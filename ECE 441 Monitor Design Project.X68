@@ -40,7 +40,7 @@ ERRORMSG        DC.B    'AN ERROR OCCURRED!',CR,LF,0
 ADDRERROR       DC.B    'Invalid Address!',CR,LF,0
 ASCIIERROR      DC.B    'NOT AN ASCII VALUE!',CR,LF,0
 HEXERROR        DC.B    'NOT A HEXADECIMAL VALUE!',CR,LF,0
-SPACE           DC.B    '   ',0
+SPACE           DC.B    ' - ',0
 HELPMSG         *DC.B    CR,LF,'*****ALL MONITOR441 COMMANDS*****',CR,LF,LF
                 DC.B    '   HELP: Displays this message',CR,LF,LF
                 
@@ -59,7 +59,8 @@ HELPMSG         *DC.B    CR,LF,'*****ALL MONITOR441 COMMANDS*****',CR,LF,LF
                 DC.B    '   ;L: Displays One Long Word',CR,LF
                 DC.B    '   MM <address>[;size] eg: MM $904;W<CR>',CR,LF,LF
                 
-                DC.B    '   MS - Memory Set.',CR,LF,LF
+                DC.B    '   MS - Memory Set.',CR,LF
+                DC.B    '   MS <address> [data] eg: MS $904 $FFFF<CR>',CR,LF,LF
                 
                 DC.B    '   BF: Fills A Block Of Memory',CR,LF
                 DC.B    '   BF <address1> <address2> <word> eg: BF $904 $908 475A<CR>',CR,LF,LF
@@ -258,7 +259,7 @@ MSMANPAGE       DC.B    CR,LF,'MS(1)                       MC68000/SANPER-1 ELU 
                 DC.B    '   MS - Memory Set.',CR,LF,LF
                 
                 DC.B    'SYNOPSYS',CR,LF
-                DC.B    '   MS <address>',CR,LF,LF
+                DC.B    '   MS <address> [data]',CR,LF,LF
                 
                 DC.B    'DESCRIPTION',CR,LF
                 DC.B    '   The Memory Set (MS) command alters memory by setting data into the address specified. The',CR,LF
@@ -916,19 +917,18 @@ HELPONLY        LEA     HELPMSG,A1
                 
 ENDHELP         MOVEM.L (SP)+,A0-A7/D0-D7
                 RTS
-        
+                
 *-----------------------------------------------------------
-* MDSP (Memory Display) - The MDSP (Memory Display) command
-* outputs the address and memory contents from <address1> to
-* <address2>. The MDSP (Memory Display) command ALSO outputs
-* the address and memory contents from <address1> to <address1 + 16bytes>
+* Check for Dollarsign and Convert Argument to Hex
+* A0 = ptr to command buffer, incremented by INDEX
+* D3 = output               A4 = ptr to output
+* D2 = 1 - INVALID ADDRESS, 0 - VALID ADDRESS
+* D4 = 0 - HEX VALUE, 1 - NON HEX VALUE
 *-----------------------------------------------------------
-MDSP        MOVEM.L A0-A7/D0-D7,-(SP)
-            
+CHKDOLLAR   MOVEM.L A0-A3/A5-A7/D0-D1/D5-D7,-(SP)
+            CLR.L   D2
             CLR.L   D3
-            JSR     ARGV
-            LEA     CMDBUFFER,A0
-            ADDA.W  #INDEX,A0
+            
             CMPI.B  #HEX,(A0)
             BEQ     DOLLARSIGN
             BRA     ARGPTR
@@ -944,26 +944,24 @@ ENDPTR      SUBI.B  #1,D3
             MOVEA.L A0,A6
             CMPI.B  #8,D3
             BLE     SAFE
+            MOVE.L  #1,D2
             LEA     ADDRERROR,A1
             MOVE.B  #14,D0
             TRAP    #15
             BRA     INVALIDADDR
                  
-SAFE        JSR     ASCII2HEX
-            MOVE.L  (A4),$1100
-            
-            CMPI.B  #2,D2
-            BEQ     ARG1
-            
-            CMPI.B  #3,D2
-            BEQ     ARG2
-            
-ARG1        LEA     ASCIIBUFFER,A0
-            MOVEA.L (A0),A2
-            LEA     BUFFER,A5
-            LEA     BUFFER,A6
-            MOVEA.L A2,A3
-            ADDA.W  #16,A3
+SAFE        MOVE.L  #0,D2
+            JSR     ASCII2HEX
+
+INVALIDADDR MOVEM.L (SP)+,A0-A3/A5-A7/D0-D1/D5-D7
+            RTS
+
+*-----------------------------------------------------------
+* MDSP Print Loop
+* A2 = ptr to beginning memory A3 = ptr to ending memory
+*-----------------------------------------------------------
+MDSPPRINT   MOVEM.L A0-A7/D0-D7,-(SP)
+
 INCREMENT   MOVE.L  A2,(A5)
             ADDA.W  #4,A6
             JSR     HEX2ASCII
@@ -985,61 +983,94 @@ INCREMENT   MOVE.L  A2,(A5)
             ADDA.W  #1,A2
             CMP.L   A2,A3
             BNE     INCREMENT
-            BRA     INVALIDADDR
-         
-ARG2        LEA     CMDBUFFER,A0
-            ADDA.W  #24,A0
-            CMPI.B  #HEX,(A0)
-            BEQ     DOLLARSIGN2
-            BRA     ARGPTR2
-DOLLARSIGN2 ADDA.W  #1,A0         
-ARGPTR2     MOVEA.L A0,A5
+            
+            MOVEM.L (SP)+,A0-A7/D0-D7
+            RTS
 
-CMPNULL2    ADDI.B  #1,D3
-            CMPI.B  #NULL,(A0)+
-            BEQ     ENDPTR2
-            BRA     CMPNULL2
-ENDPTR2     SUBI.B  #1,D3
-            SUBA.W  #1,A0
-            MOVEA.L A0,A6
-            CMPI.B  #8,D3
-            BLE     SAFE2
-            LEA     ADDRERROR,A1
-            MOVE.B  #14,D0
-            TRAP    #15
-            BRA     INVALIDADDR
-                 
-SAFE2       JSR     ASCII2HEX
 
-            LEA     $1100,A1
-            LEA     ASCIIBUFFER,A0
-            MOVEA.L (A1),A2
-            MOVEA.L (A0),A3
+*-----------------------------------------------------------
+* MDSP (Memory Display) - The MDSP (Memory Display) command
+* outputs the address and memory contents from <address1> to
+* <address2>. The MDSP (Memory Display) command ALSO outputs
+* the address and memory contents from <address1> to <address1 + 16bytes>
+*-----------------------------------------------------------
+MDSP        MOVEM.L A0-A7/D0-D7,-(SP)
+            
+            CLR.L   D3
+            JSR     ARGV
+            LEA     CMDBUFFER,A0
+            ADDA.W  #INDEX,A0
+            
+            JSR     CHKDOLLAR
+            
+            MOVE.L  (A4),$1100
+            
+            CMPI.B  #2,D2
+            BEQ     ARG1
+            
+            CMPI.B  #3,D2
+            BEQ     ARG2
+            
+ARG1        LEA     ASCIIBUFFER,A0
+            MOVEA.L (A0),A2
             LEA     BUFFER,A5
             LEA     BUFFER,A6
-INCREMENT2  MOVE.L  A2,(A5)
-            ADDA.W  #4,A6
-            JSR     HEX2ASCII
-            MOVEA.L A4,A1
-            MOVE.W  #8,D1  
-            MOVE.B  #1,D0
-            TRAP    #15
-            LEA     SPACE,A1
-            MOVE.B  #14,D0
-            TRAP    #15
-            MOVE.B  (A2),(A5)
-            LEA     BUFFER,A6
-            ADDA.W  #1,A6
-            JSR     HEX2ASCII
-            MOVEA.L A4,A1
-            MOVE.W  #2,D1  
-            MOVE.B  #0,D0
-            TRAP    #15
-            ADDA.W  #1,A2
-            CMP.L   A2,A3
-            BNE     INCREMENT2
+            MOVEA.L A2,A3
+            ADDA.W  #16,A3
             
-INVALIDADDR MOVEM.L (SP)+,A0-A7/D0-D7
+            JSR     MDSPPRINT
+            
+            BRA     MDSPDONE
+         
+ARG2        LEA     CMDBUFFER,A0
+            MOVE.B  #2,D0
+            MOVE.B  #INDEX,D1
+            MULU    D0,D1
+            ADDA.W  D1,A0
+            
+            JSR     CHKDOLLAR
+            
+            LEA     $1100,A0
+            LEA     ASCIIBUFFER,A1
+            MOVEA.L (A0),A2
+            MOVEA.L (A1),A3
+            LEA     BUFFER,A5
+            LEA     BUFFER,A6
+            
+            JSR     MDSPPRINT
+            
+MDSPDONE    MOVEM.L (SP)+,A0-A7/D0-D7
+            RTS
+
+*-----------------------------------------------------------
+* Bubble Sort
+* A0 - ptr to beginning memory A1 = ptr to ending memory
+* D1 = 1 - Ascending, 0 - Descending 
+*-----------------------------------------------------------
+BUBBLESORT  MOVEM.L A0-A7/D0-D7,-(SP)
+            
+            MOVE.L  A0,A2
+BUBBLELOOP  MOVE.L  A2,A0
+
+BUBBLECMP   CMPI.B  #1,D1
+            BEQ     DESCEND
+            CMP.W   (A0)+,(A0)+
+            BHI.S   BUBBLESWAP
+            BRA     SORT
+      
+DESCEND     CMP.W   (A0)+,(A0)+
+            BLO.S   BUBBLESWAP
+            
+SORT        SUBQ.L  #2,A0
+            CMP.L   A0,A1
+            BNE     BUBBLECMP
+            BRA     BUBBLEDN
+BUBBLESWAP  MOVE.L  -(A0),D0
+            SWAP.W  D0
+            MOVE.L  D0,(A0)
+            BRA     BUBBLELOOP
+
+BUBBLEDN    MOVEM.L (SP)+,A0-A7/D0-D7
             RTS
 
 *-----------------------------------------------------------
@@ -1048,10 +1079,199 @@ INVALIDADDR MOVEM.L (SP)+,A0-A7/D0-D7
 * are specified in the command. The order (A or D) specifies whether the list is 
 * sorted in Ascending or Descending order. (The size of the data to be sorted is a word)
 *-----------------------------------------------------------
-SORTW   MOVEM.L A0-A7/D0-D7,-(SP)
+SORTW       MOVEM.L A0-A7/D0-D7,-(SP)
+
+            JSR     ARGV
+            LEA     CMDBUFFER,A0
+            ADDA.W  #INDEX,A0
+            
+            JSR     CHKDOLLAR
+            CMP.B   #1,D2
+            BEQ     SORTWDONE
+            MOVEA.L (A4),A1
+            
+            LEA     CMDBUFFER,A0
+            MOVE.B  #2,D0
+            MOVE.B  #INDEX,D1
+            MULU    D0,D1
+            ADDA.W  D1,A0
+            
+            JSR     CHKDOLLAR
+            CMP.B   #1,D2
+            BEQ     SORTWDONE
+            MOVEA.L A1,A0
+            MOVEA.L (A4),A1
+            
+            LEA     CMDBUFFER,A2
+            MOVE.B  #3,D0
+            MOVE.B  #INDEX,D1
+            MULU    D0,D1
+            ADDA.W  D1,A2
+            
+            CMP.B   #'A',(A2)
+            BEQ     ASCENDING
+            
+            CMP.B   #'D',(A2)
+            BEQ     DESCENDING
+            
+            LEA     ERRORMSG,A1
+            MOVE.B  #14,D0
+            TRAP    #15
+            BRA     SORTWDONE
+            
+ASCENDING   MOVE.L  #1,D1
+            BRA     BSORT
+            
+DESCENDING  MOVE.L  #0,D1
+            
+BSORT       JSR     BUBBLESORT
         
-        MOVEM.L (SP)+,A0-A7/D0-D7
-        RTS
+SORTWDONE   MOVEM.L (SP)+,A0-A7/D0-D7
+            RTS
+
+*-----------------------------------------------------------
+* MM Print Loop
+* A2 = ptr to beginning memory A3 = ptr to ending memory
+* D2 = SIZE OF MEMORY OUTPUT D4 = LENGTH OF OUTPUT
+*-----------------------------------------------------------
+MMPRINT     MOVEM.L A0-A7/D0-D7,-(SP)
+
+INCREMENT2  MOVE.L  A2,(A5)
+            ADDA.W  #4,A6
+            JSR     HEX2ASCII
+            
+            MOVEA.L A4,A1
+            MOVE.B  #8,D1
+            MOVE.B  #1,D0
+            TRAP    #15
+            
+            LEA     SPACE,A1
+            MOVE.B  #14,D0
+            TRAP    #15
+            
+            CMP.B   #1,D2
+            BEQ     BYTEPRINT
+            
+            CMP.B   #2,D2
+            BEQ     WORDPRINT
+            
+            CMP.B   #4,D2
+            BEQ     LONGPRINT
+            
+BYTEPRINT   MOVE.B  (A2),(A5)
+            LEA     BUFFER,A6
+            ADDA.W  D2,A6
+            JSR     HEX2ASCII
+            MOVEA.L A4,A1
+            MOVE.L  D4,D1  
+            MOVE.B  #1,D0
+            TRAP    #15
+            
+            LEA     SPACE,A1
+            MOVE.B  #14,D0
+            TRAP    #15
+            
+            LEA     BUFFER,A1
+            MOVE.B  #2,D0
+            TRAP    #15
+            
+            CMPI.B  #'.',(A1)
+            BEQ     MMPRINTDN
+            
+            CMP.B   #0,D1
+            BEQ     BYTECONT
+
+            CMP.B   D4,D1
+            BNE     MMERROR
+            
+            LEA     BUFFER,A5
+            LEA     BUFFER,A6
+            ADDA.W  D4,A6
+            JSR     ASCII2HEX
+            ADDA.W  #3,A4
+            MOVE.B  (A4),(A2)
+            
+BYTECONT    ADDA.W  D2,A2
+            BRA     INCREMENT2
+            
+WORDPRINT   MOVE.W  (A2),(A5)
+            LEA     BUFFER,A6
+            ADDA.W  D2,A6
+            JSR     HEX2ASCII
+            MOVEA.L A4,A1
+            MOVE.L  D4,D1  
+            MOVE.B  #1,D0
+            TRAP    #15
+            
+            LEA     SPACE,A1
+            MOVE.B  #14,D0
+            TRAP    #15
+            
+            LEA     BUFFER,A1
+            MOVE.B  #2,D0
+            TRAP    #15
+            
+            CMPI.B  #'.',(A1)
+            BEQ     MMPRINTDN
+
+            CMP.B   #0,D1
+            BEQ     WORDCONT    
+
+            CMP.B   D4,D1
+            BNE     MMERROR
+            
+            LEA     BUFFER,A5
+            LEA     BUFFER,A6
+            ADDA.W  D4,A6
+            JSR     ASCII2HEX
+            ADDA.W  #2,A4
+            MOVE.W (A4),(A2)
+            
+WORDCONT    ADDA.W  D2,A2
+            BRA     INCREMENT2
+            
+LONGPRINT   MOVE.L  (A2),(A5)
+            LEA     BUFFER,A6
+            ADDA.W  D2,A6
+            JSR     HEX2ASCII
+            MOVEA.L A4,A1
+            MOVE.L  D4,D1  
+            MOVE.B  #1,D0
+            TRAP    #15
+            
+            LEA     SPACE,A1
+            MOVE.B  #14,D0
+            TRAP    #15
+            
+            LEA     BUFFER,A1
+            MOVE.B  #2,D0
+            TRAP    #15
+            
+            CMPI.B  #'.',(A1)
+            BEQ     MMPRINTDN
+            
+            CMP.B   #0,D1
+            BEQ     LONGCONT
+        
+            CMP.B   D4,D1
+            BNE     MMERROR
+            
+            LEA     BUFFER,A5
+            LEA     BUFFER,A6
+            ADDA.W  D4,A6
+            JSR     ASCII2HEX
+            MOVE.L  (A4),(A2)
+            
+LONGCONT    ADDA.W  D2,A2
+            BRA     INCREMENT2
+
+MMERROR     LEA     ERRORMSG,A1
+            MOVE.B  #14,D0
+            TRAP    #15    
+            
+MMPRINTDN   MOVEM.L (SP)+,A0-A7/D0-D7
+            RTS
+
 
 *-----------------------------------------------------------
 * MM (Memory Modify) - MM (Memory Modify) command is used to display memory and,
@@ -1059,10 +1279,62 @@ SORTW   MOVEM.L A0-A7/D0-D7,-(SP)
 * the number of bytes displayed for each address.
 *
 *-----------------------------------------------------------
-MM      MOVEM.L A0-A7/D0-D7,-(SP)
-        
-        MOVEM.L (SP)+,A0-A7/D0-D7
-        RTS
+MM          MOVEM.L A0-A7/D0-D7,-(SP)
+
+            JSR     ARGV
+            LEA     CMDBUFFER,A0
+            ADDA.W  #INDEX,A0
+            
+            JSR     CHKDOLLAR
+            CMP.B   #1,D2
+            BEQ     MMDONE
+            MOVEA.L (A4),A1
+            
+            LEA     CMDBUFFER,A2
+            MOVE.B  #2,D0
+            MOVE.B  #INDEX,D1
+            MULU    D0,D1
+            ADDA.W  D1,A2
+            
+            CMP.B   #'B',(A2)
+            BEQ     BYTE
+            
+            CMP.B   #'W',(A2)
+            BEQ     WORD
+            
+            CMP.B   #'L',(A2)
+            BEQ     LONG
+            
+            LEA     ERRORMSG,A1
+            MOVE.B  #14,D0
+            TRAP    #15
+            BRA     MMDONE
+            
+BYTE        MOVE.L  #1,D2
+            MOVE.L  #2,D4
+            MOVEA.L A1,A2
+            LEA     BUFFER,A5
+            LEA     BUFFER,A6
+            JSR     MMPRINT
+            BRA     MMDONE
+            
+WORD        MOVE.L  #2,D2
+            MOVE.L  #4,D4
+            MOVEA.L A1,A2
+            LEA     BUFFER,A5
+            LEA     BUFFER,A6
+            JSR     MMPRINT
+            BRA     MMDONE
+            
+LONG        MOVE.L  #4,D2
+            MOVE.L  #8,D4
+            MOVEA.L A1,A2
+            LEA     BUFFER,A5
+            LEA     BUFFER,A6
+            JSR     MMPRINT
+
+MMDONE      MOVEM.L (SP)+,A0-A7/D0-D7
+            RTS
 
 *-----------------------------------------------------------
 * MS (Memory Set) - The Memory Set (MS) command alters memory by setting data into
@@ -1070,10 +1342,46 @@ MM      MOVEM.L A0-A7/D0-D7,-(SP)
 * data.
 *
 *-----------------------------------------------------------
-MS      MOVEM.L A0-A7/D0-D7,-(SP)
+MS          MOVEM.L A0-A7/D0-D7,-(SP)
+
+            JSR     ARGV
+            LEA     CMDBUFFER,A0
+            ADDA.W  #INDEX,A0
+            
+            JSR     CHKDOLLAR
+            CMP.B   #1,D4
+            BEQ     MSERROR
+            CMP.B   #1,D2
+            BEQ     MSDONE
+            MOVEA.L (A4),A1
+            
+            LEA     CMDBUFFER,A0
+            MOVE.B  #2,D0
+            MOVE.B  #INDEX,D1
+            MULU    D0,D1
+            ADDA.W  D1,A0
+            
+            JSR     CHKDOLLAR
+            CMP.B   #1,D4
+            BEQ     ASCIIDATA
+            CMP.B   #1,D2
+            BEQ     MSDONE
+            MOVEA.L A1,A0
+INCPTR      CMP.B   #NULL,(A4)+
+            BEQ     INCPTR
+            SUBA.W  #1,A4
+            MOVE.L  (A4),(A1)
+            
+ASCIIDATA   
+            
+            BRA     MSDONE
+            
+MSERROR     LEA     ERRORMSG,A1
+            MOVE.B  #14,D0
+            TRAP    #15
         
-        MOVEM.L (SP)+,A0-A7/D0-D7
-        RTS
+MSDONE      MOVEM.L (SP)+,A0-A7/D0-D7
+            RTS
 
 *-----------------------------------------------------------
 * BF (Block Fill) - The Block Fill (BF) command fills memory starting with the word
@@ -1191,9 +1499,9 @@ NULLFOUND   ADDI.B  #1,D2
 *-----------------------------------------------------------
 *ASCII TO HEX CONVERSION SUBROUTINE
 * A5 = ptr to beginning address A6 = ptr to ending address
-* D3 = output                   A4 = ptr to output
+* D3 = output D4 = 0 - HEX VALUE, 1 - NON HEX VALUE A4 = ptr to output
 *-----------------------------------------------------------
-ASCII2HEX   MOVEM.L A0-A3/A5-A7/D0-D2/D4-D7,-(SP)
+ASCII2HEX   MOVEM.L A0-A3/A5-A7/D0-D2/D5-D7,-(SP)
             
             MOVEA.L #ASCIIBUFFER,A4
             CLR.L   D3            
@@ -1218,13 +1526,16 @@ ASCIINUMBER SUBI.B  #$30,D2
             OR.B    D2,D3
             ROL.L   #4,D3
             BRA     ASCIILOOP
-ASCIIRANGE  LEA     ASCIIERROR,A1
+ASCIIRANGE  MOVE.L  #1,D4
+            LEA     ASCIIERROR,A1
             MOVE.B  #14,D0
-            TRAP    #15       
-ASCIIDONE   ROR.L   #4,D3
+            TRAP    #15
+            BRA     ASCIIFIN       
+ASCIIDONE   MOVE.L  #0,D4
+            ROR.L   #4,D3
             MOVE.L  D3,(A4)
             
-            MOVEM.L (SP)+,A0-A3/A5-A7/D0-D2/D4-D7
+ASCIIFIN    MOVEM.L (SP)+,A0-A3/A5-A7/D0-D2/D5-D7
             RTS
 
 *-----------------------------------------------------------
@@ -1278,6 +1589,7 @@ HEXDONE     MOVEM.L (SP)+,A0-A3/A5-A7/D0-D2/D4-D7
 * Put variables and constants here
 
     END    START        ; last line of source
+
 
 *~Font name~Courier New~
 *~Font size~10~
