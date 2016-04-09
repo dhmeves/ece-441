@@ -49,46 +49,46 @@ DATALONGMSG     DC.B    'DATA ENTERED TOO LARGE, PLEASE ENTER WORD SIZE OR SMALL
 MEMERROR        DC.B    'MEMORY ERROR AT ADDRESS: ',0
 MEMSUCCESS      DC.B    'NO MEMORY ERROR DETECTED!',CR,LF,0
 SPACE           DC.B    ' - ',0
-HELPMSG         *DC.B    CR,LF,'*****ALL MONITOR441 COMMANDS*****',CR,LF,LF
-                DC.B    '   HELP: Displays this message',CR,LF,LF
+CMDMSG          *DC.B    CR,LF,'*****ALL MONITOR441 COMMANDS*****',CR,LF,LF
+HELPMSG         DC.B    '   HELP: Displays this message',CR,LF,LF,0
                 
-                DC.B    '   MDSP: Outputs Address And Memory Contents',CR,LF
-                DC.B    '   MDSP <address1> <address2> eg: MDSP $908 $90A<CR>',CR,LF,LF
+MDSPMSG         DC.B    '   MDSP: Outputs Address And Memory Contents',CR,LF
+                DC.B    '   MDSP <address1> <address2> eg: MDSP $908 $90A<CR>',CR,LF,LF,0
                 
-                DC.B    '   SORTW: Sorts A Block Of Memory',CR,LF
+SORTWMSG        DC.B    '   SORTW: Sorts A Block Of Memory',CR,LF
                 DC.B    '   Default: Descending Order',CR,LF
                 DC.B    '   ;A: Ascending Order',CR,LF
                 DC.B    '   ;D: Descending Order',CR,LF
-                DC.B    '   SORTW <address1> <address2> [;order] eg: SORTW $904 $90E ;A<CR>',CR,LF,LF
+                DC.B    '   SORTW <address1> <address2> [;order] eg: SORTW $904 $90E ;A<CR>',CR,LF,LF,0
                 
-                DC.B    '   MM: Modifies Data In Memory',CR,LF
+MMMSG           DC.B    '   MM: Modifies Data In Memory',CR,LF
                 DC.B    '   Default: Displays One Byte',CR,LF
                 DC.B    '   ;W: Displays One Word',CR,LF
                 DC.B    '   ;L: Displays One Long Word',CR,LF
-                DC.B    '   MM <address>[;size] eg: MM $904;W<CR>',CR,LF,LF
+                DC.B    '   MM <address>[;size] eg: MM $904;W<CR>',CR,LF,LF,0
                 
-                DC.B    '   MS - Memory Set.',CR,LF
-                DC.B    '   MS <address> [data] eg: MS $904 $FFFF<CR>',CR,LF,LF
+MSMSG           DC.B    '   MS - Memory Set.',CR,LF
+                DC.B    '   MS <address> [data] eg: MS $904 $FFFF<CR>',CR,LF,LF,0
                 
-                DC.B    '   BF: Fills A Block Of Memory',CR,LF
-                DC.B    '   BF <address1> <address2> <word> eg: BF $904 $908 475A<CR>',CR,LF,LF
+BFMSG           DC.B    '   BF: Fills A Block Of Memory',CR,LF
+                DC.B    '   BF <address1> <address2> <word> eg: BF $904 $908 475A<CR>',CR,LF,LF,0
                 
-                DC.B    '   BMOV: Moves A Block of Memory To Another Area',CR,LF
-                DC.B    '   BMOV <address1> <address2> <address3> eg: BMOV $908 $90B $909<CR>',CR,LF,LF
+BMOVMSG         DC.B    '   BMOV: Moves A Block of Memory To Another Area',CR,LF
+                DC.B    '   BMOV <address1> <address2> <address3> eg: BMOV $908 $90B $909<CR>',CR,LF,LF,0
                 
-                DC.B    '   BTST - Block Test.',CR,LF,LF
+BTSTMSG         DC.B    '   BTST - Block Test.',CR,LF,LF,0
                 
-                DC.B    '   BSCH: Searches A Literal String In The Memory',CR,LF
-                DC.B    '   BSCH <address1> <address2> "literal string" eg: BSCH $900 $910 "MATCH"<CR>',CR,LF,LF
+BSCHMSG         DC.B    '   BSCH: Searches A Literal String In The Memory',CR,LF
+                DC.B    '   BSCH <address1> <address2> "literal string" eg: BSCH $900 $910 "MATCH"<CR>',CR,LF,LF,0
                 
-                DC.B    '   GO: Starts Execution From Given Address',CR,LF
-                DC.B    '   GO <address> eg: GO $900<CR>',CR,LF,LF
+GOMSG           DC.B    '   GO: Starts Execution From Given Address',CR,LF
+                DC.B    '   GO <address> eg: GO $900<CR>',CR,LF,LF,0
                 
-                DC.B    '   DF - Display Formatted Registers.',CR,LF,LF
+DFMSG           DC.B    '   DF - Display Formatted Registers.',CR,LF,LF,0
                 
-                DC.B    '   EXIT - Exit the monitor program eg: EXIT<CR>',CR,LF,LF
+EXITMSG         DC.B    '   EXIT - Exit the monitor program eg: EXIT<CR>',CR,LF,LF,0
                 
-                DC.B    '*****Try HELP <command> or MAN <command> to view man page.*****',CR,LF,LF,0
+CMDMSG2         DC.B    '*****Try HELP <command> or MAN <command> to view man page.*****',CR,LF,LF,0
 
 *--------------------------
 *MAN PAGES
@@ -923,6 +923,26 @@ MANOUT          MOVEM.L A0-A7/D0-D7,-(SP)
                 RTS
                 
 HELPONLY        LEA     HELPMSG,A1
+                MOVE.B  #14,D0
+                TRAP    #15
+                
+                LEA     MDSPMSG,A1
+                MOVE.B  #14,D0
+                TRAP    #15
+                
+                LEA     HELPMSG,A1
+                MOVE.B  #14,D0
+                TRAP    #15
+                
+                LEA     HELPMSG,A1
+                MOVE.B  #14,D0
+                TRAP    #15
+                
+                LEA     HELPMSG,A1
+                MOVE.B  #14,D0
+                TRAP    #15
+                
+                LEA     HELPMSG,A1
                 MOVE.B  #14,D0
                 TRAP    #15
                 
@@ -1767,6 +1787,7 @@ HEXDONE     MOVEM.L (SP)+,A0-A3/A5-A7/D0-D2/D4-D7
 * Put variables and constants here
 
     END    START        ; last line of source
+
 
 
 
