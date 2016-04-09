@@ -12,7 +12,9 @@ TUTOR   EQU     228
 OUT1CR  EQU     227
 PORTIN1 EQU     241
 OUTPUT  EQU     243
-INDEX   EQU     12
+INDEX   EQU     20
+TESTVAL1    EQU     $AA
+TESTVAL2    EQU     $55
  
 BS  EQU  $08   ; Backspace
 HT  EQU  $09   ; Tab (horizontal 5 characters)
@@ -33,13 +35,19 @@ INPUTBUFFER     DS.B    80
     ORG     $1060
 CMDBUFFER       DS.B    80
     ORG     $1110
-ASCIIBUFFER     DS.B    12
-HEXBUFFER       DS.B    12
-BUFFER          DS.B    12
+ASCIIBUFFER     DS.B    20
+HEXBUFFER       DS.B    20
+BUFFER          DS.B    20
 ERRORMSG        DC.B    'AN ERROR OCCURRED!',CR,LF,0
-ADDRERROR       DC.B    'Invalid Address!',CR,LF,0
-ASCIIERROR      DC.B    'NOT AN ASCII VALUE!',CR,LF,0
-HEXERROR        DC.B    'NOT A HEXADECIMAL VALUE!',CR,LF,0
+ADDRERROR       DC.B    'INVALID ADDRESS!',CR,LF,0
+ASCIIERROR      DC.B    'NOT AN HEXADECIMAL VALUE!',CR,LF,0
+HEXERROR        DC.B    'NOT A ASCII VALUE!',CR,LF,0
+STOREDATA       DC.B    'STORING DATA AS ASCII.',CR,LF,0
+ODDADDRMSG1     DC.B    'ADDRESS 1 IS NOT AN EVEN ADDRESS!',CR,LF,0
+ODDADDRMSG2     DC.B    'ADDRESS 2 IS NOT AN EVEN ADDRESS!',CR,LF,0
+DATALONGMSG     DC.B    'DATA ENTERED TOO LARGE, PLEASE ENTER WORD SIZE OR SMALLER!',CR,LF,0
+MEMERROR        DC.B    'MEMORY ERROR AT ADDRESS: ',0
+MEMSUCCESS      DC.B    'NO MEMORY ERROR DETECTED!',CR,LF,0
 SPACE           DC.B    ' - ',0
 HELPMSG         *DC.B    CR,LF,'*****ALL MONITOR441 COMMANDS*****',CR,LF,LF
                 DC.B    '   HELP: Displays this message',CR,LF,LF
@@ -736,6 +744,9 @@ ERROR           LEA     ERRORMSG,A1
 COMPARESTRING   MOVEM.L A0-A2/A5-A7/D0-D3/D5-D7,-(SP)
                 CLR.L   D4
                 
+                CMP.B   #NULL,(A3)
+                BEQ     START
+                
 COMPARELOOP     CMPI.B  #SP,(A3)
                 BEQ     COMPARELIST
                 
@@ -924,8 +935,9 @@ ENDHELP         MOVEM.L (SP)+,A0-A7/D0-D7
 * D3 = output               A4 = ptr to output
 * D2 = 1 - INVALID ADDRESS, 0 - VALID ADDRESS
 * D4 = 0 - HEX VALUE, 1 - NON HEX VALUE
+* D5 - LENGTH OF STRING
 *-----------------------------------------------------------
-CHKDOLLAR   MOVEM.L A0-A3/A5-A7/D0-D1/D5-D7,-(SP)
+CHKDOLLAR   MOVEM.L A0-A3/A5-A7/D0-D1/D6-D7,-(SP)
             CLR.L   D2
             CLR.L   D3
             
@@ -945,6 +957,7 @@ ENDPTR      SUBI.B  #1,D3
             CMPI.B  #8,D3
             BLE     SAFE
             MOVE.L  #1,D2
+            JSR     ASCII2HEX
             LEA     ADDRERROR,A1
             MOVE.B  #14,D0
             TRAP    #15
@@ -953,7 +966,7 @@ ENDPTR      SUBI.B  #1,D3
 SAFE        MOVE.L  #0,D2
             JSR     ASCII2HEX
 
-INVALIDADDR MOVEM.L (SP)+,A0-A3/A5-A7/D0-D1/D5-D7
+INVALIDADDR MOVEM.L (SP)+,A0-A3/A5-A7/D0-D1/D6-D7
             RTS
 
 *-----------------------------------------------------------
@@ -1372,7 +1385,14 @@ INCPTR      CMP.B   #NULL,(A4)+
             SUBA.W  #1,A4
             MOVE.L  (A4),(A1)
             
-ASCIIDATA   
+ASCIIDATA   LEA     STOREDATA,A1
+            MOVE.B  #14,D0
+            TRAP    #15
+
+DATALOOP    CMP.B   #NULL,(A0)
+            BEQ     MSDONE
+            MOVE.B  (A0)+,(A1)+
+            BRA     DATALOOP
             
             BRA     MSDONE
             
@@ -1389,10 +1409,81 @@ MSDONE      MOVEM.L (SP)+,A0-A7/D0-D7
 * addresses. This command only fills with a word-size (2 bytes) data pattern. If an entire
 * word-size data pattern is not entered, the pattern is right justified and leading zeros are inserted.
 *-----------------------------------------------------------
-BF      MOVEM.L A0-A7/D0-D7,-(SP)
+BF          MOVEM.L A0-A7/D0-D7,-(SP)
+            
+            CLR.L   D6
+            JSR     ARGV
+            LEA     CMDBUFFER,A0
+            ADDA.W  #INDEX,A0
+            
+            JSR     CHKDOLLAR
+            CMP.B   #1,D2
+            BEQ     BFDONE
+            MOVEA.L (A4),A1
+            
+            MOVE.L  A1,D2
+            DIVU    #2,D2
+            SWAP    D2
+            CMP.W   #0,D2
+            BNE     ODDADDR1
+            
+CHKADDR2    LEA     CMDBUFFER,A0
+            MOVE.B  #2,D0
+            MOVE.B  #INDEX,D1
+            MULU    D0,D1
+            ADDA.W  D1,A0
+            
+            JSR     CHKDOLLAR
+            CMP.B   #1,D2
+            BEQ     BFDONE
+            MOVEA.L (A4),A2
+            
+            MOVE.L  A2,D2
+            DIVU    #2,D2
+            SWAP    D2
+            CMP.W   #0,D2
+            BNE     ODDADDR2
+            
+            CMP.B   #1,D6
+            BEQ     BFDONE
+            
+            LEA     CMDBUFFER,A0
+            MOVE.B  #3,D0
+            MOVE.B  #INDEX,D1
+            MULU    D0,D1
+            ADDA.W  D1,A0
+            
+            JSR     CHKDOLLAR
+            CMP.B   #1,D2
+            BEQ     BFDONE
+            MOVEA.L (A4),A3
+            
+            CMP.B   #4,D5
+            BEQ     FILLLOOP
+            BGT     DATALONG
         
-        MOVEM.L (SP)+,A0-A7/D0-D7
-        RTS
+FILLLOOP    MOVE.W  A3,(A1)+
+            CMP.L   A1,A2
+            BNE     FILLLOOP
+            BRA     BFDONE
+            
+DATALONG    LEA     DATALONGMSG,A1
+            MOVE.B  #14,D0
+            TRAP    #15
+            BRA     BFDONE
+
+ODDADDR1    MOVE.L  #1,D6
+            LEA     ODDADDRMSG1,A1
+            MOVE.B  #14,D0
+            TRAP    #15
+            BRA     CHKADDR2
+            
+ODDADDR2    LEA     ODDADDRMSG2,A1
+            MOVE.B  #14,D0
+            TRAP    #15           
+                
+BFDONE      MOVEM.L (SP)+,A0-A7/D0-D7
+            RTS
 
 *-----------------------------------------------------------
 * BMOV (Block Move) - The Block Move (BMOV) command is used to move (duplicate) blocks
@@ -1400,10 +1491,45 @@ BF      MOVEM.L A0-A7/D0-D7,-(SP)
 *
 *
 *-----------------------------------------------------------
-BMOV    MOVEM.L A0-A7/D0-D7,-(SP)
+BMOV        MOVEM.L A0-A7/D0-D7,-(SP)
+
+            JSR     ARGV
+            LEA     CMDBUFFER,A0
+            ADDA.W  #INDEX,A0
+            
+            JSR     CHKDOLLAR
+            CMP.B   #1,D2
+            BEQ     BMOVDONE
+            MOVEA.L (A4),A1
+            
+            LEA     CMDBUFFER,A0
+            MOVE.B  #2,D0
+            MOVE.B  #INDEX,D1
+            MULU    D0,D1
+            ADDA.W  D1,A0
+            
+            JSR     CHKDOLLAR
+            CMP.B   #1,D2
+            BEQ     BMOVDONE
+            MOVEA.L (A4),A2
+            
+            LEA     CMDBUFFER,A0
+            MOVE.B  #3,D0
+            MOVE.B  #INDEX,D1
+            MULU    D0,D1
+            ADDA.W  D1,A0
+            
+            JSR     CHKDOLLAR
+            CMP.B   #1,D2
+            BEQ     BMOVDONE
+            MOVEA.L (A4),A3
+            
+BMOVLOOP    MOVE.B  (A1)+,(A3)+
+            CMP.L   A1,A2
+            BNE     BMOVLOOP
         
-        MOVEM.L (SP)+,A0-A7/D0-D7
-        RTS
+BMOVDONE    MOVEM.L (SP)+,A0-A7/D0-D7
+            RTS
 
 *-----------------------------------------------------------
 * BTST (Block Test) - The Block Test (BT) command is a destructive test of a block of memory
@@ -1411,10 +1537,58 @@ BMOV    MOVEM.L A0-A7/D0-D7,-(SP)
 * errors, and display a message that no error was detected. If memory problems are found, a message
 * is displayed indicating the address, the data stored, and the data read of the failing memory.
 *-----------------------------------------------------------
-BTST    MOVEM.L A0-A7/D0-D7,-(SP)
+BTST        MOVEM.L A0-A7/D0-D7,-(SP)
         
-        MOVEM.L (SP)+,A0-A7/D0-D7
-        RTS
+            JSR     ARGV
+            LEA     CMDBUFFER,A0
+            ADDA.W  #INDEX,A0
+            
+            JSR     CHKDOLLAR
+            CMP.B   #1,D2
+            BEQ     BMOVDONE
+            MOVEA.L (A4),A1
+            MOVEA.L (A4),A3
+            
+            LEA     CMDBUFFER,A0
+            MOVE.B  #2,D0
+            MOVE.B  #INDEX,D1
+            MULU    D0,D1
+            ADDA.W  D1,A0
+            
+            JSR     CHKDOLLAR
+            CMP.B   #1,D2
+            BEQ     BMOVDONE
+            MOVEA.L (A4),A2
+            
+BTSTLOOP    MOVE.B  #TESTVAL1,(A1)+
+            CMP.L   A1,A2
+            BNE     BTSTLOOP
+            
+MEMCHKLP    CMP.B   #TESTVAL1,(A3)+
+            BNE     ERRORDETECT
+            CMP.L   A3,A2
+            BNE     MEMCHKLP
+            LEA     MEMSUCCESS,A1
+            MOVE.B  #14,D0
+            TRAP    #15
+            BRA     BTSTDONE
+            
+ERRORDETECT LEA     MEMERROR,A1
+            MOVE.B  #14,D0
+            TRAP    #15
+            SUBA.W  #1,A3
+            LEA     BUFFER,A5
+            LEA     BUFFER,A6
+            MOVE.L  A3,(A5)
+            ADDA.W  #4,A6
+            JSR     HEX2ASCII
+            MOVEA.L A4,A1
+            MOVE.B  #13,D0
+            TRAP    #15
+            
+        
+BTSTDONE    MOVEM.L (SP)+,A0-A7/D0-D7
+            RTS
 
 *-----------------------------------------------------------
 * BSCH (Block Search) - The BSCH (Block Search) command is used to search a literal string in a 
@@ -1499,15 +1673,18 @@ NULLFOUND   ADDI.B  #1,D2
 *-----------------------------------------------------------
 *ASCII TO HEX CONVERSION SUBROUTINE
 * A5 = ptr to beginning address A6 = ptr to ending address
-* D3 = output D4 = 0 - HEX VALUE, 1 - NON HEX VALUE A4 = ptr to output
+* D3 = output D4 = 0 - HEX VALUE, 1 - NON HEX VALUE 
+* D5 - LENGTH OF STRING  A4 = ptr to output
 *-----------------------------------------------------------
-ASCII2HEX   MOVEM.L A0-A3/A5-A7/D0-D2/D5-D7,-(SP)
+ASCII2HEX   MOVEM.L A0-A3/A5-A7/D0-D2/D6-D7,-(SP)
             
             MOVEA.L #ASCIIBUFFER,A4
-            CLR.L   D3            
-ASCIILOOP   CLR.L   D2           
+            CLR.L   D3
+            CLR.L   D5            
+ASCIILOOP   CLR.L   D2      
             CMP.L   A5,A6
             BEQ     ASCIIDONE
+            ADD.B   #1,D5
             MOVE.B  (A5)+,D2
             CMPI.B  #'0',D2
             BLT     ASCIIRANGE
@@ -1535,7 +1712,7 @@ ASCIIDONE   MOVE.L  #0,D4
             ROR.L   #4,D3
             MOVE.L  D3,(A4)
             
-ASCIIFIN    MOVEM.L (SP)+,A0-A3/A5-A7/D0-D2/D5-D7
+ASCIIFIN    MOVEM.L (SP)+,A0-A3/A5-A7/D0-D2/D6-D7
             RTS
 
 *-----------------------------------------------------------
@@ -1548,6 +1725,7 @@ HEX2ASCII   MOVEM.L A0-A3/A5-A7/D0-D2/D4-D7,-(SP)
             CLR.L   D2
             CLR.L   D3
             LEA     HEXBUFFER,A4
+            MOVE.B  #NULL,(A4)
 NEXTHEX     CLR.L   D4
             MOVE.B  #1,D4
             CMP.L   A5,A6
@@ -1589,6 +1767,8 @@ HEXDONE     MOVEM.L (SP)+,A0-A3/A5-A7/D0-D2/D4-D7
 * Put variables and constants here
 
     END    START        ; last line of source
+
+
 
 
 *~Font name~Courier New~
