@@ -47,48 +47,50 @@ ODDADDRMSG1     DC.B    'ADDRESS 1 IS NOT AN EVEN ADDRESS!',CR,LF,0
 ODDADDRMSG2     DC.B    'ADDRESS 2 IS NOT AN EVEN ADDRESS!',CR,LF,0
 DATALONGMSG     DC.B    'DATA ENTERED TOO LARGE, PLEASE ENTER WORD SIZE OR SMALLER!',CR,LF,0
 MEMERROR        DC.B    'MEMORY ERROR AT ADDRESS: ',0
-MEMSUCCESS      DC.B    'NO MEMORY ERROR DETECTED!',CR,LF,0
+MEMSUCCESS      DC.B    'NO MEMORY ERROR DETECTED AT ADDRESS: ',0
+DATASTORED      DC.B    'DATA STORED: ',0
+DATAREAD        DC.B    'DATA READ: ',0
 SPACE           DC.B    ' - ',0
-CMDMSG          *DC.B    CR,LF,'*****ALL MONITOR441 COMMANDS*****',CR,LF,LF
-HELPMSG         DC.B    '   HELP: Displays this message',CR,LF,LF,0
+CMDMSG          DC.B    CR,LF,'*****ALL MONITOR441 COMMANDS*****',CR,LF,LF,0
+HELPMSG         DC.B    CR,LF,'   HELP: Displays this message',CR,LF,LF,0
                 
-MDSPMSG         DC.B    '   MDSP: Outputs Address And Memory Contents',CR,LF
+MDSPMSG         DC.B    CR,LF,'   MDSP: Outputs Address And Memory Contents',CR,LF
                 DC.B    '   MDSP <address1> <address2> eg: MDSP $908 $90A<CR>',CR,LF,LF,0
                 
-SORTWMSG        DC.B    '   SORTW: Sorts A Block Of Memory',CR,LF
+SORTWMSG        DC.B    CR,LF,'   SORTW: Sorts A Block Of Memory',CR,LF
                 DC.B    '   Default: Descending Order',CR,LF
                 DC.B    '   ;A: Ascending Order',CR,LF
                 DC.B    '   ;D: Descending Order',CR,LF
                 DC.B    '   SORTW <address1> <address2> [;order] eg: SORTW $904 $90E ;A<CR>',CR,LF,LF,0
                 
-MMMSG           DC.B    '   MM: Modifies Data In Memory',CR,LF
+MMMSG           DC.B    CR,LF,'   MM: Modifies Data In Memory',CR,LF
                 DC.B    '   Default: Displays One Byte',CR,LF
                 DC.B    '   ;W: Displays One Word',CR,LF
                 DC.B    '   ;L: Displays One Long Word',CR,LF
                 DC.B    '   MM <address>[;size] eg: MM $904;W<CR>',CR,LF,LF,0
                 
-MSMSG           DC.B    '   MS - Memory Set.',CR,LF
+MSMSG           DC.B    CR,LF,'   MS - Memory Set.',CR,LF
                 DC.B    '   MS <address> [data] eg: MS $904 $FFFF<CR>',CR,LF,LF,0
                 
-BFMSG           DC.B    '   BF: Fills A Block Of Memory',CR,LF
+BFMSG           DC.B    CR,LF,'   BF: Fills A Block Of Memory',CR,LF
                 DC.B    '   BF <address1> <address2> <word> eg: BF $904 $908 475A<CR>',CR,LF,LF,0
                 
-BMOVMSG         DC.B    '   BMOV: Moves A Block of Memory To Another Area',CR,LF
+BMOVMSG         DC.B    CR,LF,'   BMOV: Moves A Block of Memory To Another Area',CR,LF
                 DC.B    '   BMOV <address1> <address2> <address3> eg: BMOV $908 $90B $909<CR>',CR,LF,LF,0
                 
-BTSTMSG         DC.B    '   BTST - Block Test.',CR,LF,LF,0
+BTSTMSG         DC.B    CR,LF,'   BTST - Block Test.',CR,LF,LF,0
                 
-BSCHMSG         DC.B    '   BSCH: Searches A Literal String In The Memory',CR,LF
+BSCHMSG         DC.B    CR,LF,'   BSCH: Searches A Literal String In The Memory',CR,LF
                 DC.B    '   BSCH <address1> <address2> "literal string" eg: BSCH $900 $910 "MATCH"<CR>',CR,LF,LF,0
                 
-GOMSG           DC.B    '   GO: Starts Execution From Given Address',CR,LF
+GOMSG           DC.B    CR,LF,'   GO: Starts Execution From Given Address',CR,LF
                 DC.B    '   GO <address> eg: GO $900<CR>',CR,LF,LF,0
                 
-DFMSG           DC.B    '   DF - Display Formatted Registers.',CR,LF,LF,0
+DFMSG           DC.B    CR,LF,'   DF - Display Formatted Registers.',CR,LF,LF,0
                 
-EXITMSG         DC.B    '   EXIT - Exit the monitor program eg: EXIT<CR>',CR,LF,LF,0
+EXITMSG         DC.B    CR,LF,'   EXIT - Exit the monitor program eg: EXIT<CR>',CR,LF,LF,0
                 
-CMDMSG2         DC.B    '*****Try HELP <command> or MAN <command> to view man page.*****',CR,LF,LF,0
+CMDMSG2         DC.B    CR,LF,'*****Try HELP <command> or MAN <command> to view man page.*****',CR,LF,LF,0
 
 *--------------------------
 *MAN PAGES
@@ -922,7 +924,11 @@ MANOUT          MOVEM.L A0-A7/D0-D7,-(SP)
                 MOVEM.L (SP)+,A0-A7/D0-D7
                 RTS
                 
-HELPONLY        LEA     HELPMSG,A1
+HELPONLY        LEA     CMDMSG,A1
+                MOVE.B  #14,D0
+                TRAP    #15
+
+                LEA     HELPMSG,A1
                 MOVE.B  #14,D0
                 TRAP    #15
                 
@@ -930,19 +936,47 @@ HELPONLY        LEA     HELPMSG,A1
                 MOVE.B  #14,D0
                 TRAP    #15
                 
-                LEA     HELPMSG,A1
+                LEA     SORTWMSG,A1
                 MOVE.B  #14,D0
                 TRAP    #15
                 
-                LEA     HELPMSG,A1
+                LEA     MMMSG,A1
                 MOVE.B  #14,D0
                 TRAP    #15
                 
-                LEA     HELPMSG,A1
+                LEA     MSMSG,A1
                 MOVE.B  #14,D0
                 TRAP    #15
                 
-                LEA     HELPMSG,A1
+                LEA     BFMSG,A1
+                MOVE.B  #14,D0
+                TRAP    #15
+                
+                LEA     BMOVMSG,A1
+                MOVE.B  #14,D0
+                TRAP    #15
+                
+                LEA     BTSTMSG,A1
+                MOVE.B  #14,D0
+                TRAP    #15
+                
+                LEA     BSCHMSG,A1
+                MOVE.B  #14,D0
+                TRAP    #15
+                
+                LEA     GOMSG,A1
+                MOVE.B  #14,D0
+                TRAP    #15
+                
+                LEA     DFMSG,A1
+                MOVE.B  #14,D0
+                TRAP    #15
+                
+                LEA     EXITMSG,A1
+                MOVE.B  #14,D0
+                TRAP    #15
+                
+                LEA     CMDMSG2,A1
                 MOVE.B  #14,D0
                 TRAP    #15
                 
@@ -1028,9 +1062,27 @@ INCREMENT   MOVE.L  A2,(A5)
 * the address and memory contents from <address1> to <address1 + 16bytes>
 *-----------------------------------------------------------
 MDSP        MOVEM.L A0-A7/D0-D7,-(SP)
+
+            LEA     INPUTBUFFER,A0
+            ADDA.W  #5,A0
+MDSPONLY    ADDA.W  #1,A0
+            ADD.B   #1,D4
+            CMP.B   #3,D4
+            BGE     PRTMDSP
+            CMP.B   #SP,(A0)
+            BEQ     MDSPONLY
+            CMP.B   #NULL,(A0)
+            BEQ     MDSPONLY
+            BRA     MDSPCONT
             
-            CLR.L   D3
+PRTMDSP     LEA     MDSPMSG,A1
+            MOVE.B  #14,D0
+            TRAP    #15
+            BRA     MDSPDONE
+            
+MDSPCONT    CLR.L   D3
             JSR     ARGV
+            MOVE.L  D2,D6
             LEA     CMDBUFFER,A0
             ADDA.W  #INDEX,A0
             
@@ -1038,10 +1090,10 @@ MDSP        MOVEM.L A0-A7/D0-D7,-(SP)
             
             MOVE.L  (A4),$1100
             
-            CMPI.B  #2,D2
+            CMPI.B  #2,D6
             BEQ     ARG1
             
-            CMPI.B  #3,D2
+            CMPI.B  #3,D6
             BEQ     ARG2
             
 ARG1        LEA     ASCIIBUFFER,A0
@@ -1114,7 +1166,24 @@ BUBBLEDN    MOVEM.L (SP)+,A0-A7/D0-D7
 *-----------------------------------------------------------
 SORTW       MOVEM.L A0-A7/D0-D7,-(SP)
 
-            JSR     ARGV
+            LEA     INPUTBUFFER,A0
+            ADDA.W  #6,A0
+SORTWONLY   ADDA.W  #1,A0
+            ADD.B   #1,D4
+            CMP.B   #3,D4
+            BGE     PRTSORTW
+            CMP.B   #SP,(A0)
+            BEQ     SORTWONLY
+            CMP.B   #NULL,(A0)
+            BEQ     SORTWONLY
+            BRA     SORTWCONT
+            
+PRTSORTW    LEA     SORTWMSG,A1
+            MOVE.B  #14,D0
+            TRAP    #15
+            BRA     SORTWDONE
+
+SORTWCONT   JSR     ARGV
             LEA     CMDBUFFER,A0
             ADDA.W  #INDEX,A0
             
@@ -1196,7 +1265,7 @@ BYTEPRINT   MOVE.B  (A2),(A5)
             ADDA.W  D2,A6
             JSR     HEX2ASCII
             MOVEA.L A4,A1
-            MOVE.L  D4,D1  
+            MOVE.L  D6,D1  
             MOVE.B  #1,D0
             TRAP    #15
             
@@ -1214,12 +1283,12 @@ BYTEPRINT   MOVE.B  (A2),(A5)
             CMP.B   #0,D1
             BEQ     BYTECONT
 
-            CMP.B   D4,D1
+            CMP.B   D6,D1
             BNE     MMERROR
             
             LEA     BUFFER,A5
             LEA     BUFFER,A6
-            ADDA.W  D4,A6
+            ADDA.W  D6,A6
             JSR     ASCII2HEX
             ADDA.W  #3,A4
             MOVE.B  (A4),(A2)
@@ -1232,7 +1301,7 @@ WORDPRINT   MOVE.W  (A2),(A5)
             ADDA.W  D2,A6
             JSR     HEX2ASCII
             MOVEA.L A4,A1
-            MOVE.L  D4,D1  
+            MOVE.L  D6,D1  
             MOVE.B  #1,D0
             TRAP    #15
             
@@ -1250,12 +1319,12 @@ WORDPRINT   MOVE.W  (A2),(A5)
             CMP.B   #0,D1
             BEQ     WORDCONT    
 
-            CMP.B   D4,D1
+            CMP.B   D6,D1
             BNE     MMERROR
             
             LEA     BUFFER,A5
             LEA     BUFFER,A6
-            ADDA.W  D4,A6
+            ADDA.W  D6,A6
             JSR     ASCII2HEX
             ADDA.W  #2,A4
             MOVE.W (A4),(A2)
@@ -1268,7 +1337,7 @@ LONGPRINT   MOVE.L  (A2),(A5)
             ADDA.W  D2,A6
             JSR     HEX2ASCII
             MOVEA.L A4,A1
-            MOVE.L  D4,D1  
+            MOVE.L  D6,D1  
             MOVE.B  #1,D0
             TRAP    #15
             
@@ -1286,12 +1355,12 @@ LONGPRINT   MOVE.L  (A2),(A5)
             CMP.B   #0,D1
             BEQ     LONGCONT
         
-            CMP.B   D4,D1
+            CMP.B   D6,D1
             BNE     MMERROR
             
             LEA     BUFFER,A5
             LEA     BUFFER,A6
-            ADDA.W  D4,A6
+            ADDA.W  D6,A6
             JSR     ASCII2HEX
             MOVE.L  (A4),(A2)
             
@@ -1314,7 +1383,24 @@ MMPRINTDN   MOVEM.L (SP)+,A0-A7/D0-D7
 *-----------------------------------------------------------
 MM          MOVEM.L A0-A7/D0-D7,-(SP)
 
-            JSR     ARGV
+            LEA     INPUTBUFFER,A0
+            ADDA.W  #3,A0
+MMONLY      ADDA.W  #1,A0
+            ADD.B   #1,D4
+            CMP.B   #3,D4
+            BGE     PRTMM
+            CMP.B   #SP,(A0)
+            BEQ     MMONLY
+            CMP.B   #NULL,(A0)
+            BEQ     MMONLY
+            BRA     MMCONT
+            
+PRTMM       LEA     MMMSG,A1
+            MOVE.B  #14,D0
+            TRAP    #15
+            BRA     MMDONE
+
+MMCONT      JSR     ARGV
             LEA     CMDBUFFER,A0
             ADDA.W  #INDEX,A0
             
@@ -1344,7 +1430,7 @@ MM          MOVEM.L A0-A7/D0-D7,-(SP)
             BRA     MMDONE
             
 BYTE        MOVE.L  #1,D2
-            MOVE.L  #2,D4
+            MOVE.L  #2,D6
             MOVEA.L A1,A2
             LEA     BUFFER,A5
             LEA     BUFFER,A6
@@ -1352,7 +1438,7 @@ BYTE        MOVE.L  #1,D2
             BRA     MMDONE
             
 WORD        MOVE.L  #2,D2
-            MOVE.L  #4,D4
+            MOVE.L  #4,D6
             MOVEA.L A1,A2
             LEA     BUFFER,A5
             LEA     BUFFER,A6
@@ -1360,7 +1446,7 @@ WORD        MOVE.L  #2,D2
             BRA     MMDONE
             
 LONG        MOVE.L  #4,D2
-            MOVE.L  #8,D4
+            MOVE.L  #8,D6
             MOVEA.L A1,A2
             LEA     BUFFER,A5
             LEA     BUFFER,A6
@@ -1377,7 +1463,24 @@ MMDONE      MOVEM.L (SP)+,A0-A7/D0-D7
 *-----------------------------------------------------------
 MS          MOVEM.L A0-A7/D0-D7,-(SP)
 
-            JSR     ARGV
+            LEA     INPUTBUFFER,A0
+            ADDA.W  #3,A0
+MSONLY      ADDA.W  #1,A0
+            ADD.B   #1,D4
+            CMP.B   #3,D4
+            BGE     PRTMS
+            CMP.B   #SP,(A0)
+            BEQ     MSONLY
+            CMP.B   #NULL,(A0)
+            BEQ     MSONLY
+            BRA     MSCONT
+            
+PRTMS       LEA     MSMSG,A1
+            MOVE.B  #14,D0
+            TRAP    #15
+            BRA     MSDONE
+
+MSCONT      JSR     ARGV
             LEA     CMDBUFFER,A0
             ADDA.W  #INDEX,A0
             
@@ -1386,7 +1489,7 @@ MS          MOVEM.L A0-A7/D0-D7,-(SP)
             BEQ     MSERROR
             CMP.B   #1,D2
             BEQ     MSDONE
-            MOVEA.L (A4),A1
+            MOVEA.L (A4),A2
             
             LEA     CMDBUFFER,A0
             MOVE.B  #2,D0
@@ -1403,7 +1506,9 @@ MS          MOVEM.L A0-A7/D0-D7,-(SP)
 INCPTR      CMP.B   #NULL,(A4)+
             BEQ     INCPTR
             SUBA.W  #1,A4
-            MOVE.L  (A4),(A1)
+            MOVE.L  (A4),(A2)
+            
+            BRA     MSDONE
             
 ASCIIDATA   LEA     STOREDATA,A1
             MOVE.B  #14,D0
@@ -1411,7 +1516,7 @@ ASCIIDATA   LEA     STOREDATA,A1
 
 DATALOOP    CMP.B   #NULL,(A0)
             BEQ     MSDONE
-            MOVE.B  (A0)+,(A1)+
+            MOVE.B  (A0)+,(A2)+
             BRA     DATALOOP
             
             BRA     MSDONE
@@ -1431,7 +1536,24 @@ MSDONE      MOVEM.L (SP)+,A0-A7/D0-D7
 *-----------------------------------------------------------
 BF          MOVEM.L A0-A7/D0-D7,-(SP)
             
-            CLR.L   D6
+            LEA     INPUTBUFFER,A0
+            ADDA.W  #3,A0
+BFONLY      ADDA.W  #1,A0
+            ADD.B   #1,D4
+            CMP.B   #3,D4
+            BGE     PRTBF
+            CMP.B   #SP,(A0)
+            BEQ     BFONLY
+            CMP.B   #NULL,(A0)
+            BEQ     BFONLY
+            BRA     BFCONT
+            
+PRTBF       LEA     BFMSG,A1
+            MOVE.B  #14,D0
+            TRAP    #15
+            BRA     BFDONE
+
+BFCONT      CLR.L   D6
             JSR     ARGV
             LEA     CMDBUFFER,A0
             ADDA.W  #INDEX,A0
@@ -1513,7 +1635,24 @@ BFDONE      MOVEM.L (SP)+,A0-A7/D0-D7
 *-----------------------------------------------------------
 BMOV        MOVEM.L A0-A7/D0-D7,-(SP)
 
-            JSR     ARGV
+            LEA     INPUTBUFFER,A0
+            ADDA.W  #5,A0
+BMOVONLY    ADDA.W  #1,A0
+            ADD.B   #1,D4
+            CMP.B   #3,D4
+            BGE     PRTBMOV
+            CMP.B   #SP,(A0)
+            BEQ     BMOVONLY    
+            CMP.B   #NULL,(A0)
+            BEQ     BMOVONLY
+            BRA     BMOVCONT
+            
+PRTBMOV     LEA     BMOVMSG,A1
+            MOVE.B  #14,D0
+            TRAP    #15
+            BRA     BMOVDONE
+
+BMOVCONT    JSR     ARGV
             LEA     CMDBUFFER,A0
             ADDA.W  #INDEX,A0
             
@@ -1559,7 +1698,24 @@ BMOVDONE    MOVEM.L (SP)+,A0-A7/D0-D7
 *-----------------------------------------------------------
 BTST        MOVEM.L A0-A7/D0-D7,-(SP)
         
-            JSR     ARGV
+            LEA     INPUTBUFFER,A0
+            ADDA.W  #5,A0
+BTSTONLY    ADDA.W  #1,A0
+            ADD.B   #1,D4
+            CMP.B   #3,D4
+            BGE     PRTBTST
+            CMP.B   #SP,(A0)
+            BEQ     BTSTONLY
+            CMP.B   #NULL,(A0)
+            BEQ     BTSTONLY
+            BRA     BTSTCONT
+            
+PRTBTST     LEA     BTSTMSG,A1
+            MOVE.B  #14,D0
+            TRAP    #15
+            BRA     BTSTDONE
+
+BTSTCONT    JSR     ARGV
             LEA     CMDBUFFER,A0
             ADDA.W  #INDEX,A0
             
@@ -1584,19 +1740,12 @@ BTSTLOOP    MOVE.B  #TESTVAL1,(A1)+
             CMP.L   A1,A2
             BNE     BTSTLOOP
             
-MEMCHKLP    CMP.B   #TESTVAL1,(A3)+
+MEMCHKLP    CMP.B   #TESTVAL1,(A3)
             BNE     ERRORDETECT
-            CMP.L   A3,A2
-            BNE     MEMCHKLP
+         
             LEA     MEMSUCCESS,A1
             MOVE.B  #14,D0
             TRAP    #15
-            BRA     BTSTDONE
-            
-ERRORDETECT LEA     MEMERROR,A1
-            MOVE.B  #14,D0
-            TRAP    #15
-            SUBA.W  #1,A3
             LEA     BUFFER,A5
             LEA     BUFFER,A6
             MOVE.L  A3,(A5)
@@ -1606,6 +1755,52 @@ ERRORDETECT LEA     MEMERROR,A1
             MOVE.B  #13,D0
             TRAP    #15
             
+            ADDA.W  #1,A3
+            CMP.L   A3,A2
+            BNE     MEMCHKLP
+            BRA     BTSTDONE
+            
+ERRORDETECT LEA     MEMERROR,A1
+            MOVE.B  #14,D0
+            TRAP    #15
+            LEA     BUFFER,A5
+            LEA     BUFFER,A6
+            MOVE.L  A3,(A5)
+            ADDA.W  #4,A6
+            JSR     HEX2ASCII
+            MOVEA.L A4,A1
+            MOVE.B  #13,D0
+            TRAP    #15
+            
+            LEA     DATASTORED,A1
+            MOVE.B  #14,D0
+            TRAP    #15
+            
+            LEA     BUFFER,A5
+            LEA     BUFFER,A6
+            MOVE.B  #TESTVAL1,(A5)
+            ADDA.W  #1,A6
+            JSR     HEX2ASCII
+            MOVEA.L A4,A1
+            MOVE.B  #13,D0
+            TRAP    #15
+            
+            LEA     DATAREAD,A1
+            MOVE.B  #14,D0
+            TRAP    #15
+            
+            LEA     BUFFER,A5
+            LEA     BUFFER,A6
+            MOVE.B  (A3),(A5)
+            ADDA.W  #1,A6
+            JSR     HEX2ASCII
+            MOVEA.L A4,A1
+            MOVE.B  #13,D0
+            TRAP    #15
+            
+            ADDA.L  #1,A3
+            CMP.L   A3,A2
+            BNE     MEMCHKLP
         
 BTSTDONE    MOVEM.L (SP)+,A0-A7/D0-D7
             RTS
@@ -1616,10 +1811,29 @@ BTSTDONE    MOVEM.L (SP)+,A0-A7/D0-D7
 * finds matching data, the data and address(es) must be displayed.
 *
 *-----------------------------------------------------------
-BSCH    MOVEM.L A0-A7/D0-D7,-(SP)
+BSCH        MOVEM.L A0-A7/D0-D7,-(SP)
+
+            LEA     INPUTBUFFER,A0
+            ADDA.W  #5,A0
+BSCHONLY    ADDA.W  #1,A0
+            ADD.B   #1,D4
+            CMP.B   #3,D4
+            BGE     PRTBSCH
+            CMP.B   #SP,(A0)
+            BEQ     BSCHONLY
+            CMP.B   #NULL,(A0)
+            BEQ     BSCHONLY
+            BRA     BSCHCONT
+            
+PRTBSCH     LEA     BSCHMSG,A1
+            MOVE.B  #14,D0
+            TRAP    #15
+            BRA     BSCHDONE
+
+BSCHCONT
         
-        MOVEM.L (SP)+,A0-A7/D0-D7
-        RTS
+BSCHDONE    MOVEM.L (SP)+,A0-A7/D0-D7
+            RTS
 
 *-----------------------------------------------------------
 * GO (Execute Program) - The GO command is used to start execution from a given address.
@@ -1627,10 +1841,29 @@ BSCH    MOVEM.L A0-A7/D0-D7,-(SP)
 *
 *
 *-----------------------------------------------------------
-GO      MOVEM.L A0-A7/D0-D7,-(SP)
+GO          MOVEM.L A0-A7/D0-D7,-(SP)
+
+            LEA     INPUTBUFFER,A0
+            ADDA.W  #3,A0
+GOONLY      ADDA.W  #1,A0
+            ADD.B   #1,D4
+            CMP.B   #3,D4
+            BGE     PRTGO
+            CMP.B   #SP,(A0)
+            BEQ     GOONLY
+            CMP.B   #NULL,(A0)
+            BEQ     GOONLY
+            BRA     GOCONT
+            
+PRTGO       LEA     GOMSG,A1
+            MOVE.B  #14,D0
+            TRAP    #15
+            BRA     GODONE
+
+GOCONT
         
-        MOVEM.L (SP)+,A0-A7/D0-D7
-        RTS
+GODONE      MOVEM.L (SP)+,A0-A7/D0-D7
+            RTS
 
 *-----------------------------------------------------------
 * DF (Display Formatted Registers) - The Display Formatted Registers (DF) command is used
@@ -1639,10 +1872,29 @@ GO      MOVEM.L A0-A7/D0-D7,-(SP)
 * changed values should not be shown to the user. Thus, you must save all D and A register
 * values before any of your subroutines.
 *-----------------------------------------------------------
-DF      MOVEM.L A0-A7/D0-D7,-(SP)
+DF          MOVEM.L A0-A7/D0-D7,-(SP)
+
+*            LEA     INPUTBUFFER,A0
+*            ADDA.W  #3,A0
+*DFONLY      ADDA.W  #1,A0
+*            ADD.B   #1,D4
+*            CMP.B   #3,D4
+*            BGE     PRTDF
+*            CMP.B   #SP,(A0)
+*            BEQ     MDSPONLY
+*            CMP.B   #NULL,(A0)
+*            BEQ     DFONLY
+*            BRA     DFCONT
+            
+*PRTDF       LEA     DFMSG,A1
+*            MOVE.B  #14,D0
+*            TRAP    #15
+*            BRA     DFDONE
+
+*DFCONT
         
-        MOVEM.L (SP)+,A0-A7/D0-D7
-        RTS
+DFDONE      MOVEM.L (SP)+,A0-A7/D0-D7
+            RTS
 
 *-----------------------------------------------------------
 * EXIT (Exit Monitor Program) - The EXIT command terminates/exits your Monitor program.
@@ -1650,13 +1902,31 @@ DF      MOVEM.L A0-A7/D0-D7,-(SP)
 *
 *
 *-----------------------------------------------------------
-EXIT    MOVEM.L A0-A7/D0-D7,-(SP)
+EXIT        MOVEM.L A0-A7/D0-D7,-(SP)
 
-        MOVE.B  #9,D0
-        TRAP    #15
+*            LEA     INPUTBUFFER,A0
+*            ADDA.W  #5,A0
+*EXITONLY    ADDA.W  #1,A0 
+*            ADD.B   #1,D4
+*            CMP.B   #3,D4
+*            BGE     PRTEXIT
+*            CMP.B   #SP,(A0)
+*            BEQ     EXITONLY
+*            CMP.B   #NULL,(A0)
+*            BEQ     EXITONLY
+*            BRA     EXITCONT
+            
+*PRTEXIT     LEA     EXITMSG,A1
+*            MOVE.B  #14,D0
+*            TRAP    #15
+*            BRA     EXITDONE
+
+*EXITCONT    
+            MOVE.B  #9,D0
+            TRAP    #15
         
-        MOVEM.L (SP)+,A0-A7/D0-D7
-        RTS
+EXITDONE    MOVEM.L (SP)+,A0-A7/D0-D7
+            RTS
         
 *-----------------------------------------------------------
 * ARGV Command Line Parsing Subroutine
@@ -1787,6 +2057,10 @@ HEXDONE     MOVEM.L (SP)+,A0-A3/A5-A7/D0-D2/D4-D7
 * Put variables and constants here
 
     END    START        ; last line of source
+
+
+
+
 
 
 
