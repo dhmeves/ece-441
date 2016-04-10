@@ -15,6 +15,8 @@ OUTPUT  EQU     243
 INDEX   EQU     20
 TESTVAL1    EQU     $AA
 TESTVAL2    EQU     $55
+SINGLEQUOTE EQU     $27
+DOUBLEQUOTE EQU     $22
  
 BS  EQU  $08   ; Backspace
 HT  EQU  $09   ; Tab (horizontal 5 characters)
@@ -1830,7 +1832,41 @@ PRTBSCH     LEA     BSCHMSG,A1
             TRAP    #15
             BRA     BSCHDONE
 
-BSCHCONT
+BSCHCONT    JSR     ARGV
+            LEA     CMDBUFFER,A0
+            ADDA.W  #INDEX,A0
+            
+            JSR     CHKDOLLAR
+            CMP.B   #1,D2
+            BEQ     BSCHDONE
+            MOVEA.L (A4),A1
+            
+            LEA     CMDBUFFER,A0
+            MOVE.B  #2,D0
+            MOVE.B  #INDEX,D1
+            MULU    D0,D1
+            ADDA.W  D1,A0
+            
+            JSR     CHKDOLLAR
+            CMP.B   #1,D2
+            BEQ     BSCHDONE
+            MOVEA.L (A4),A2
+            
+            LEA     CMDBUFFER,A0
+            MOVE.B  #3,D0
+            MOVE.B  #INDEX,D1
+            MULU    D0,D1
+            ADDA.W  D1,A0
+            CMP.B   #SINGLEQUOTE,(A0)
+            BEQ     ADD1
+            CMP.B   #DOUBLEQUOTE,(A0)
+            BEQ     ADD1
+            BRA     STRINGCONT
+ADD1        ADDA.W  #1,A0
+
+STRINGCONT  MOVEA.L A0,A3
+            CMP.B   (A1)+,(A3)+
+
         
 BSCHDONE    MOVEM.L (SP)+,A0-A7/D0-D7
             RTS
@@ -2057,6 +2093,7 @@ HEXDONE     MOVEM.L (SP)+,A0-A3/A5-A7/D0-D2/D4-D7
 * Put variables and constants here
 
     END    START        ; last line of source
+
 
 
 
