@@ -742,6 +742,8 @@ MANSTR      DC.L    MANOUT
 *-----------------------------------------------------------
     ORG     $2000
 START:                  ; first instruction of program
+                MOVEM.L A0-A7/D0-D7,-(SP)
+                MOVE.L  SP,A2
                 LEA     PROMPT,A1
                 MOVE.B  #14,D0
                 TRAP    #15
@@ -760,14 +762,18 @@ CLRCMDBUF       CLR.B   (A3)+
                 MOVE.B  #2,D0
                 TRAP    #15
                 
+                MOVEM.L (SP)+,A0-A7/D0-D7
                 JSR     INTERPRETER
+                
                 BRA     START   
     
 *-----------------------------------------------------------
 *Command Interpreter
 *-----------------------------------------------------------
-INTERPRETER     *MOVEM.L A0-A7/D0-D7,-(SP)  ; commented out to allow .D and .A command passthrough
- 
+INTERPRETER     MOVEM.L A0-A7/D0-D7,-(SP)  ; commented out to allow .D and .A command passthrough
+
+                *MOVE.L  SP,A2 
+                
                 LEA     INPUTBUFFER,A1      ; pointer to command input
                 MOVEA.L A1,A0
                 ADDA.L  D1,A1               ; pointer to end of command input
@@ -789,7 +795,7 @@ NEXT            LEA     INPUTBUFFER,A3
 HDLRJMP         MOVE.L  (A5),A6
                 JSR     (A6)
                    
-                *MOVEM.L (SP)+,A0-A7/D0-D7  ; commented out to allow .D and .A command passthrough
+                MOVEM.L (SP)+,A0-A7/D0-D7  ; commented out to allow .D and .A command passthrough
 
                 RTS
                 
@@ -1467,6 +1473,7 @@ MMCONT      JSR     ARGV
             JSR     CHKDOLLAR
             CMP.B   #1,D2
             BEQ     MMDONE
+            MOVE.L  #$716B857B,$68000
             MOVEA.L (A4),A1
             
             LEA     CMDBUFFER,A2
@@ -1904,6 +1911,7 @@ BSCHCONT    JSR     ARGV
             MOVEA.L (A4),A1
             
             LEA     CMDBUFFER,A0
+            MOVE.L  #$73812983,$68004
             MOVE.B  #2,D0
             MOVE.B  #INDEX,D1
             MULU    D0,D1
@@ -2076,7 +2084,7 @@ GODONE      MOVEM.L (SP)+,A0-A7/D0-D7
 *-----------------------------------------------------------
 DF          MOVEM.L A0-A7/D0-D7,-(SP)
             MOVE.L  SP,SPDATA
-            MOVE.L  SP,A2
+            *MOVE.L  SP,A2
 PCLABEL     MOVE.L  #PCLABEL,PCDATA
             MOVE    SR,SRDATA
             MOVE    USP,A3
@@ -2372,7 +2380,7 @@ EXITDONE    MOVEM.L (SP)+,A0-A7/D0-D7
             RTS
 
 *-----------------------------------------------------------
-*
+* Change Registers (.D[0-7] .A[0-7])
 *-----------------------------------------------------------
 D0          MOVEM.L A0-A7/D1-D7,-(SP)
 
@@ -2383,7 +2391,8 @@ D0          MOVEM.L A0-A7/D1-D7,-(SP)
             JSR     CHKDOLLAR
             CMP.B   #1,D2
             BEQ     REGD0DONE
-            MOVE.L (A4),D0
+            MOVE.L  (A4),D0
+            MOVE.L  (A4),0(A2)
 
 REGD0DONE   MOVEM.L (SP)+,A0-A7/D1-D7
             RTS
@@ -2398,6 +2407,7 @@ D1          MOVEM.L A0-A7/D0/D2-D7,-(SP)
             CMP.B   #1,D2
             BEQ     REGD1DONE
             MOVE.L (A4),D1
+            MOVE.L  (A4),4(A2)
 
 REGD1DONE   MOVEM.L (SP)+,A0-A7/D0/D2-D7
             RTS
@@ -2412,6 +2422,7 @@ D2          MOVEM.L A0-A7/D0-D1/D3-D7,-(SP)
             CMP.B   #1,D2
             BEQ     REGD2DONE
             MOVE.L (A4),D2
+            MOVE.L  (A4),8(A2)
 
 REGD2DONE   MOVEM.L (SP)+,A0-A7/D0-D1/D3-D7
             RTS
@@ -2426,6 +2437,7 @@ D3          MOVEM.L A0-A7/D0-D2/D4-D7,-(SP)
             CMP.B   #1,D2
             BEQ     REGD3DONE
             MOVE.L (A4),D3
+            MOVE.L  (A4),12(A2)
             
 REGD3DONE   MOVEM.L (SP)+,A0-A7/D0-D2/D4-D7
             RTS
@@ -2440,6 +2452,7 @@ D4          MOVEM.L A0-A7/D0-D3/D5-D7,-(SP)
             CMP.B   #1,D2
             BEQ     REGD4DONE
             MOVE.L (A4),D4
+            MOVE.L  (A4),16(A2)
 
 REGD4DONE   MOVEM.L (SP)+,A0-A7/D0-D3/D5-D7
             RTS
@@ -2451,9 +2464,11 @@ D5          MOVEM.L A0-A7/D0-D4/D6-D7,-(SP)
             ADDA.W  #INDEX,A0
             
             JSR     CHKDOLLAR
+            MOVE.L  #$7395738F,$68008
             CMP.B   #1,D2
             BEQ     REGD5DONE
             MOVE.L (A4),D5
+            MOVE.L  (A4),20(A2)
 
 REGD5DONE   MOVEM.L (SP)+,A0-A7/D0-D4/D6-D7
             RTS
@@ -2468,6 +2483,7 @@ D6          MOVEM.L A0-A7/D0-D5/D7,-(SP)
             CMP.B   #1,D2
             BEQ     REGD6DONE
             MOVE.L (A4),D6
+            MOVE.L  (A4),24(A2)
 
 REGD6DONE   MOVEM.L (SP)+,A0-A7/D0-D5/D7
             RTS
@@ -2482,6 +2498,7 @@ D7          MOVEM.L A0-A7/D0-D6,-(SP)
             CMP.B   #1,D2
             BEQ     REGD7DONE
             MOVE.L (A4),D7
+            MOVE.L  (A4),28(A2)
 
 REGD7DONE   MOVEM.L (SP)+,A0-A7/D0-D6
             RTS
@@ -2496,6 +2513,7 @@ A0          MOVEM.L A1-A7/D0-D7,-(SP)
             CMP.B   #1,D2
             BEQ     REGA0DONE
             MOVE.L (A4),A0
+            MOVE.L  (A4),32(A2)
 
 REGA0DONE   MOVEM.L (SP)+,A1-A7/D0-D7
             RTS
@@ -2510,6 +2528,7 @@ A1          MOVEM.L A0/A2-A7/D0-D7,-(SP)
             CMP.B   #1,D2
             BEQ     REGA1DONE
             MOVE.L (A4),A1
+            MOVE.L  (A4),36(A2)
 
 REGA1DONE   MOVEM.L (SP)+,A0/A2-A7/D0-D7
             RTS
@@ -2523,7 +2542,8 @@ A2          MOVEM.L A0-A1/A3-A7/D0-D7,-(SP)
             JSR     CHKDOLLAR
             CMP.B   #1,D2
             BEQ     REGA2DONE
-            MOVE.L (A4),A2
+            *MOVE.L (A4),A2
+            MOVE.L  (A4),40(A2)
 
 REGA2DONE   MOVEM.L (SP)+,A0-A1/A3-A7/D0-D7
             RTS
@@ -2538,6 +2558,7 @@ A3          MOVEM.L A0-A2/A4-A7/D0-D7,-(SP)
             CMP.B   #1,D2
             BEQ     REGA3DONE
             MOVE.L (A4),A3
+            MOVE.L  (A4),44(A2)
 
 REGA3DONE   MOVEM.L (SP)+,A0-A2/A4-A7/D0-D7
             RTS
@@ -2551,7 +2572,8 @@ A4          MOVEM.L A0-A3/A5-A7/D0-D7,-(SP)
             JSR     CHKDOLLAR
             CMP.B   #1,D2
             BEQ     REGA4DONE
-            MOVE.L (A4),A4
+            *MOVE.L (A4),A4
+            MOVE.L  (A4),48(A2)
 
 REGA4DONE   MOVEM.L (SP)+,A0-A3/A5-A7/D0-D7
             RTS
@@ -2566,6 +2588,7 @@ A5          MOVEM.L A0-A4/A6-A7/D0-D7,-(SP)
             CMP.B   #1,D2
             BEQ     REGA5DONE
             MOVE.L (A4),A5
+            MOVE.L  (A4),52(A2)
 
 REGA5DONE   MOVEM.L (SP)+,A0-A4/A6-A7/D0-D7
             RTS
@@ -2580,6 +2603,7 @@ A6          MOVEM.L A0-A5/A7/D0-D7,-(SP)
             CMP.B   #1,D2
             BEQ     REGA6DONE
             MOVE.L (A4),A6
+            MOVE.L  (A4),56(A2)
 
 REGA6DONE   MOVEM.L (SP)+,A0-A5/A7/D0-D7
             RTS
@@ -2594,6 +2618,7 @@ A7          MOVEM.L A0-A6/D0-D7,-(SP)
             CMP.B   #1,D2
             BEQ     REGA7DONE
             MOVE.L (A4),A7
+            MOVE.L  (A4),60(A2)
 
 REGA7DONE   MOVEM.L (SP)+,A0-A6/D0-D7
             RTS
@@ -2739,6 +2764,9 @@ HEXDONE     MOVEM.L (SP)+,A0-A3/A5-A7/D0-D2/D4-D7
 * Put variables and constants here
 
     END    START        ; last line of source
+
+
+
 *~Font name~Courier New~
 *~Font size~10~
 *~Tab type~1~
