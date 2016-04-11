@@ -53,6 +53,31 @@ MEMSUCCESS      DC.B    'NO MEMORY ERROR DETECTED AT ADDRESS: ',0
 DATASTORED      DC.B    'DATA STORED: ',0
 DATAREAD        DC.B    'DATA READ: ',0
 SPACE           DC.B    ' - ',0
+NOSTRINGFOUND   DC.B    'NO MATCHING STRING FOUND!',CR,LF,0
+STRINGFOUNDMSG  DC.B    'STRING FOUND!',CR,LF,0
+REGD0           DC.B    'D0 - ',0
+REGD1           DC.B    'D1 - ',0
+REGD2           DC.B    'D2 - ',0
+REGD3           DC.B    'D3 - ',0
+REGD4           DC.B    'D4 - ',0
+REGD5           DC.B    'D5 - ',0
+REGD6           DC.B    'D6 - ',0
+REGD7           DC.B    'D7 - ',0
+REGA0           DC.B    'A0 - ',0
+REGA1           DC.B    'A1 - ',0
+REGA2           DC.B    'A2 - ',0
+REGA3           DC.B    'A3 - ',0
+REGA4           DC.B    'A4 - ',0
+REGA5           DC.B    'A5 - ',0
+REGA6           DC.B    'A6 - ',0
+REGA7           DC.B    'A7 - ',0
+REGSR           DC.B    'SR - ',0
+REGSSP          DC.B    'SSP - ',0
+REGUSP          DC.B    'USP - ',0
+REGPC           DC.B    'PC - ',0
+PCDATA          DS.L    1
+SRDATA          DS.L    1
+SPDATA          DS.L    1
 CMDMSG          DC.B    CR,LF,'*****ALL MONITOR441 COMMANDS*****',CR,LF,LF,0
 HELPMSG         DC.B    CR,LF,'   HELP: Displays this message',CR,LF,LF,0
                 
@@ -635,7 +660,7 @@ MANMANPAGE      DC.B    CR,LF,'MAN(1)                       MC68000/SANPER-1 ELU
                 
                 DC.B    'Daniel H. Meves                    27 April 2016                        MAN(1)',CR,LF,LF,0
                 
-    ORG     $3000
+    ORG     $4000
 HELPPTR    DC.B    'HELP',0
 MDSPPTR    DC.B    'MDSP',0
 SORTWPTR   DC.B    'SORTW',0
@@ -649,8 +674,24 @@ GOPTR      DC.B    'GO',0
 DFPTR      DC.B    'DF',0
 EXITPTR    DC.B    'EXIT',0
 MANPTR     DC.B    'MAN',0
+D0PTR      DC.B    '.D0',0
+D1PTR      DC.B    '.D1',0
+D2PTR      DC.B    '.D2',0
+D3PTR      DC.B    '.D3',0
+D4PTR      DC.B    '.D4',0
+D5PTR      DC.B    '.D5',0
+D6PTR      DC.B    '.D6',0
+D7PTR      DC.B    '.D7',0
+A0PTR      DC.B    '.A0',0
+A1PTR      DC.B    '.A1',0
+A2PTR      DC.B    '.A2',0
+A3PTR      DC.B    '.A3',0
+A4PTR      DC.B    '.A4',0
+A5PTR      DC.B    '.A5',0
+A6PTR      DC.B    '.A6',0
+A7PTR      DC.B    '.A7',0
 
-    ORG     $4000
+    ORG     $4400
 HELPHDLR    DC.L   HELP
 MDSPHDLR    DC.L   MDSP
 SORTWHDLR   DC.L   SORTW
@@ -664,6 +705,22 @@ GOHDLR      DC.L   GO
 DFHDLR      DC.L   DF
 EXITHDLR    DC.L   EXIT
 MANHDLR     DC.L   MANHELP
+D0HDLR      DC.L   D0
+D1HDLR      DC.L   D1
+D2HDLR      DC.L   D2
+D3HDLR      DC.L   D3
+D4HDLR      DC.L   D4
+D5HDLR      DC.L   D5
+D6HDLR      DC.L   D6
+D7HDLR      DC.L   D7
+A0HDLR      DC.L   A0
+A1HDLR      DC.L   A1
+A2HDLR      DC.L   A2
+A3HDLR      DC.L   A3
+A4HDLR      DC.L   A4
+A5HDLR      DC.L   A5
+A6HDLR      DC.L   A6
+A7HDLR      DC.L   A7
 
     ORG     $4800
 HELPSTR     DC.L    HELPOUT
@@ -709,7 +766,7 @@ CLRCMDBUF       CLR.B   (A3)+
 *-----------------------------------------------------------
 *Command Interpreter
 *-----------------------------------------------------------
-INTERPRETER     MOVEM.L A0-A7/D0-D7,-(SP)
+INTERPRETER     *MOVEM.L A0-A7/D0-D7,-(SP)  ; commented out to allow .D and .A command passthrough
  
                 LEA     INPUTBUFFER,A1      ; pointer to command input
                 MOVEA.L A1,A0
@@ -725,14 +782,15 @@ NEXT            LEA     INPUTBUFFER,A3
                 CMPI.B  #1,D4
                 BEQ     HDLRJMP
                 ADDA.W  #4,A5
-                CMP.W  #$4034,A5
+                CMP.W  #$4474,A5
                 BEQ     ERROR
                 BRA     NEXT
                 
 HDLRJMP         MOVE.L  (A5),A6
                 JSR     (A6)
                    
-                MOVEM.L (SP)+,A0-A7/D0-D7
+                *MOVEM.L (SP)+,A0-A7/D0-D7  ; commented out to allow .D and .A command passthrough
+
                 RTS
                 
 ERROR           LEA     ERRORMSG,A1
@@ -1507,8 +1565,12 @@ MSCONT      JSR     ARGV
             MOVEA.L A1,A0
 INCPTR      CMP.B   #NULL,(A4)+
             BEQ     INCPTR
+            LEA     ASCIIBUFFER,A3
+            ADDA.W  #4,A3
             SUBA.W  #1,A4
-            MOVE.L  (A4),(A2)
+COPYLOOP    MOVE.B  (A4)+,(A2)+
+            CMP.L   A4,A3
+            BNE     COPYLOOP
             
             BRA     MSDONE
             
@@ -1857,17 +1919,112 @@ BSCHCONT    JSR     ARGV
             MOVE.B  #INDEX,D1
             MULU    D0,D1
             ADDA.W  D1,A0
-            CMP.B   #SINGLEQUOTE,(A0)
-            BEQ     ADD1
+            CLR.L   D4  
+            BRA     CHKLOOP
+ 
+QUOTECHK0   SUBA.W  #1,A0
+
+CHKLOOP     CMP.B   #SINGLEQUOTE,(A1)
+            BEQ     QUOTECHK1
+            
+            CMP.B   #DOUBLEQUOTE,(A1)
+            BEQ     QUOTECHK1
+            
+            BRA     QUOTECHK2
+            
+QUOTECHK1   MOVE.B  #NULL,(A1)
+            ADDA.W  #1,A1
+
+QUOTECHK2   CMP.B   #SINGLEQUOTE,(A0)
+            BEQ     QUOTECHK3
+            
             CMP.B   #DOUBLEQUOTE,(A0)
-            BEQ     ADD1
+            BEQ     QUOTECHK3
+            
             BRA     STRINGCONT
-ADD1        ADDA.W  #1,A0
+            
+QUOTECHK3   MOVE.B  #NULL,(A0)
+            ADDA.W  #1,A0
 
-STRINGCONT  MOVEA.L A0,A3
-            CMP.B   (A1)+,(A3)+
+STRINGCONT  CMPM.B  (A0)+,(A1)+
+            BEQ     MATCHFOUND
+            
+            CMP.L   A1,A2
+            BEQ     NOSTRING
+         
+            BRA     QUOTECHK0
+            
+MATCHFOUND  ADD.B   #1,D4
+            CMP.B   #SINGLEQUOTE,(A0)
+            BEQ     CHECKNULL
+            
+            CMP.B   #DOUBLEQUOTE,(A0)
+            BEQ     CHECKNULL
+            
+CHKQUOTE2   CMP.B   #SINGLEQUOTE,(A1)
+            BEQ     CHECKNULL2
+            
+            CMP.B   #DOUBLEQUOTE,(A1)
+            BEQ     CHECKNULL2
+            
+            BRA     NOADD1
+            
+CHECKNULL   MOVE.B  #NULL,(A0)
+            BRA     CHKQUOTE2
+            
+CHECKNULL2  MOVE.B  #NULL,(A1)
 
-        
+NOADD1      CMP.B   #NULL,(A0)
+            BEQ     STRINGFOUND           
+            BRA     CHKLOOP
+            
+NOSTRING    LEA     NOSTRINGFOUND,A1
+            MOVE.B  #14,D0
+            TRAP    #15
+            BRA     BSCHDONE   
+ 
+STRINGFOUND MOVEA.L A1,A3
+
+            SUB.L   D4,A3
+            LEA     BUFFER,A5
+            LEA     BUFFER,A6
+            ADD.L   #4,A6
+            MOVEA.L A0,A2
+            SUB.L   D4,A2
+            
+            LEA     STRINGFOUNDMSG,A1
+            MOVE.B  #14,D0
+            TRAP    #15
+            
+STRPRTLOOP  MOVE.L  A3,(A5)
+          
+            JSR     HEX2ASCII
+            MOVE.L  A4,A1
+            MOVE.B  #14,D0
+            TRAP    #15   
+
+            LEA     SPACE,A1
+            MOVE.B  #14,D0
+            TRAP    #15
+            
+            MOVE.B  (A2),D1
+            MOVE.B  #6,D0
+            TRAP    #15
+            
+            MOVE.B  #CR,D1
+            MOVE.B  #6,D0
+            TRAP    #15
+            
+            MOVE.B  #LF,D1
+            MOVE.B  #6,D0
+            TRAP    #15
+            
+            ADDA.W  #1,A3
+            ADDA.W  #1,A2
+            
+            CMP.L   A2,A0
+            BNE     STRPRTLOOP
+            
 BSCHDONE    MOVEM.L (SP)+,A0-A7/D0-D7
             RTS
 
@@ -1896,7 +2053,16 @@ PRTGO       LEA     GOMSG,A1
             TRAP    #15
             BRA     GODONE
 
-GOCONT
+GOCONT      JSR     ARGV
+            LEA     CMDBUFFER,A0
+            ADDA.W  #INDEX,A0
+            
+            JSR     CHKDOLLAR
+            CMP.B   #1,D2
+            BEQ     GODONE
+            MOVEA.L (A4),A1
+            
+            JSR     (A1)
         
 GODONE      MOVEM.L (SP)+,A0-A7/D0-D7
             RTS
@@ -1909,6 +2075,11 @@ GODONE      MOVEM.L (SP)+,A0-A7/D0-D7
 * values before any of your subroutines.
 *-----------------------------------------------------------
 DF          MOVEM.L A0-A7/D0-D7,-(SP)
+            MOVE.L  SP,SPDATA
+            MOVE.L  SP,A2
+PCLABEL     MOVE.L  #PCLABEL,PCDATA
+            MOVE    SR,SRDATA
+            MOVE    USP,A3
 
 *            LEA     INPUTBUFFER,A0
 *            ADDA.W  #3,A0
@@ -1928,7 +2099,243 @@ DF          MOVEM.L A0-A7/D0-D7,-(SP)
 *            BRA     DFDONE
 
 *DFCONT
-        
+            LEA     REGD0,A1
+            MOVE.B  #14,D0
+            TRAP    #15
+            LEA     BUFFER,A5
+            LEA     BUFFER,A6
+            ADDA.W  #4,A6
+            MOVE.L  (A2)+,(A5)
+            JSR     HEX2ASCII
+            MOVEA.L A4,A1
+            MOVE.B  #13,D0
+            TRAP    #15
+            
+            LEA     REGD1,A1
+            MOVE.B  #14,D0
+            TRAP    #15
+            LEA     BUFFER,A5
+            LEA     BUFFER,A6
+            ADDA.W  #4,A6
+            MOVE.L  (A2)+,(A5)
+            JSR     HEX2ASCII
+            MOVEA.L A4,A1
+            MOVE.B  #13,D0
+            TRAP    #15
+            
+            LEA     REGD2,A1
+            MOVE.B  #14,D0
+            TRAP    #15
+            LEA     BUFFER,A5
+            LEA     BUFFER,A6
+            ADDA.W  #4,A6
+            MOVE.L  (A2)+,(A5)
+            JSR     HEX2ASCII
+            MOVEA.L A4,A1
+            MOVE.B  #13,D0
+            TRAP    #15
+            
+            LEA     REGD3,A1
+            MOVE.B  #14,D0
+            TRAP    #15
+            LEA     BUFFER,A5
+            LEA     BUFFER,A6
+            ADDA.W  #4,A6
+            MOVE.L  (A2)+,(A5)
+            JSR     HEX2ASCII
+            MOVEA.L A4,A1
+            MOVE.B  #13,D0
+            TRAP    #15
+            
+            LEA     REGD4,A1
+            MOVE.B  #14,D0
+            TRAP    #15
+            LEA     BUFFER,A5
+            LEA     BUFFER,A6
+            ADDA.W  #4,A6
+            MOVE.L  (A2)+,(A5)
+            JSR     HEX2ASCII
+            MOVEA.L A4,A1
+            MOVE.B  #13,D0
+            TRAP    #15
+            
+            LEA     REGD5,A1
+            MOVE.B  #14,D0
+            TRAP    #15
+            LEA     BUFFER,A5
+            LEA     BUFFER,A6
+            ADDA.W  #4,A6
+            MOVE.L  (A2)+,(A5)
+            JSR     HEX2ASCII
+            MOVEA.L A4,A1
+            MOVE.B  #13,D0
+            TRAP    #15
+            
+            LEA     REGD6,A1
+            MOVE.B  #14,D0
+            TRAP    #15
+            LEA     BUFFER,A5
+            LEA     BUFFER,A6
+            ADDA.W  #4,A6
+            MOVE.L  (A2)+,(A5)
+            JSR     HEX2ASCII
+            MOVEA.L A4,A1
+            MOVE.B  #13,D0
+            TRAP    #15
+            
+            LEA     REGD7,A1
+            MOVE.B  #14,D0
+            TRAP    #15
+            LEA     BUFFER,A5
+            LEA     BUFFER,A6
+            ADDA.W  #4,A6
+            MOVE.L  (A2)+,(A5)
+            JSR     HEX2ASCII
+            MOVEA.L A4,A1
+            MOVE.B  #13,D0
+            TRAP    #15
+            
+            LEA     REGA0,A1
+            MOVE.B  #14,D0
+            TRAP    #15
+            LEA     BUFFER,A5
+            LEA     BUFFER,A6
+            ADDA.W  #4,A6
+            MOVE.L  (A2)+,(A5)
+            JSR     HEX2ASCII
+            MOVEA.L A4,A1
+            MOVE.B  #13,D0
+            TRAP    #15
+            
+            LEA     REGA1,A1
+            MOVE.B  #14,D0
+            TRAP    #15
+            LEA     BUFFER,A5
+            LEA     BUFFER,A6
+            ADDA.W  #4,A6
+            MOVE.L  (A2)+,(A5)
+            JSR     HEX2ASCII
+            MOVEA.L A4,A1
+            MOVE.B  #13,D0
+            TRAP    #15
+            
+            LEA     REGA2,A1
+            MOVE.B  #14,D0
+            TRAP    #15
+            LEA     BUFFER,A5
+            LEA     BUFFER,A6
+            ADDA.W  #4,A6
+            MOVE.L  (A2)+,(A5)
+            JSR     HEX2ASCII
+            MOVEA.L A4,A1
+            MOVE.B  #13,D0
+            TRAP    #15
+            
+            LEA     REGA3,A1
+            MOVE.B  #14,D0
+            TRAP    #15
+            LEA     BUFFER,A5
+            LEA     BUFFER,A6
+            ADDA.W  #4,A6
+            MOVE.L  (A2)+,(A5)
+            JSR     HEX2ASCII
+            MOVEA.L A4,A1
+            MOVE.B  #13,D0
+            TRAP    #15
+            
+            LEA     REGA4,A1
+            MOVE.B  #14,D0
+            TRAP    #15
+            LEA     BUFFER,A5
+            LEA     BUFFER,A6
+            ADDA.W  #4,A6
+            MOVE.L  (A2)+,(A5)
+            JSR     HEX2ASCII
+            MOVEA.L A4,A1
+            MOVE.B  #13,D0
+            TRAP    #15
+            
+            LEA     REGA5,A1
+            MOVE.B  #14,D0
+            TRAP    #15
+            LEA     BUFFER,A5
+            LEA     BUFFER,A6
+            ADDA.W  #4,A6
+            MOVE.L  (A2)+,(A5)
+            JSR     HEX2ASCII
+            MOVEA.L A4,A1
+            MOVE.B  #13,D0
+            TRAP    #15
+            
+            LEA     REGA6,A1
+            MOVE.B  #14,D0
+            TRAP    #15
+            LEA     BUFFER,A5
+            LEA     BUFFER,A6
+            ADDA.W  #4,A6
+            MOVE.L  (A2)+,(A5)
+            JSR     HEX2ASCII
+            MOVEA.L A4,A1
+            MOVE.B  #13,D0
+            TRAP    #15
+            
+            LEA     REGA7,A1
+            MOVE.B  #14,D0
+            TRAP    #15
+            LEA     BUFFER,A5
+            LEA     BUFFER,A6
+            ADDA.W  #4,A6
+            MOVE.L  (A2)+,(A5)
+            JSR     HEX2ASCII
+            MOVEA.L A4,A1
+            MOVE.B  #13,D0
+            TRAP    #15
+            
+            LEA     REGSR,A1
+            MOVE.B  #14,D0
+            TRAP    #15
+            LEA     SRDATA,A5
+            LEA     SRDATA,A6
+            ADDA.W  #2,A6
+            JSR     HEX2ASCII
+            MOVEA.L A4,A1
+            MOVE.B  #13,D0
+            TRAP    #15
+            
+            LEA     REGUSP,A1
+            MOVE.B  #14,D0
+            TRAP    #15
+            LEA     BUFFER,A5
+            LEA     BUFFER,A6
+            MOVE.L  A3,(A5)
+            ADDA.W  #4,A6
+            JSR     HEX2ASCII
+            MOVEA.L A4,A1
+            MOVE.B  #13,D0
+            TRAP    #15
+            
+            LEA     REGSSP,A1
+            MOVE.B  #14,D0
+            TRAP    #15
+            LEA     SPDATA,A5
+            LEA     SPDATA,A6
+            ADDA.W  #4,A6
+            JSR     HEX2ASCII
+            MOVEA.L A4,A1
+            MOVE.B  #13,D0
+            TRAP    #15
+            
+            LEA     REGPC,A1
+            MOVE.B  #14,D0
+            TRAP    #15
+            LEA     PCDATA,A5
+            LEA     PCDATA,A6
+            ADDA.W  #4,A6
+            JSR     HEX2ASCII
+            MOVEA.L A4,A1
+            MOVE.B  #13,D0
+            TRAP    #15
+            
 DFDONE      MOVEM.L (SP)+,A0-A7/D0-D7
             RTS
 
@@ -1963,7 +2370,235 @@ EXIT        MOVEM.L A0-A7/D0-D7,-(SP)
         
 EXITDONE    MOVEM.L (SP)+,A0-A7/D0-D7
             RTS
-        
+
+*-----------------------------------------------------------
+*
+*-----------------------------------------------------------
+D0          MOVEM.L A0-A7/D1-D7,-(SP)
+
+            JSR     ARGV
+            LEA     CMDBUFFER,A0
+            ADDA.W  #INDEX,A0
+            
+            JSR     CHKDOLLAR
+            CMP.B   #1,D2
+            BEQ     REGD0DONE
+            MOVE.L (A4),D0
+
+REGD0DONE   MOVEM.L (SP)+,A0-A7/D1-D7
+            RTS
+            
+D1          MOVEM.L A0-A7/D0/D2-D7,-(SP)
+
+            JSR     ARGV
+            LEA     CMDBUFFER,A0
+            ADDA.W  #INDEX,A0
+            
+            JSR     CHKDOLLAR
+            CMP.B   #1,D2
+            BEQ     REGD1DONE
+            MOVE.L (A4),D1
+
+REGD1DONE   MOVEM.L (SP)+,A0-A7/D0/D2-D7
+            RTS
+
+D2          MOVEM.L A0-A7/D0-D1/D3-D7,-(SP)
+
+            JSR     ARGV
+            LEA     CMDBUFFER,A0
+            ADDA.W  #INDEX,A0
+            
+            JSR     CHKDOLLAR
+            CMP.B   #1,D2
+            BEQ     REGD2DONE
+            MOVE.L (A4),D2
+
+REGD2DONE   MOVEM.L (SP)+,A0-A7/D0-D1/D3-D7
+            RTS
+
+D3          MOVEM.L A0-A7/D0-D2/D4-D7,-(SP)
+
+            JSR     ARGV
+            LEA     CMDBUFFER,A0
+            ADDA.W  #INDEX,A0
+            
+            JSR     CHKDOLLAR
+            CMP.B   #1,D2
+            BEQ     REGD3DONE
+            MOVE.L (A4),D3
+            
+REGD3DONE   MOVEM.L (SP)+,A0-A7/D0-D2/D4-D7
+            RTS
+
+D4          MOVEM.L A0-A7/D0-D3/D5-D7,-(SP)
+
+            JSR     ARGV
+            LEA     CMDBUFFER,A0
+            ADDA.W  #INDEX,A0
+            
+            JSR     CHKDOLLAR
+            CMP.B   #1,D2
+            BEQ     REGD4DONE
+            MOVE.L (A4),D4
+
+REGD4DONE   MOVEM.L (SP)+,A0-A7/D0-D3/D5-D7
+            RTS
+
+D5          MOVEM.L A0-A7/D0-D4/D6-D7,-(SP)
+
+            JSR     ARGV
+            LEA     CMDBUFFER,A0
+            ADDA.W  #INDEX,A0
+            
+            JSR     CHKDOLLAR
+            CMP.B   #1,D2
+            BEQ     REGD5DONE
+            MOVE.L (A4),D5
+
+REGD5DONE   MOVEM.L (SP)+,A0-A7/D0-D4/D6-D7
+            RTS
+
+D6          MOVEM.L A0-A7/D0-D5/D7,-(SP)
+
+            JSR     ARGV
+            LEA     CMDBUFFER,A0
+            ADDA.W  #INDEX,A0
+            
+            JSR     CHKDOLLAR
+            CMP.B   #1,D2
+            BEQ     REGD6DONE
+            MOVE.L (A4),D6
+
+REGD6DONE   MOVEM.L (SP)+,A0-A7/D0-D5/D7
+            RTS
+
+D7          MOVEM.L A0-A7/D0-D6,-(SP)
+
+            JSR     ARGV
+            LEA     CMDBUFFER,A0
+            ADDA.W  #INDEX,A0
+            
+            JSR     CHKDOLLAR
+            CMP.B   #1,D2
+            BEQ     REGD7DONE
+            MOVE.L (A4),D7
+
+REGD7DONE   MOVEM.L (SP)+,A0-A7/D0-D6
+            RTS
+
+A0          MOVEM.L A1-A7/D0-D7,-(SP)
+
+            JSR     ARGV
+            LEA     CMDBUFFER,A0
+            ADDA.W  #INDEX,A0
+            
+            JSR     CHKDOLLAR
+            CMP.B   #1,D2
+            BEQ     REGA0DONE
+            MOVE.L (A4),A0
+
+REGA0DONE   MOVEM.L (SP)+,A1-A7/D0-D7
+            RTS
+
+A1          MOVEM.L A0/A2-A7/D0-D7,-(SP)
+
+            JSR     ARGV
+            LEA     CMDBUFFER,A0
+            ADDA.W  #INDEX,A0
+            
+            JSR     CHKDOLLAR
+            CMP.B   #1,D2
+            BEQ     REGA1DONE
+            MOVE.L (A4),A1
+
+REGA1DONE   MOVEM.L (SP)+,A0/A2-A7/D0-D7
+            RTS
+
+A2          MOVEM.L A0-A1/A3-A7/D0-D7,-(SP)
+
+            JSR     ARGV
+            LEA     CMDBUFFER,A0
+            ADDA.W  #INDEX,A0
+            
+            JSR     CHKDOLLAR
+            CMP.B   #1,D2
+            BEQ     REGA2DONE
+            MOVE.L (A4),A2
+
+REGA2DONE   MOVEM.L (SP)+,A0-A1/A3-A7/D0-D7
+            RTS
+
+A3          MOVEM.L A0-A2/A4-A7/D0-D7,-(SP)
+
+            JSR     ARGV
+            LEA     CMDBUFFER,A0
+            ADDA.W  #INDEX,A0
+            
+            JSR     CHKDOLLAR
+            CMP.B   #1,D2
+            BEQ     REGA3DONE
+            MOVE.L (A4),A3
+
+REGA3DONE   MOVEM.L (SP)+,A0-A2/A4-A7/D0-D7
+            RTS
+
+A4          MOVEM.L A0-A3/A5-A7/D0-D7,-(SP)
+    
+            JSR     ARGV
+            LEA     CMDBUFFER,A0
+            ADDA.W  #INDEX,A0
+            
+            JSR     CHKDOLLAR
+            CMP.B   #1,D2
+            BEQ     REGA4DONE
+            MOVE.L (A4),A4
+
+REGA4DONE   MOVEM.L (SP)+,A0-A3/A5-A7/D0-D7
+            RTS
+
+A5          MOVEM.L A0-A4/A6-A7/D0-D7,-(SP)
+
+            JSR     ARGV
+            LEA     CMDBUFFER,A0
+            ADDA.W  #INDEX,A0
+            
+            JSR     CHKDOLLAR
+            CMP.B   #1,D2
+            BEQ     REGA5DONE
+            MOVE.L (A4),A5
+
+REGA5DONE   MOVEM.L (SP)+,A0-A4/A6-A7/D0-D7
+            RTS
+
+A6          MOVEM.L A0-A5/A7/D0-D7,-(SP)
+
+            JSR     ARGV
+            LEA     CMDBUFFER,A0
+            ADDA.W  #INDEX,A0
+            
+            JSR     CHKDOLLAR
+            CMP.B   #1,D2
+            BEQ     REGA6DONE
+            MOVE.L (A4),A6
+
+REGA6DONE   MOVEM.L (SP)+,A0-A5/A7/D0-D7
+            RTS
+
+A7          MOVEM.L A0-A6/D0-D7,-(SP)
+
+            JSR     ARGV
+            LEA     CMDBUFFER,A0
+            ADDA.W  #INDEX,A0
+            
+            JSR     CHKDOLLAR
+            CMP.B   #1,D2
+            BEQ     REGA7DONE
+            MOVE.L (A4),A7
+
+REGA7DONE   MOVEM.L (SP)+,A0-A6/D0-D7
+            RTS
+
+
 *-----------------------------------------------------------
 * ARGV Command Line Parsing Subroutine
 * Stores Commands separated by INDEX (12) in memory starting at CMDBUFFER
@@ -1976,13 +2611,24 @@ ARGV        MOVEM.L A0-A7/D0-D1/D3-D7,-(SP)
             LEA     CMDBUFFER,A1
             LEA     CMDBUFFER,A2
             CLR.L   D2
+            CLR.L   D3
 CHECKLOOP   MOVE.B  (A0),(A1)+
+            CMP.B   #SINGLEQUOTE,(A0)
+            BEQ     QUOTEFOUND
+            CMP.B   #DOUBLEQUOTE,(A0)
+            BEQ     QUOTEFOUND
+FLAGCHK     CMP.B   #1,D3
+            BEQ     NULLCHK
             CMPI.B  #SP,(A0)
             BEQ     SPFOUND
-            CMPI.B  #NULL,(A0)+
+NULLCHK     CMPI.B  #NULL,(A0)+
             BEQ     NULLFOUND
             BRA     CHECKLOOP
-                     
+            
+QUOTEFOUND  ADD.L   #1,D3
+            ANDI.B  #1,D3
+            BRA     FLAGCHK
+         
 SPFOUND     SUBA.W  #1,A1
             MOVE.B  #NULL,(A1)
             ADDA.W  #1,A1
@@ -2093,16 +2739,6 @@ HEXDONE     MOVEM.L (SP)+,A0-A3/A5-A7/D0-D2/D4-D7
 * Put variables and constants here
 
     END    START        ; last line of source
-
-
-
-
-
-
-
-
-
-
 *~Font name~Courier New~
 *~Font size~10~
 *~Tab type~1~
