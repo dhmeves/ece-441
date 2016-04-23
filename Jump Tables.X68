@@ -11,7 +11,6 @@ GOPTR      DC.B    'GO',0
 DFPTR      DC.B    'DF',0
 EXITPTR    DC.B    'EXIT',0
 MANPTR     DC.B    'MAN',0
-SRPTR      DC.B    '.SR',0
 D0PTR      DC.B    '.D0',0
 D1PTR      DC.B    '.D1',0
 D2PTR      DC.B    '.D2',0
@@ -28,6 +27,7 @@ A4PTR      DC.B    '.A4',0
 A5PTR      DC.B    '.A5',0
 A6PTR      DC.B    '.A6',0
 A7PTR      DC.B    '.A7',0
+SRPTR      DC.B    '.SR',0
 
 HELPHDLR    DC.L   HELP
 MDSPHDLR    DC.L   MDSP
@@ -42,7 +42,6 @@ GOHDLR      DC.L   GO
 DFHDLR      DC.L   DF
 EXITHDLR    DC.L   EXIT
 MANHDLR     DC.L   MANHELP
-SRHDLR      DC.L   SR
 D0HDLR      DC.L   D0
 D1HDLR      DC.L   D1
 D2HDLR      DC.L   D2
@@ -59,6 +58,7 @@ A4HDLR      DC.L   A4
 A5HDLR      DC.L   A5
 A6HDLR      DC.L   A6
 A7HDLR      DC.L   A7
+SRHDLR      DC.L   SR
 NOCMD       DS.B   1
 
 HELPSTR     DC.L    HELPOUT
@@ -74,6 +74,7 @@ GOSTR       DC.L    GOOUT
 DFSTR       DC.L    DFOUT
 EXITSTR     DC.L    EXITOUT
 MANSTR      DC.L    MANOUT 
+
 
 *~Font name~Courier New~
 *~Font size~12~
