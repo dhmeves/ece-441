@@ -4,7 +4,7 @@
 START:                  ; first instruction of program
                 MOVEM.L A0-A7/D0-D7,-(SP)
                 MOVE    SR,-(SP)
-                MOVE.L  SP,A2
+                MOVE.L  SP,SPDATA
                 LEA     PROMPT,A1
                 MOVE.B  #14,D0
                 TRAP    #15
@@ -28,6 +28,7 @@ CLRCMDBUF       CLR.B   (A3)+
                 JSR     INTERPRETER
                 
                 BRA     START
+
 
 *~Font name~Courier New~
 *~Font size~12~

@@ -6,7 +6,7 @@
 * values before any of your subroutines.
 *-----------------------------------------------------------
 DF          MOVEM.L A0-A7/D0-D7,-(SP)
-            MOVE.L  SP,SPDATA
+            *MOVE.L  SP,SPDATA
             *MOVE.L  SP,A2
 PCLABEL     MOVE.L  #PCLABEL,PCDATA
             MOVE    SR,SRDATA
@@ -36,6 +36,7 @@ PCLABEL     MOVE.L  #PCLABEL,PCDATA
             LEA     BUFFER,A5
             LEA     BUFFER,A6
             ADDA.W  #4,A6
+            MOVE.L  SPDATA,A2
             MOVE.L  (A2)+,(A5)
             JSR     HEX2ASCII
             MOVEA.L A4,A1
@@ -269,6 +270,7 @@ PCLABEL     MOVE.L  #PCLABEL,PCDATA
             
 DFDONE      MOVEM.L (SP)+,A0-A7/D0-D7
             RTS
+
 *~Font name~Courier New~
 *~Font size~12~
 *~Tab type~1~
