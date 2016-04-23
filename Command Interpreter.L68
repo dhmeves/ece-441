@@ -1,0 +1,62 @@
+00001418 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.15.04
+Created On: 4/22/2016 8:07:58 PM
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  *Command Interpreter
+00000000                             3  *-----------------------------------------------------------
+00000000  48E7 FFFF                  4  INTERPRETER     MOVEM.L A0-A7/D0-D7,-(SP)  ; commented out to allow .D and .A command passthrough
+00000004                             5  
+00000004                             6                  *MOVE.L  SP,A2 
+00000004                             7                  
+Line 8 ERROR: Undefined symbol
+00000004  43F9 004DBB8E              8                  LEA     INPUTBUFFER,A1      ; pointer to command input
+0000000A  2049                       9                  MOVEA.L A1,A0
+0000000C  D3C1                      10                  ADDA.L  D1,A1               ; pointer to end of command input
+0000000E  4282                      11                  CLR.L   D2
+00000010  4283                      12                  CLR.L   D3                  ; character counter
+00000012                            13                   
+Line 14 ERROR: Undefined symbol
+00000012  49F9 004DBB8E             14                  LEA     HELPPTR,A4          ; pointer to string table
+Line 15 ERROR: Undefined symbol
+00000018  4BF9 004DBB8E             15                  LEA     HELPHDLR,A5         ; pointer to jump table
+Line 16 ERROR: Undefined symbol
+0000001E  47F9 004DBB8E             16  NEXT            LEA     INPUTBUFFER,A3
+Line 17 ERROR: Undefined symbol
+00000024  4EB9 004DBB8E             17                  JSR     COMPARESTRING
+0000002A                            18                  
+0000002A  0C04 0001                 19                  CMPI.B  #1,D4
+0000002E  6700 000E                 20                  BEQ     HDLRJMP
+00000032  584D                      21                  ADDA.W  #4,A5
+Line 22 ERROR: Undefined symbol
+00000034  BAFC BB8E                 22                  CMP.W   #NOCMD,A5
+00000038  6700 000E                 23                  BEQ     ERROR
+0000003C  60E0                      24                  BRA     NEXT
+0000003E                            25                  
+0000003E  2C55                      26  HDLRJMP         MOVE.L  (A5),A6
+00000040  4E96                      27                  JSR     (A6)
+00000042                            28                     
+00000042  4CDF FFFF                 29                  MOVEM.L (SP)+,A0-A7/D0-D7  ; commented out to allow .D and .A command passthrough
+00000046                            30  
+00000046  4E75                      31                  RTS
+00000048                            32                  
+Line 33 ERROR: Undefined symbol
+00000048  43F9 004DBB8E             33  ERROR           LEA     ERRORMSG,A1
+0000004E  103C 000E                 34                  MOVE.B  #14,D0
+00000052  4E4F                      35                  TRAP    #15
+Line 36 ERROR: Undefined symbol
+00000054  6000 BB38                 36                  BRA     START
+00000058                            37  
+Line 38 WARNING: END directive missing, starting address not set
+
+8 errors detected
+1 warning generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+ERROR               48
+HDLRJMP             3E
+INTERPRETER         0
+NEXT                1E

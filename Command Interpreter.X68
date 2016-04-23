@@ -19,7 +19,7 @@ NEXT            LEA     INPUTBUFFER,A3
                 CMPI.B  #1,D4
                 BEQ     HDLRJMP
                 ADDA.W  #4,A5
-                CMP.W  #$4478,A5
+                CMP.W   #NOCMD,A5
                 BEQ     ERROR
                 BRA     NEXT
                 
@@ -34,6 +34,7 @@ ERROR           LEA     ERRORMSG,A1
                 MOVE.B  #14,D0
                 TRAP    #15
                 BRA     START
+
 
 *~Font name~Courier New~
 *~Font size~12~

@@ -1,0 +1,374 @@
+00001418 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.15.04
+Created On: 4/22/2016 7:45:40 PM
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Change Registers (.D[0-7] .A[0-7])
+00000000                             3  *-----------------------------------------------------------
+00000000  48E7 7FFF                  4  SR          MOVEM.L A0-A7/D1-D7,-(SP)
+00000004                             5              
+Line 6 ERROR: Undefined symbol
+00000004  4EB9 004DBB8E              6              JSR     ARGV
+Line 7 ERROR: Undefined symbol
+0000000A  41F9 004DBB8E              7              LEA     CMDBUFFER,A0
+Line 8 ERROR: Undefined symbol
+00000010  D0FC BB8E                  8              ADDA.W  #INDEX,A0
+00000014                             9              
+Line 10 ERROR: Undefined symbol
+00000014  4EB9 004DBB8E             10              JSR     CHKDOLLAR
+0000001A  B43C 0001                 11              CMP.B   #1,D2
+0000001E  6700 0008                 12              BEQ     REGSRDONE
+00000022  2014                      13              MOVE.L  (A4),D0
+00000024  2554 0040                 14              MOVE.L  (A4),64(A2)
+00000028                            15  
+00000028  4CDF FFFE                 16  REGSRDONE   MOVEM.L (SP)+,A0-A7/D1-D7
+0000002C  4E75                      17              RTS
+0000002E                            18              
+0000002E  48E7 7FFF                 19  D0          MOVEM.L A0-A7/D1-D7,-(SP)
+00000032                            20  
+Line 21 ERROR: Undefined symbol
+00000032  4EB9 004DBB8E             21              JSR     ARGV
+Line 22 ERROR: Undefined symbol
+00000038  41F9 004DBB8E             22              LEA     CMDBUFFER,A0
+Line 23 ERROR: Undefined symbol
+0000003E  D0FC BB8E                 23              ADDA.W  #INDEX,A0
+00000042                            24              
+Line 25 ERROR: Undefined symbol
+00000042  4EB9 004DBB8E             25              JSR     CHKDOLLAR
+00000048  B43C 0001                 26              CMP.B   #1,D2
+0000004C  6700 0008                 27              BEQ     REGD0DONE
+00000050  2014                      28              MOVE.L  (A4),D0
+00000052  2554 0000                 29              MOVE.L  (A4),0(A2)
+00000056                            30  
+00000056  4CDF FFFE                 31  REGD0DONE   MOVEM.L (SP)+,A0-A7/D1-D7
+0000005A  4E75                      32              RTS
+0000005C                            33              
+0000005C  48E7 BFFF                 34  D1          MOVEM.L A0-A7/D0/D2-D7,-(SP)
+00000060                            35  
+Line 36 ERROR: Undefined symbol
+00000060  4EB9 004DBB8E             36              JSR     ARGV
+Line 37 ERROR: Undefined symbol
+00000066  41F9 004DBB8E             37              LEA     CMDBUFFER,A0
+Line 38 ERROR: Undefined symbol
+0000006C  D0FC BB8E                 38              ADDA.W  #INDEX,A0
+00000070                            39              
+Line 40 ERROR: Undefined symbol
+00000070  4EB9 004DBB8E             40              JSR     CHKDOLLAR
+00000076  B43C 0001                 41              CMP.B   #1,D2
+0000007A  6700 0008                 42              BEQ     REGD1DONE
+0000007E  2214                      43              MOVE.L (A4),D1
+00000080  2554 0004                 44              MOVE.L  (A4),4(A2)
+00000084                            45  
+00000084  4CDF FFFD                 46  REGD1DONE   MOVEM.L (SP)+,A0-A7/D0/D2-D7
+00000088  4E75                      47              RTS
+0000008A                            48  
+0000008A  48E7 DFFF                 49  D2          MOVEM.L A0-A7/D0-D1/D3-D7,-(SP)
+0000008E                            50  
+Line 51 ERROR: Undefined symbol
+0000008E  4EB9 004DBB8E             51              JSR     ARGV
+Line 52 ERROR: Undefined symbol
+00000094  41F9 004DBB8E             52              LEA     CMDBUFFER,A0
+Line 53 ERROR: Undefined symbol
+0000009A  D0FC BB8E                 53              ADDA.W  #INDEX,A0
+0000009E                            54              
+Line 55 ERROR: Undefined symbol
+0000009E  4EB9 004DBB8E             55              JSR     CHKDOLLAR
+000000A4  B43C 0001                 56              CMP.B   #1,D2
+000000A8  6700 0008                 57              BEQ     REGD2DONE
+000000AC  2414                      58              MOVE.L (A4),D2
+000000AE  2554 0008                 59              MOVE.L  (A4),8(A2)
+000000B2                            60  
+000000B2  4CDF FFFB                 61  REGD2DONE   MOVEM.L (SP)+,A0-A7/D0-D1/D3-D7
+000000B6  4E75                      62              RTS
+000000B8                            63  
+000000B8  48E7 EFFF                 64  D3          MOVEM.L A0-A7/D0-D2/D4-D7,-(SP)
+000000BC                            65  
+Line 66 ERROR: Undefined symbol
+000000BC  4EB9 004DBB8E             66              JSR     ARGV
+Line 67 ERROR: Undefined symbol
+000000C2  41F9 004DBB8E             67              LEA     CMDBUFFER,A0
+Line 68 ERROR: Undefined symbol
+000000C8  D0FC BB8E                 68              ADDA.W  #INDEX,A0
+000000CC                            69              
+Line 70 ERROR: Undefined symbol
+000000CC  4EB9 004DBB8E             70              JSR     CHKDOLLAR
+000000D2  B43C 0001                 71              CMP.B   #1,D2
+000000D6  6700 0008                 72              BEQ     REGD3DONE
+000000DA  2614                      73              MOVE.L (A4),D3
+000000DC  2554 000C                 74              MOVE.L  (A4),12(A2)
+000000E0                            75              
+000000E0  4CDF FFF7                 76  REGD3DONE   MOVEM.L (SP)+,A0-A7/D0-D2/D4-D7
+000000E4  4E75                      77              RTS
+000000E6                            78  
+000000E6  48E7 F7FF                 79  D4          MOVEM.L A0-A7/D0-D3/D5-D7,-(SP)
+000000EA                            80  
+Line 81 ERROR: Undefined symbol
+000000EA  4EB9 004DBB8E             81              JSR     ARGV
+Line 82 ERROR: Undefined symbol
+000000F0  41F9 004DBB8E             82              LEA     CMDBUFFER,A0
+Line 83 ERROR: Undefined symbol
+000000F6  D0FC BB8E                 83              ADDA.W  #INDEX,A0
+000000FA                            84              
+Line 85 ERROR: Undefined symbol
+000000FA  4EB9 004DBB8E             85              JSR     CHKDOLLAR
+00000100  B43C 0001                 86              CMP.B   #1,D2
+00000104  6700 0008                 87              BEQ     REGD4DONE
+00000108  2814                      88              MOVE.L (A4),D4
+0000010A  2554 0010                 89              MOVE.L  (A4),16(A2)
+0000010E                            90  
+0000010E  4CDF FFEF                 91  REGD4DONE   MOVEM.L (SP)+,A0-A7/D0-D3/D5-D7
+00000112  4E75                      92              RTS
+00000114                            93  
+00000114  48E7 FBFF                 94  D5          MOVEM.L A0-A7/D0-D4/D6-D7,-(SP)
+00000118                            95  
+Line 96 ERROR: Undefined symbol
+00000118  4EB9 004DBB8E             96              JSR     ARGV
+Line 97 ERROR: Undefined symbol
+0000011E  41F9 004DBB8E             97              LEA     CMDBUFFER,A0
+Line 98 ERROR: Undefined symbol
+00000124  D0FC BB8E                 98              ADDA.W  #INDEX,A0
+00000128                            99              
+Line 100 ERROR: Undefined symbol
+00000128  4EB9 004DBB8E            100              JSR     CHKDOLLAR
+0000012E  23FC 7395738F 00068008   101              MOVE.L  #$7395738F,$68008
+00000138  B43C 0001                102              CMP.B   #1,D2
+0000013C  6700 0008                103              BEQ     REGD5DONE
+00000140  2A14                     104              MOVE.L (A4),D5
+00000142  2554 0014                105              MOVE.L  (A4),20(A2)
+00000146                           106  
+00000146  4CDF FFDF                107  REGD5DONE   MOVEM.L (SP)+,A0-A7/D0-D4/D6-D7
+0000014A  4E75                     108              RTS
+0000014C                           109  
+0000014C  48E7 FDFF                110  D6          MOVEM.L A0-A7/D0-D5/D7,-(SP)
+00000150                           111  
+Line 112 ERROR: Undefined symbol
+00000150  4EB9 004DBB8E            112              JSR     ARGV
+Line 113 ERROR: Undefined symbol
+00000156  41F9 004DBB8E            113              LEA     CMDBUFFER,A0
+Line 114 ERROR: Undefined symbol
+0000015C  D0FC BB8E                114              ADDA.W  #INDEX,A0
+00000160                           115              
+Line 116 ERROR: Undefined symbol
+00000160  4EB9 004DBB8E            116              JSR     CHKDOLLAR
+00000166  B43C 0001                117              CMP.B   #1,D2
+0000016A  6700 0008                118              BEQ     REGD6DONE
+0000016E  2C14                     119              MOVE.L (A4),D6
+00000170  2554 0018                120              MOVE.L  (A4),24(A2)
+00000174                           121  
+00000174  4CDF FFBF                122  REGD6DONE   MOVEM.L (SP)+,A0-A7/D0-D5/D7
+00000178  4E75                     123              RTS
+0000017A                           124  
+0000017A  48E7 FEFF                125  D7          MOVEM.L A0-A7/D0-D6,-(SP)
+0000017E                           126  
+Line 127 ERROR: Undefined symbol
+0000017E  4EB9 004DBB8E            127              JSR     ARGV
+Line 128 ERROR: Undefined symbol
+00000184  41F9 004DBB8E            128              LEA     CMDBUFFER,A0
+Line 129 ERROR: Undefined symbol
+0000018A  D0FC BB8E                129              ADDA.W  #INDEX,A0
+0000018E                           130              
+Line 131 ERROR: Undefined symbol
+0000018E  4EB9 004DBB8E            131              JSR     CHKDOLLAR
+00000194  B43C 0001                132              CMP.B   #1,D2
+00000198  6700 0008                133              BEQ     REGD7DONE
+0000019C  2E14                     134              MOVE.L (A4),D7
+0000019E  2554 001C                135              MOVE.L  (A4),28(A2)
+000001A2                           136  
+000001A2  4CDF FF7F                137  REGD7DONE   MOVEM.L (SP)+,A0-A7/D0-D6
+000001A6  4E75                     138              RTS
+000001A8                           139  
+000001A8  48E7 FF7F                140  A0          MOVEM.L A1-A7/D0-D7,-(SP)
+000001AC                           141  
+Line 142 ERROR: Undefined symbol
+000001AC  4EB9 004DBB8E            142              JSR     ARGV
+Line 143 ERROR: Undefined symbol
+000001B2  41F9 004DBB8E            143              LEA     CMDBUFFER,A0
+Line 144 ERROR: Undefined symbol
+000001B8  D0FC BB8E                144              ADDA.W  #INDEX,A0
+000001BC                           145              
+Line 146 ERROR: Undefined symbol
+000001BC  4EB9 004DBB8E            146              JSR     CHKDOLLAR
+000001C2  B43C 0001                147              CMP.B   #1,D2
+000001C6  6700 0008                148              BEQ     REGA0DONE
+000001CA  2054                     149              MOVE.L (A4),A0
+000001CC  2554 0020                150              MOVE.L  (A4),32(A2)
+000001D0                           151  
+000001D0  4CDF FEFF                152  REGA0DONE   MOVEM.L (SP)+,A1-A7/D0-D7
+000001D4  4E75                     153              RTS
+000001D6                           154  
+000001D6  48E7 FFBF                155  A1          MOVEM.L A0/A2-A7/D0-D7,-(SP)
+000001DA                           156  
+Line 157 ERROR: Undefined symbol
+000001DA  4EB9 004DBB8E            157              JSR     ARGV
+Line 158 ERROR: Undefined symbol
+000001E0  41F9 004DBB8E            158              LEA     CMDBUFFER,A0
+Line 159 ERROR: Undefined symbol
+000001E6  D0FC BB8E                159              ADDA.W  #INDEX,A0
+000001EA                           160              
+Line 161 ERROR: Undefined symbol
+000001EA  4EB9 004DBB8E            161              JSR     CHKDOLLAR
+000001F0  B43C 0001                162              CMP.B   #1,D2
+000001F4  6700 0008                163              BEQ     REGA1DONE
+000001F8  2254                     164              MOVE.L (A4),A1
+000001FA  2554 0024                165              MOVE.L  (A4),36(A2)
+000001FE                           166  
+000001FE  4CDF FDFF                167  REGA1DONE   MOVEM.L (SP)+,A0/A2-A7/D0-D7
+00000202  4E75                     168              RTS
+00000204                           169  
+00000204  48E7 FFDF                170  A2          MOVEM.L A0-A1/A3-A7/D0-D7,-(SP)
+00000208                           171  
+Line 172 ERROR: Undefined symbol
+00000208  4EB9 004DBB8E            172              JSR     ARGV
+Line 173 ERROR: Undefined symbol
+0000020E  41F9 004DBB8E            173              LEA     CMDBUFFER,A0
+Line 174 ERROR: Undefined symbol
+00000214  D0FC BB8E                174              ADDA.W  #INDEX,A0
+00000218                           175              
+Line 176 ERROR: Undefined symbol
+00000218  4EB9 004DBB8E            176              JSR     CHKDOLLAR
+0000021E  B43C 0001                177              CMP.B   #1,D2
+00000222  6700 0006                178              BEQ     REGA2DONE
+00000226                           179              *MOVE.L (A4),A2
+00000226  2554 0028                180              MOVE.L  (A4),40(A2)
+0000022A                           181  
+0000022A  4CDF FBFF                182  REGA2DONE   MOVEM.L (SP)+,A0-A1/A3-A7/D0-D7
+0000022E  4E75                     183              RTS
+00000230                           184  
+00000230  48E7 FFEF                185  A3          MOVEM.L A0-A2/A4-A7/D0-D7,-(SP)
+00000234                           186  
+Line 187 ERROR: Undefined symbol
+00000234  4EB9 004DBB8E            187              JSR     ARGV
+Line 188 ERROR: Undefined symbol
+0000023A  41F9 004DBB8E            188              LEA     CMDBUFFER,A0
+Line 189 ERROR: Undefined symbol
+00000240  D0FC BB8E                189              ADDA.W  #INDEX,A0
+00000244                           190              
+Line 191 ERROR: Undefined symbol
+00000244  4EB9 004DBB8E            191              JSR     CHKDOLLAR
+0000024A  B43C 0001                192              CMP.B   #1,D2
+0000024E  6700 0008                193              BEQ     REGA3DONE
+00000252  2654                     194              MOVE.L (A4),A3
+00000254  2554 002C                195              MOVE.L  (A4),44(A2)
+00000258                           196  
+00000258  4CDF F7FF                197  REGA3DONE   MOVEM.L (SP)+,A0-A2/A4-A7/D0-D7
+0000025C  4E75                     198              RTS
+0000025E                           199  
+0000025E  48E7 FFF7                200  A4          MOVEM.L A0-A3/A5-A7/D0-D7,-(SP)
+00000262                           201      
+Line 202 ERROR: Undefined symbol
+00000262  4EB9 004DBB8E            202              JSR     ARGV
+Line 203 ERROR: Undefined symbol
+00000268  41F9 004DBB8E            203              LEA     CMDBUFFER,A0
+Line 204 ERROR: Undefined symbol
+0000026E  D0FC BB8E                204              ADDA.W  #INDEX,A0
+00000272                           205              
+Line 206 ERROR: Undefined symbol
+00000272  4EB9 004DBB8E            206              JSR     CHKDOLLAR
+00000278  B43C 0001                207              CMP.B   #1,D2
+0000027C  6700 0006                208              BEQ     REGA4DONE
+00000280                           209              *MOVE.L (A4),A4
+00000280  2554 0030                210              MOVE.L  (A4),48(A2)
+00000284                           211  
+00000284  4CDF EFFF                212  REGA4DONE   MOVEM.L (SP)+,A0-A3/A5-A7/D0-D7
+00000288  4E75                     213              RTS
+0000028A                           214  
+0000028A  48E7 FFFB                215  A5          MOVEM.L A0-A4/A6-A7/D0-D7,-(SP)
+0000028E                           216  
+Line 217 ERROR: Undefined symbol
+0000028E  4EB9 004DBB8E            217              JSR     ARGV
+Line 218 ERROR: Undefined symbol
+00000294  41F9 004DBB8E            218              LEA     CMDBUFFER,A0
+Line 219 ERROR: Undefined symbol
+0000029A  D0FC BB8E                219              ADDA.W  #INDEX,A0
+0000029E                           220              
+Line 221 ERROR: Undefined symbol
+0000029E  4EB9 004DBB8E            221              JSR     CHKDOLLAR
+000002A4  B43C 0001                222              CMP.B   #1,D2
+000002A8  6700 0008                223              BEQ     REGA5DONE
+000002AC  2A54                     224              MOVE.L (A4),A5
+000002AE  2554 0034                225              MOVE.L  (A4),52(A2)
+000002B2                           226  
+000002B2  4CDF DFFF                227  REGA5DONE   MOVEM.L (SP)+,A0-A4/A6-A7/D0-D7
+000002B6  4E75                     228              RTS
+000002B8                           229  
+000002B8  48E7 FFFD                230  A6          MOVEM.L A0-A5/A7/D0-D7,-(SP)
+000002BC                           231  
+Line 232 ERROR: Undefined symbol
+000002BC  4EB9 004DBB8E            232              JSR     ARGV
+Line 233 ERROR: Undefined symbol
+000002C2  41F9 004DBB8E            233              LEA     CMDBUFFER,A0
+Line 234 ERROR: Undefined symbol
+000002C8  D0FC BB8E                234              ADDA.W  #INDEX,A0
+000002CC                           235              
+Line 236 ERROR: Undefined symbol
+000002CC  4EB9 004DBB8E            236              JSR     CHKDOLLAR
+000002D2  B43C 0001                237              CMP.B   #1,D2
+000002D6  6700 0008                238              BEQ     REGA6DONE
+000002DA  2C54                     239              MOVE.L (A4),A6
+000002DC  2554 0038                240              MOVE.L  (A4),56(A2)
+000002E0                           241  
+000002E0  4CDF BFFF                242  REGA6DONE   MOVEM.L (SP)+,A0-A5/A7/D0-D7
+000002E4  4E75                     243              RTS
+000002E6                           244  
+000002E6  48E7 FFFE                245  A7          MOVEM.L A0-A6/D0-D7,-(SP)
+000002EA                           246  
+Line 247 ERROR: Undefined symbol
+000002EA  4EB9 004DBB8E            247              JSR     ARGV
+Line 248 ERROR: Undefined symbol
+000002F0  41F9 004DBB8E            248              LEA     CMDBUFFER,A0
+Line 249 ERROR: Undefined symbol
+000002F6  D0FC BB8E                249              ADDA.W  #INDEX,A0
+000002FA                           250              
+Line 251 ERROR: Undefined symbol
+000002FA  4EB9 004DBB8E            251              JSR     CHKDOLLAR
+00000300  B43C 0001                252              CMP.B   #1,D2
+00000304  6700 0008                253              BEQ     REGA7DONE
+00000308  2E54                     254              MOVE.L (A4),A7
+0000030A  2554 003C                255              MOVE.L  (A4),60(A2)
+0000030E                           256  
+0000030E  4CDF 7FFF                257  REGA7DONE   MOVEM.L (SP)+,A0-A6/D0-D7
+00000312  4E75                     258              RTS
+00000314                           259  
+Line 260 WARNING: END directive missing, starting address not set
+
+68 errors detected
+1 warning generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+A0                  1A8
+A1                  1D6
+A2                  204
+A3                  230
+A4                  25E
+A5                  28A
+A6                  2B8
+A7                  2E6
+D0                  2E
+D1                  5C
+D2                  8A
+D3                  B8
+D4                  E6
+D5                  114
+D6                  14C
+D7                  17A
+REGA0DONE           1D0
+REGA1DONE           1FE
+REGA2DONE           22A
+REGA3DONE           258
+REGA4DONE           284
+REGA5DONE           2B2
+REGA6DONE           2E0
+REGA7DONE           30E
+REGD0DONE           56
+REGD1DONE           84
+REGD2DONE           B2
+REGD3DONE           E0
+REGD4DONE           10E
+REGD5DONE           146
+REGD6DONE           174
+REGD7DONE           1A2
+REGSRDONE           28
+SR                  0

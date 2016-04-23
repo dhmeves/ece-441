@@ -59,6 +59,7 @@ A4HDLR      DC.L   A4
 A5HDLR      DC.L   A5
 A6HDLR      DC.L   A6
 A7HDLR      DC.L   A7
+NOCMD       DS.B   1
 
 HELPSTR     DC.L    HELPOUT
 MDSPSTR     DC.L    MDSPOUT
@@ -73,6 +74,7 @@ GOSTR       DC.L    GOOUT
 DFSTR       DC.L    DFOUT
 EXITSTR     DC.L    EXITOUT
 MANSTR      DC.L    MANOUT 
+
 *~Font name~Courier New~
 *~Font size~12~
 *~Tab type~1~

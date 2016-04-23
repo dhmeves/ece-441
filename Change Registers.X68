@@ -11,7 +11,7 @@ SR          MOVEM.L A0-A7/D1-D7,-(SP)
             CMP.B   #1,D2
             BEQ     REGSRDONE
             MOVE.L  (A4),D0
-            MOVE.L  (A4),0(A2)
+            MOVE.L  (A4),64(A2)
 
 REGSRDONE   MOVEM.L (SP)+,A0-A7/D1-D7
             RTS
@@ -256,6 +256,7 @@ A7          MOVEM.L A0-A6/D0-D7,-(SP)
 
 REGA7DONE   MOVEM.L (SP)+,A0-A6/D0-D7
             RTS
+
 
 *~Font name~Courier New~
 *~Font size~12~

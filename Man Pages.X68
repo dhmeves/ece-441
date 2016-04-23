@@ -580,6 +580,7 @@ MANMANPAGE      DC.B    CR,LF,'MAN(1)                       MC68000/SANPER-1 ELU
                 
                 DC.B    'Daniel H. Meves                    27 April 2016                        MAN(1)',CR,LF,LF,0        
 
+
 *~Font name~Courier New~
 *~Font size~12~
 *~Tab type~1~
