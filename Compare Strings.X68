@@ -7,7 +7,7 @@ COMPARESTRING   MOVEM.L A0-A2/A5-A7/D0-D3/D5-D7,-(SP)
                 CLR.L   D4
                 
                 CMP.B   #NULL,(A3)
-                BEQ     START
+                BEQ     NEXTCMD
                 
 COMPARELOOP     CMPI.B  #SP,(A3)
                 BEQ     COMPARELIST
@@ -42,6 +42,7 @@ NULLLOOP        CMPI.B  #NULL,(A4)+
                 BNE     NULLLOOP
                 MOVEM.L (SP)+,A0-A3/A5-A7/D0-D7
                 RTS
+
 *~Font name~Courier New~
 *~Font size~12~
 *~Tab type~1~

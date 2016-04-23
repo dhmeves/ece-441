@@ -1,3 +1,4 @@
+        ORG     $4000
 CMDMSG          DC.B    CR,LF,'*****ALL MONITOR441 COMMANDS*****',CR,LF,LF,0
 HELPMSG         DC.B    CR,LF,'   HELP: Displays this message',CR,LF,LF,0
                 
@@ -42,7 +43,7 @@ CMDMSG2         DC.B    CR,LF,'*****Try HELP <command> or MAN <command> to view 
 *--------------------------
 *MAN PAGES
 *--------------------------
-    ORG     $4000
+    
 HELPMANPAGE     DC.B    CR,LF,'HELP(1)                       MC68000/SANPER-1 ELU                       HELP(1)',CR,LF,LF
                 
                 DC.B    'NAME',CR,LF
@@ -579,6 +580,7 @@ MANMANPAGE      DC.B    CR,LF,'MAN(1)                       MC68000/SANPER-1 ELU
                 DC.B    '   HELP(1), MDSP(1), SORTW(1), MM(1), MS(1), BF(1), BMOV(1), BTST(1), BSCH(1), GO(1), DF(1), EXIT(1)',CR,LF,LF
                 
                 DC.B    'Daniel H. Meves                    27 April 2016                        MAN(1)',CR,LF,LF,0        
+
 
 
 *~Font name~Courier New~

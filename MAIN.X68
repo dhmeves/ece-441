@@ -4,7 +4,26 @@
 START:                  ; first instruction of program
                 MOVE    SR,-(SP)
                 MOVEM.L A0-A7/D0-D7,-(SP)
-                MOVE.L  SP,SPDATA
+                MOVE.L  SP,SSPDATA
+                MOVE.L  SP,SSPDATA2
+                MOVE.L  SP,A2
+                MOVE.W  64(A2),SRDATA
+                MOVE.W  64(A2),SRDATA2
+PCLABEL         MOVE.L  #PCLABEL,PCDATA
+                MOVE.L  #PCLABEL,PCDATA2
+                MOVE    USP,A3
+                MOVE.L  A3,USPDATA
+                MOVE    USP,A3
+                MOVE.L  A3,USPDATA2
+                
+                *MOVE.L $005001,A1            ;ADDRESS ERROR
+                *MOVE.W  #$AA,(A1)
+                
+                *MOVE.W  #$4000,SR           ;PRIVILEGE VIOLATION
+                
+                *MOVE.L  #0,D1               ;DIVIDE BY ZERO
+                *DIVU    D1,D0
+                
 NEXTCMD         LEA     PROMPT,A1
                 MOVE.B  #14,D0
                 TRAP    #15
@@ -28,6 +47,9 @@ CLRCMDBUF       CLR.B   (A3)+
                 JSR     INTERPRETER
                 
                 BRA     NEXTCMD
+
+
+
 
 
 

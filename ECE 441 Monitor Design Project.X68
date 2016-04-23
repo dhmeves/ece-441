@@ -6,6 +6,23 @@
 *-----------------------------------------------------------
 
     INCLUDE "Constants.X68"
+    
+            ORG $08
+            DC.L    BUSERRHDLR
+            ORG $0C
+            DC.L    ADDERRHDLR
+            ORG $10
+            DC.L    ILLINSTHDLR
+            ORG $20
+            DC.L    PRIV_VHDLR
+            ORG $14
+            DC.L    DIV_ZHDLR
+            ORG $18
+            DC.L    CHK_IHDLR
+            ORG $28
+            DC.L    LINE_AHDLR
+            ORG $2C
+            DC.L    LINE_FHDLR
 
     ORG    $1000
     
@@ -53,6 +70,8 @@
 
     INCLUDE "HEX2ASCII.X68"
     
+    INCLUDE "Exception Handlers.X68"
+    
     INCLUDE "Man Pages.X68"
            
 * Put program code here
@@ -62,6 +81,8 @@
 * Put variables and constants here
 
     END    START        ; last line of source
+
+
 
 
 

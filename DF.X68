@@ -8,9 +8,9 @@
 DF          MOVEM.L A0-A7/D0-D7,-(SP)
             *MOVE.L  SP,SPDATA
             *MOVE.L  SP,A2
-PCLABEL     MOVE.L  #PCLABEL,PCDATA
+*PCLABEL     MOVE.L  #PCLABEL,PCDATA
             *MOVE    SR,SRDATA
-            MOVE    USP,A3
+            *MOVE    USP,USPDATA
 
 *            LEA     INPUTBUFFER,A0
 *            ADDA.W  #3,A0
@@ -30,7 +30,7 @@ PCLABEL     MOVE.L  #PCLABEL,PCDATA
 *            BRA     DFDONE
 
 *DFCONT
-            MOVE.L  SPDATA,A2
+            MOVE.L  SSPDATA,A2
             
             LEA     REGD0,A1
             MOVE.B  #14,D0
@@ -227,10 +227,9 @@ PCLABEL     MOVE.L  #PCLABEL,PCDATA
             LEA     REGSR,A1
             MOVE.B  #14,D0
             TRAP    #15
-            LEA     BUFFER,A5
-            LEA     BUFFER,A6
+            LEA     SRDATA,A5
+            LEA     SRDATA,A6
             ADDA.W  #2,A6
-            MOVE.W  (A2)+,(A5)
             JSR     HEX2ASCII
             MOVEA.L A4,A1
             MOVE.B  #13,D0
@@ -239,9 +238,8 @@ PCLABEL     MOVE.L  #PCLABEL,PCDATA
             LEA     REGUSP,A1
             MOVE.B  #14,D0
             TRAP    #15
-            LEA     BUFFER,A5
-            LEA     BUFFER,A6
-            MOVE.L  A3,(A5)
+            LEA     USPDATA,A5
+            LEA     USPDATA,A6
             ADDA.W  #4,A6
             JSR     HEX2ASCII
             MOVEA.L A4,A1
@@ -251,8 +249,8 @@ PCLABEL     MOVE.L  #PCLABEL,PCDATA
             LEA     REGSSP,A1
             MOVE.B  #14,D0
             TRAP    #15
-            LEA     SPDATA,A5
-            LEA     SPDATA,A6
+            LEA     SSPDATA2,A5
+            LEA     SSPDATA2,A6
             ADDA.W  #4,A6
             JSR     HEX2ASCII
             MOVEA.L A4,A1
@@ -272,6 +270,8 @@ PCLABEL     MOVE.L  #PCLABEL,PCDATA
             
 DFDONE      MOVEM.L (SP)+,A0-A7/D0-D7
             RTS
+
+
 
 
 
