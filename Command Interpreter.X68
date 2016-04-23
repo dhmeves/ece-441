@@ -33,7 +33,8 @@ HDLRJMP         MOVE.L  (A5),A6
 ERROR           LEA     ERRORMSG,A1
                 MOVE.B  #14,D0
                 TRAP    #15
-                BRA     START
+                BRA     NEXTCMD
+
 
 
 *~Font name~Courier New~

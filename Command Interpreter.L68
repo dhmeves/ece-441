@@ -1,6 +1,6 @@
-00001418 Starting Address
+0000141A Starting Address
 Assembler used: EASy68K Editor/Assembler v5.15.04
-Created On: 4/22/2016 8:07:58 PM
+Created On: 4/23/2016 2:29:04 AM
 
 00000000                             1  *-----------------------------------------------------------
 00000000                             2  *Command Interpreter
@@ -45,9 +45,10 @@ Line 33 ERROR: Undefined symbol
 0000004E  103C 000E                 34                  MOVE.B  #14,D0
 00000052  4E4F                      35                  TRAP    #15
 Line 36 ERROR: Undefined symbol
-00000054  6000 BB38                 36                  BRA     START
+00000054  6000 BB38                 36                  BRA     NEXTCMD
 00000058                            37  
-Line 38 WARNING: END directive missing, starting address not set
+00000058                            38  
+Line 39 WARNING: END directive missing, starting address not set
 
 8 errors detected
 1 warning generated

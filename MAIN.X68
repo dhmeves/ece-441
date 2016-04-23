@@ -2,10 +2,10 @@
 * Main Program
 *-----------------------------------------------------------
 START:                  ; first instruction of program
-                MOVEM.L A0-A7/D0-D7,-(SP)
                 MOVE    SR,-(SP)
+                MOVEM.L A0-A7/D0-D7,-(SP)
                 MOVE.L  SP,SPDATA
-                LEA     PROMPT,A1
+NEXTCMD         LEA     PROMPT,A1
                 MOVE.B  #14,D0
                 TRAP    #15
         
@@ -23,11 +23,12 @@ CLRCMDBUF       CLR.B   (A3)+
                 MOVE.B  #2,D0
                 TRAP    #15
                 
-                MOVE    (SP)+,SR
-                MOVEM.L (SP)+,A0-A7/D0-D7
+                *MOVEM.L (SP)+,A0-A7/D0-D7
+                *MOVE    (SP)+,SR
                 JSR     INTERPRETER
                 
-                BRA     START
+                BRA     NEXTCMD
+
 
 
 *~Font name~Courier New~
