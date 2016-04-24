@@ -14,18 +14,18 @@ ASCIILOOP   CLR.L   D2                                      ; clear long word D2
             BEQ     ASCIIDONE                               ; branch if equal to ASCIIDONE
             ADD.B   #1,D5                                   ; add byte immediate 1 to D5
             MOVE.B  (A5)+,D2                                ; move byte from memory location specified by A5 to D2, post increment A5
-            CMPI.B  #'0',D2                                 
-            BLT     ASCIIRANGE
-            CMPI.B  #'F',D2
-            BGT     ASCIIRANGE
-            CMPI.B  #'9',D2
-            BLE     ASCIINUMBER
-            CMPI.B  #'A',D2
-            BGE     ASCIILETTER
-            BRA     ASCIIRANGE
-ASCIILETTER SUBI.B  #$37,D2
-            OR.B    D2,D3
-            ROL.L   #4,D3
+            CMPI.B  #'0',D2                                 ; compare byte immediate ASCII 0 to D2
+            BLT     ASCIIRANGE                              ; branch less than to ASCIIRANGE
+            CMPI.B  #'F',D2                                 ; compare byte immediate ASCII F to D2
+            BGT     ASCIIRANGE                              ; branch greater than to ASCIIRANGE
+            CMPI.B  #'9',D2                                 ; compare byte immediate ASCII 9 to D2
+            BLE     ASCIINUMBER                             ; branch less than or equal to ASCIINUMBER
+            CMPI.B  #'A',D2                                 ; compare byte immediate ASCII A to D2
+            BGE     ASCIILETTER                             ; branch greater than or equal to ASCIILETTER
+            BRA     ASCIIRANGE                              ; branch always to ASCIIRANGE    
+ASCIILETTER SUBI.B  #$37,D2                                 ; subtract immediate byte $37 from D2, convert byte to hex    
+            OR.B    D2,D3                                   ; OR byte D2 with D3, move hex byte 
+            ROL.L   #4,D3                                   ;
             BRA     ASCIILOOP
 ASCIINUMBER SUBI.B  #$30,D2
             OR.B    D2,D3
@@ -42,6 +42,7 @@ ASCIIDONE   MOVE.L  #0,D4
             
 ASCIIFIN    MOVEM.L (SP)+,A0-A3/A5-A7/D0-D2/D6-D7
             RTS
+
 
 *~Font name~Courier New~
 *~Font size~12~
