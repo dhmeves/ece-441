@@ -28,6 +28,8 @@ A5PTR      DC.B    '.A5',0
 A6PTR      DC.B    '.A6',0
 A7PTR      DC.B    '.A7',0
 SRPTR      DC.B    '.SR',0
+CLRPTR     DC.B    'CLEAR',0
+HISTPTR    DC.B    'HISTORY',0
 
 HELPHDLR    DC.L   HELP
 MDSPHDLR    DC.L   MDSP
@@ -59,6 +61,8 @@ A5HDLR      DC.L   A5
 A6HDLR      DC.L   A6
 A7HDLR      DC.L   A7
 SRHDLR      DC.L   SR
+CLRHDLR     DC.L   CLEAR
+HISTHDLR    DC.L   HISTORY
 NOCMD       DS.B   1
 
 HELPSTR     DC.L    HELPOUT
@@ -74,6 +78,8 @@ GOSTR       DC.L    GOOUT
 DFSTR       DC.L    DFOUT
 EXITSTR     DC.L    EXITOUT
 MANSTR      DC.L    MANOUT 
+
+
 
 
 *~Font name~Courier New~

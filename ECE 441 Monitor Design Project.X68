@@ -7,22 +7,22 @@
 
     INCLUDE "Constants.X68"
     
-            ORG $08
-            DC.L    BUSERRHDLR
-            ORG $0C
-            DC.L    ADDERRHDLR
-            ORG $10
-            DC.L    ILLINSTHDLR
-            ORG $20
-            DC.L    PRIV_VHDLR
-            ORG $14
-            DC.L    DIV_ZHDLR
-            ORG $18
-            DC.L    CHK_IHDLR
-            ORG $28
-            DC.L    LINE_AHDLR
-            ORG $2C
-            DC.L    LINE_FHDLR
+    ORG $08
+    DC.L    BUSERRHDLR
+    ORG $0C
+    DC.L    ADDERRHDLR
+    ORG $10
+    DC.L    ILLINSTHDLR
+    ORG $20
+    DC.L    PRIV_VHDLR
+    ORG $14
+    DC.L    DIV_ZHDLR
+    ORG $18
+    DC.L    CHK_IHDLR
+    ORG $28
+    DC.L    LINE_AHDLR
+    ORG $2C
+    DC.L    LINE_FHDLR
 
     ORG    $1000
     
@@ -64,6 +64,10 @@
 
     INCLUDE "Change Registers.X68"
     
+    INCLUDE "CLEAR.X68"
+    
+    INCLUDE "Command History.X68"
+    
     INCLUDE "ARGV.X68"
         
     INCLUDE "ASCII2HEX.X68"
@@ -81,6 +85,7 @@
 * Put variables and constants here
 
     END    START        ; last line of source
+
 
 
 

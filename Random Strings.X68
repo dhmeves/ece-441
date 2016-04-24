@@ -47,6 +47,7 @@ SSPDATA         DS.L    1
 SSPDATA2        DS.L    1
 USPDATA         DS.L    1
 USPDATA2        DS.L    1
+HISTORYPTR      DS.L    1
 BERR            DC.B    'A BUS ERROR JUST OCCURRED!',0
 AERR            DC.B    'AN ADDRESS ERROR JUST OCCURRED!',0
 ILL_INST        DC.B    'AN ILLEGAL INSTRUCTION WAS EXECUTED!',0
@@ -58,6 +59,8 @@ LINE_F          DC.B    'A LINE F EMULATOR EXCEPTION JUST OCCURRED!',0
 SSW             DC.B    'SSW - ',0
 BA              DC.B    'BA - ',0
 IR              DC.B    'IR - ',0
+CRLF            DC.B    $d,$a,0
+
 *~Font name~Courier New~
 *~Font size~12~
 *~Tab type~1~
