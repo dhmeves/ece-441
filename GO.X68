@@ -27,15 +27,25 @@ GOCONT      JSR     ARGV
             LEA     CMDBUFFER,A0
             ADDA.W  #INDEX,A0
             
+            CMP.B   #NULL,(A0)
+            BEQ     GOERROR
+            
             JSR     CHKDOLLAR
             CMP.B   #1,D2
             BEQ     GODONE
             MOVEA.L (A4),A1
             
             JSR     (A1)
+            BRA     GODONE
+            
+GOERROR     LEA     ERRORMSG,A1
+            MOVE.B  #14,D0
+            TRAP    #15 
+            BRA     PRTGO          
         
 GODONE      MOVEM.L (SP)+,A0-A7/D0-D7
             RTS
+
 *~Font name~Courier New~
 *~Font size~12~
 *~Tab type~1~

@@ -61,9 +61,12 @@ MDSPCONT    CLR.L   D3
             LEA     CMDBUFFER,A0
             ADDA.W  #INDEX,A0
             
+            CMP.B   #NULL,(A0)
+            BEQ     MDSPERROR
+            
             JSR     CHKDOLLAR
             
-            MOVE.L  (A4),$1100
+            MOVE.L  (A4),MDSPBUF
             
             CMPI.B  #2,D6
             BEQ     ARG1
@@ -88,19 +91,33 @@ ARG2        LEA     CMDBUFFER,A0
             MULU    D0,D1
             ADDA.W  D1,A0
             
+            CMP.B   #NULL,(A0)
+            BEQ     MDSPERROR
+            
             JSR     CHKDOLLAR
             
-            LEA     $1100,A0
+            LEA     MDSPBUF,A0
             LEA     ASCIIBUFFER,A1
             MOVEA.L (A0),A2
             MOVEA.L (A1),A3
             LEA     BUFFER,A5
             LEA     BUFFER,A6
             
+            CMPA.L  A2,A3
+            BLE     MDSPERROR
+            
             JSR     MDSPPRINT
+            BRA     MDSPDONE
+            
+MDSPERROR   LEA     ERRORMSG,A1
+            MOVE.B  #14,D0
+            TRAP    #15 
+            BRA     PRTMDSP
             
 MDSPDONE    MOVEM.L (SP)+,A0-A7/D0-D7
             RTS
+
+
 *~Font name~Courier New~
 *~Font size~12~
 *~Tab type~1~

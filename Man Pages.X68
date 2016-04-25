@@ -1,4 +1,4 @@
-        ORG     $68000
+        ORG     $70000
 CMDMSG          DC.B    CR,LF,'*****ALL MONITOR441 COMMANDS*****',CR,LF,LF,0
 HELPMSG         DC.B    CR,LF,'   HELP: Displays this message',CR,LF,LF,0
                 
@@ -582,6 +582,7 @@ MANMANPAGE      DC.B    CR,LF,'MAN(1)                       MC68000/SANPER-1 ELU
                 DC.B    'Daniel H. Meves                    27 April 2016                        MAN(1)',CR,LF,LF,0        
 
 HISTORYBUFFER   DS.L    500
+
 
 
 

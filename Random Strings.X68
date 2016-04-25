@@ -4,6 +4,7 @@ CMDBUFFER       DS.B    80
 ASCIIBUFFER     DS.B    20
 HEXBUFFER       DS.B    20
 BUFFER          DS.B    20
+MDSPBUF         DS.L    1
 ERRORMSG        DC.B    'AN ERROR OCCURRED!',CR,LF,0
 ADDRERROR       DC.B    'INVALID ADDRESS!',CR,LF,0
 ASCIIERROR      DC.B    'NOT A HEXADECIMAL VALUE!',CR,LF,0
@@ -60,7 +61,6 @@ SSW             DC.B    'SSW - ',0
 BA              DC.B    'BA - ',0
 IR              DC.B    'IR - ',0
 CRLF            DC.B    $d,$a,0
-
 *~Font name~Courier New~
 *~Font size~12~
 *~Tab type~1~

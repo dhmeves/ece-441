@@ -27,6 +27,9 @@ MSCONT      JSR     ARGV
             LEA     CMDBUFFER,A0
             ADDA.W  #INDEX,A0
             
+            CMP.B   #NULL,(A0)
+            BEQ     MSERROR
+            
             JSR     CHKDOLLAR
             CMP.B   #1,D4
             BEQ     MSERROR
@@ -39,6 +42,9 @@ MSCONT      JSR     ARGV
             MOVE.B  #INDEX,D1
             MULU    D0,D1
             ADDA.W  D1,A0
+            
+            CMP.B   #NULL,(A0)
+            BEQ     MSERROR
             
             JSR     CHKDOLLAR
             CMP.B   #1,D4
@@ -71,9 +77,11 @@ DATALOOP    CMP.B   #NULL,(A0)
 MSERROR     LEA     ERRORMSG,A1
             MOVE.B  #14,D0
             TRAP    #15
+            BRA     PRTMS
         
 MSDONE      MOVEM.L (SP)+,A0-A7/D0-D7
             RTS
+
 *~Font name~Courier New~
 *~Font size~12~
 *~Tab type~1~

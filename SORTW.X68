@@ -58,6 +58,9 @@ SORTWCONT   JSR     ARGV
             LEA     CMDBUFFER,A0
             ADDA.W  #INDEX,A0
             
+            CMP.B   #NULL,(A0)
+            BEQ     SORTWERROR
+            
             JSR     CHKDOLLAR
             CMP.B   #1,D2
             BEQ     SORTWDONE
@@ -69,11 +72,17 @@ SORTWCONT   JSR     ARGV
             MULU    D0,D1
             ADDA.W  D1,A0
             
+            CMP.B   #NULL,(A0)
+            BEQ     SORTWERROR
+            
             JSR     CHKDOLLAR
             CMP.B   #1,D2
             BEQ     SORTWDONE
             MOVEA.L A1,A0
             MOVEA.L (A4),A1
+            
+            CMPA.L  A0,A1
+            BLE     SORTWERROR
             
             LEA     CMDBUFFER,A2
             MOVE.B  #3,D0
@@ -81,16 +90,19 @@ SORTWCONT   JSR     ARGV
             MULU    D0,D1
             ADDA.W  D1,A2
             
+            CMP.B   #NULL,(A2)
+            BEQ     SORTWERROR
+            
             CMP.B   #'A',(A2)
             BEQ     ASCENDING
             
             CMP.B   #'D',(A2)
             BEQ     DESCENDING
             
-            LEA     ERRORMSG,A1
+SORTWERROR  LEA     ERRORMSG,A1
             MOVE.B  #14,D0
             TRAP    #15
-            BRA     SORTWDONE
+            BRA     PRTSORTW
             
 ASCENDING   MOVE.L  #1,D1
             BRA     BSORT
@@ -101,6 +113,8 @@ BSORT       JSR     BUBBLESORT
         
 SORTWDONE   MOVEM.L (SP)+,A0-A7/D0-D7
             RTS
+
+
 *~Font name~Courier New~
 *~Font size~12~
 *~Tab type~1~

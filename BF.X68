@@ -4,10 +4,10 @@
 * addresses. This command only fills with a word-size (2 bytes) data pattern. If an entire
 * word-size data pattern is not entered, the pattern is right justified and leading zeros are inserted.
 *-----------------------------------------------------------
-BF          MOVEM.L A0-A7/D0-D7,-(SP)
+BF          MOVEM.L A0-A7/D0-D7,-(SP)               ; save registers on stack
             
-            LEA     INPUTBUFFER,A0
-            ADDA.W  #3,A0
+            LEA     INPUTBUFFER,A0                  ; load effective addresss of INPUTBUFFER into A0
+            ADDA.W  #3,A0                           
 BFONLY      ADDA.W  #1,A0
             ADD.B   #1,D4
             CMP.B   #3,D4
@@ -28,6 +28,9 @@ BFCONT      CLR.L   D6
             LEA     CMDBUFFER,A0
             ADDA.W  #INDEX,A0
             
+            CMP.B   #NULL,(A0)
+            BEQ     BFERROR
+            
             JSR     CHKDOLLAR
             CMP.B   #1,D2
             BEQ     BFDONE
@@ -36,7 +39,7 @@ BFCONT      CLR.L   D6
             MOVE.L  A1,D2
             DIVU    #2,D2
             SWAP    D2
-            CMP.W   #0,D2
+            TST.W   D2
             BNE     ODDADDR1
             
 CHKADDR2    LEA     CMDBUFFER,A0
@@ -44,6 +47,9 @@ CHKADDR2    LEA     CMDBUFFER,A0
             MOVE.B  #INDEX,D1
             MULU    D0,D1
             ADDA.W  D1,A0
+            
+            CMP.B   #NULL,(A0)
+            BEQ     BFERROR
             
             JSR     CHKDOLLAR
             CMP.B   #1,D2
@@ -53,8 +59,11 @@ CHKADDR2    LEA     CMDBUFFER,A0
             MOVE.L  A2,D2
             DIVU    #2,D2
             SWAP    D2
-            CMP.W   #0,D2
+            TST.W   D2
             BNE     ODDADDR2
+            
+            CMPA.L  A1,A2
+            BLE     BFERROR
             
             CMP.B   #1,D6
             BEQ     BFDONE
@@ -64,6 +73,9 @@ CHKADDR2    LEA     CMDBUFFER,A0
             MOVE.B  #INDEX,D1
             MULU    D0,D1
             ADDA.W  D1,A0
+            
+            CMP.B   #NULL,(A0)
+            BEQ     BFERROR
             
             JSR     CHKDOLLAR
             CMP.B   #1,D2
@@ -92,10 +104,19 @@ ODDADDR1    MOVE.L  #1,D6
             
 ODDADDR2    LEA     ODDADDRMSG2,A1
             MOVE.B  #14,D0
-            TRAP    #15           
+            TRAP    #15
+            BRA     BFDONE
+
+BFERROR     LEA     ERRORMSG,A1
+            MOVE.B  #14,D0
+            TRAP    #15 
+            BRA     PRTBF          
                 
 BFDONE      MOVEM.L (SP)+,A0-A7/D0-D7
             RTS
+
+
+
 *~Font name~Courier New~
 *~Font size~12~
 *~Tab type~1~

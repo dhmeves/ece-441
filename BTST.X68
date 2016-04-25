@@ -27,6 +27,9 @@ BTSTCONT    JSR     ARGV
             LEA     CMDBUFFER,A0
             ADDA.W  #INDEX,A0
             
+            CMP.B   #NULL,(A0)
+            BEQ     BTSTERROR
+            
             JSR     CHKDOLLAR
             CMP.B   #1,D2
             BEQ     BMOVDONE
@@ -39,10 +42,16 @@ BTSTCONT    JSR     ARGV
             MULU    D0,D1
             ADDA.W  D1,A0
             
+            CMP.B   #NULL,(A0)
+            BEQ     BTSTERROR
+            
             JSR     CHKDOLLAR
             CMP.B   #1,D2
             BEQ     BMOVDONE
             MOVEA.L (A4),A2
+            
+            CMPA.L  A1,A2
+            BLE     BTSTERROR
             
 BTSTLOOP    MOVE.B  #TESTVAL1,(A1)+
             CMP.L   A1,A2
@@ -109,9 +118,17 @@ ERRORDETECT LEA     MEMERROR,A1
             ADDA.L  #1,A3
             CMP.L   A3,A2
             BNE     MEMCHKLP
+            BRA     BTSTDONE
+            
+BTSTERROR   LEA     ERRORMSG,A1
+            MOVE.B  #14,D0
+            TRAP    #15 
+            BRA     PRTBTST
         
 BTSTDONE    MOVEM.L (SP)+,A0-A7/D0-D7
             RTS
+
+
 
 *~Font name~Courier New~
 *~Font size~12~

@@ -171,6 +171,9 @@ MMCONT      JSR     ARGV
             LEA     CMDBUFFER,A0
             ADDA.W  #INDEX,A0
             
+            CMP.B   #NULL,(A0)
+            BEQ     MMERROR2
+            
             JSR     CHKDOLLAR
             CMP.B   #1,D2
             BEQ     MMDONE
@@ -183,6 +186,9 @@ MMCONT      JSR     ARGV
             MULU    D0,D1
             ADDA.W  D1,A2
             
+            CMP.B   #NULL,(A2)
+            BEQ     MMERROR2
+            
             CMP.B   #'B',(A2)
             BEQ     BYTE
             
@@ -192,10 +198,10 @@ MMCONT      JSR     ARGV
             CMP.B   #'L',(A2)
             BEQ     LONG
             
-            LEA     ERRORMSG,A1
+MMERROR2    LEA     ERRORMSG,A1
             MOVE.B  #14,D0
             TRAP    #15
-            BRA     MMDONE
+            BRA     PRTMM
             
 BYTE        MOVE.L  #1,D2
             MOVE.L  #2,D6
@@ -205,7 +211,13 @@ BYTE        MOVE.L  #1,D2
             JSR     MMPRINT
             BRA     MMDONE
             
-WORD        MOVE.L  #2,D2
+WORD        MOVE.L  A1,D0
+            DIVU    #2,D0
+            SWAP    D0
+            TST.W   D0
+            BNE     ODDADDRMM
+            
+            MOVE.L  #2,D2
             MOVE.L  #4,D6
             MOVEA.L A1,A2
             LEA     BUFFER,A5
@@ -213,15 +225,29 @@ WORD        MOVE.L  #2,D2
             JSR     MMPRINT
             BRA     MMDONE
             
-LONG        MOVE.L  #4,D2
+LONG        MOVE.L  A1,D0
+            DIVU    #2,D0
+            SWAP    D0
+            TST.W   D0
+            BNE     ODDADDRMM
+
+            MOVE.L  #4,D2
             MOVE.L  #8,D6
             MOVEA.L A1,A2
             LEA     BUFFER,A5
             LEA     BUFFER,A6
             JSR     MMPRINT
+            BRA     MMDONE
+            
+ODDADDRMM   LEA     ODDADDRMSG1,A1
+            MOVE.B  #14,D0
+            TRAP    #15
+            BRA     PRTMM
 
 MMDONE      MOVEM.L (SP)+,A0-A7/D0-D7
             RTS
+
+
 
 *~Font name~Courier New~
 *~Font size~12~
