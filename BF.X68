@@ -4,10 +4,10 @@
 * addresses. This command only fills with a word-size (2 bytes) data pattern. If an entire
 * word-size data pattern is not entered, the pattern is right justified and leading zeros are inserted.
 *-----------------------------------------------------------
-BF          MOVEM.L A0-A7/D0-D7,-(SP)
+BF          MOVEM.L A0-A7/D0-D7,-(SP)               ; save registers on stack
             
-            LEA     INPUTBUFFER,A0
-            ADDA.W  #3,A0
+            LEA     INPUTBUFFER,A0                  ; load effective addresss of INPUTBUFFER into A0
+            ADDA.W  #3,A0                           
 BFONLY      ADDA.W  #1,A0
             ADD.B   #1,D4
             CMP.B   #3,D4
@@ -114,6 +114,7 @@ BFERROR     LEA     ERRORMSG,A1
                 
 BFDONE      MOVEM.L (SP)+,A0-A7/D0-D7
             RTS
+
 
 
 *~Font name~Courier New~
