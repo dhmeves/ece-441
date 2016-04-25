@@ -27,6 +27,9 @@ BSCHCONT    JSR     ARGV
             LEA     CMDBUFFER,A0
             ADDA.W  #INDEX,A0
             
+            CMP.B   #NULL,(A0)
+            BEQ     BSCHERROR
+            
             JSR     CHKDOLLAR
             CMP.B   #1,D2
             BEQ     BSCHDONE
@@ -39,16 +42,26 @@ BSCHCONT    JSR     ARGV
             MULU    D0,D1
             ADDA.W  D1,A0
             
+            CMP.B   #NULL,(A0)
+            BEQ     BSCHERROR
+            
             JSR     CHKDOLLAR
             CMP.B   #1,D2
             BEQ     BSCHDONE
             MOVEA.L (A4),A2
+            
+            CMPA.L  A1,A2
+            BLE     BSCHERROR
             
             LEA     CMDBUFFER,A0
             MOVE.B  #3,D0
             MOVE.B  #INDEX,D1
             MULU    D0,D1
             ADDA.W  D1,A0
+            
+            CMP.B   #NULL,(A0)
+            BEQ     BSCHERROR
+            
             CLR.L   D4  
             BRA     CHKLOOP
  
@@ -154,9 +167,17 @@ STRPRTLOOP  MOVE.L  A3,(A5)
             
             CMP.L   A2,A0
             BNE     STRPRTLOOP
+            BRA     BSCHDONE
+            
+BSCHERROR   LEA     ERRORMSG,A1
+            MOVE.B  #14,D0
+            TRAP    #15 
+            BRA     PRTBSCH
             
 BSCHDONE    MOVEM.L (SP)+,A0-A7/D0-D7
             RTS
+
+
 
 *~Font name~Courier New~
 *~Font size~12~

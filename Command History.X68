@@ -28,10 +28,12 @@ NEXTHISTORY     ADD.B   #1,D4
                 
 INCPOINTER      CMP.B   #NULL,(A1)+
                 BEQ     NEXTHISTORY
-                BRA     INCPOINTER         
-
+                BRA     INCPOINTER     
+                
 HISTORYDONE     MOVEM.L (SP)+,A0-A7/D0-D7
                 RTS
+
+
 
 
 *~Font name~Courier New~

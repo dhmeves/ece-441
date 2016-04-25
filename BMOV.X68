@@ -27,6 +27,9 @@ BMOVCONT    JSR     ARGV
             LEA     CMDBUFFER,A0
             ADDA.W  #INDEX,A0
             
+            CMP.B   #NULL,(A0)
+            BEQ     BMOVERROR
+            
             JSR     CHKDOLLAR
             CMP.B   #1,D2
             BEQ     BMOVDONE
@@ -38,16 +41,25 @@ BMOVCONT    JSR     ARGV
             MULU    D0,D1
             ADDA.W  D1,A0
             
+            CMP.B   #NULL,(A0)
+            BEQ     BMOVERROR
+            
             JSR     CHKDOLLAR
             CMP.B   #1,D2
             BEQ     BMOVDONE
             MOVEA.L (A4),A2
+            
+            CMPA.L  A1,A2
+            BLE     BMOVERROR
             
             LEA     CMDBUFFER,A0
             MOVE.B  #3,D0
             MOVE.B  #INDEX,D1
             MULU    D0,D1
             ADDA.W  D1,A0
+            
+            CMP.B   #NULL,(A0)
+            BEQ     BMOVERROR
             
             JSR     CHKDOLLAR
             CMP.B   #1,D2
@@ -57,9 +69,17 @@ BMOVCONT    JSR     ARGV
 BMOVLOOP    MOVE.B  (A1)+,(A3)+
             CMP.L   A1,A2
             BNE     BMOVLOOP
+            BRA     BMOVDONE
+            
+BMOVERROR   LEA     ERRORMSG,A1
+            MOVE.B  #14,D0
+            TRAP    #15
+            BRA     PRTBMOV
         
 BMOVDONE    MOVEM.L (SP)+,A0-A7/D0-D7
             RTS
+
+
 *~Font name~Courier New~
 *~Font size~12~
 *~Tab type~1~
