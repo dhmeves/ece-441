@@ -97,7 +97,7 @@ STRINGCONT  CMPM.B  (A0)+,(A1)+
          
             BRA     QUOTECHK0
             
-MATCHFOUND  ADD.B   #1,D4
+MATCHFOUND  ADD.B   #1,D4                           ; string length counter
             CMP.B   #SINGLEQUOTE,(A0)
             BEQ     CHECKNULL
             
@@ -176,6 +176,7 @@ BSCHERROR   LEA     ERRORMSG,A1
             
 BSCHDONE    MOVEM.L (SP)+,A0-A7/D0-D7
             RTS
+
 
 
 
