@@ -64,7 +64,10 @@ MDSPCONT    JSR     ARGV
             BEQ     MDSPERROR
             
             JSR     CHKDOLLAR
-            
+            CMP.B   #1,D2
+            BEQ     MDSPDONE
+            CMP.B   #1,D4
+            BEQ     MDSPDONE
             MOVE.L  (A4),MDSPBUF
             
             CMPI.B  #2,D6
@@ -94,11 +97,14 @@ ARG2        LEA     CMDBUFFER,A0
             BEQ     MDSPERROR
             
             JSR     CHKDOLLAR
+            CMP.B   #1,D2
+            BEQ     MDSPDONE
+            CMP.B   #1,D4
+            BEQ     MDSPDONE
             
             LEA     MDSPBUF,A0
-            LEA     ASCIIBUFFER,A1
             MOVEA.L (A0),A2
-            MOVEA.L (A1),A3
+            MOVEA.L (A4),A3
             LEA     BUFFER,A5
             LEA     BUFFER,A6
             
@@ -115,6 +121,7 @@ MDSPERROR   LEA     ERRORMSG,A1
             
 MDSPDONE    MOVEM.L (SP)+,A0-A7/D0-D7
             RTS
+
 
 
 

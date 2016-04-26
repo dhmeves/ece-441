@@ -211,11 +211,11 @@ BYTE        MOVE.L  #1,D2
             JSR     MMPRINT
             BRA     MMDONE
             
-WORD        MOVE.L  A1,D0
-            DIVU    #2,D0
-            SWAP    D0
-            TST.W   D0
-            BNE     ODDADDRMM
+WORD        *MOVE.L  A1,D0
+            *DIVU    #2,D0
+            *SWAP    D0
+            *TST.W   D0
+            *BNE     ODDADDRMM
             
             MOVE.L  #2,D2
             MOVE.L  #4,D6
@@ -225,11 +225,11 @@ WORD        MOVE.L  A1,D0
             JSR     MMPRINT
             BRA     MMDONE
             
-LONG        MOVE.L  A1,D0
-            DIVU    #2,D0
-            SWAP    D0
-            TST.W   D0
-            BNE     ODDADDRMM
+LONG        *MOVE.L  A1,D0
+            *DIVU    #2,D0
+            *SWAP    D0
+            *TST.W   D0
+            *BNE     ODDADDRMM
 
             MOVE.L  #4,D2
             MOVE.L  #8,D6
@@ -246,6 +246,7 @@ ODDADDRMM   LEA     ODDADDRMSG1,A1
 
 MMDONE      MOVEM.L (SP)+,A0-A7/D0-D7
             RTS
+
 
 
 
