@@ -33,6 +33,8 @@ GOCONT      JSR     ARGV
             JSR     CHKDOLLAR
             CMP.B   #1,D2
             BEQ     GODONE
+            CMP.B   #1,D4
+            BEQ     GODONE
             MOVEA.L (A4),A1
             
             JSR     (A1)
@@ -45,6 +47,7 @@ GOERROR     LEA     ERRORMSG,A1
         
 GODONE      MOVEM.L (SP)+,A0-A7/D0-D7
             RTS
+
 
 *~Font name~Courier New~
 *~Font size~12~

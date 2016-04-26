@@ -34,6 +34,8 @@ BFCONT      CLR.L   D6
             JSR     CHKDOLLAR
             CMP.B   #1,D2
             BEQ     BFDONE
+            CMP.B   #1,D4
+            BEQ     BFDONE
             MOVEA.L (A4),A1
             
             MOVE.L  A1,D2
@@ -53,6 +55,8 @@ CHKADDR2    LEA     CMDBUFFER,A0
             
             JSR     CHKDOLLAR
             CMP.B   #1,D2
+            BEQ     BFDONE
+            CMP.B   #1,D4
             BEQ     BFDONE
             MOVEA.L (A4),A2
             
@@ -79,6 +83,8 @@ CHKADDR2    LEA     CMDBUFFER,A0
             
             JSR     CHKDOLLAR
             CMP.B   #1,D2
+            BEQ     BFDONE
+            CMP.B   #1,D4
             BEQ     BFDONE
             MOVEA.L (A4),A3
             
@@ -114,6 +120,7 @@ BFERROR     LEA     ERRORMSG,A1
                 
 BFDONE      MOVEM.L (SP)+,A0-A7/D0-D7
             RTS
+
 
 
 

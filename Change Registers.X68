@@ -10,6 +10,8 @@ D0          MOVEM.L A0-A7/D1-D7,-(SP)
             JSR     CHKDOLLAR
             CMP.B   #1,D2
             BEQ     REGD0DONE
+            CMP.B   #1,D4
+            BEQ     REGD0DONE
             MOVE.L  (A4),D0
             MOVE.L  SSPDATA,A2
             MOVE.L  (A4),0(A2)
@@ -25,6 +27,8 @@ D1          MOVEM.L A0-A7/D0/D2-D7,-(SP)
             
             JSR     CHKDOLLAR
             CMP.B   #1,D2
+            BEQ     REGD1DONE
+            CMP.B   #1,D4
             BEQ     REGD1DONE
             MOVE.L (A4),D1
             MOVE.L  SSPDATA,A2
@@ -42,6 +46,8 @@ D2          MOVEM.L A0-A7/D0-D1/D3-D7,-(SP)
             JSR     CHKDOLLAR
             CMP.B   #1,D2
             BEQ     REGD2DONE
+            CMP.B   #1,D4
+            BEQ     REGD2DONE
             MOVE.L (A4),D2
             MOVE.L  SSPDATA,A2
             MOVE.L  (A4),8(A2)
@@ -58,6 +64,8 @@ D3          MOVEM.L A0-A7/D0-D2/D4-D7,-(SP)
             JSR     CHKDOLLAR
             CMP.B   #1,D2
             BEQ     REGD3DONE
+            CMP.B   #1,D4
+            BEQ     REGD3DONE
             MOVE.L (A4),D3
             MOVE.L  SSPDATA,A2
             MOVE.L  (A4),12(A2)
@@ -73,6 +81,8 @@ D4          MOVEM.L A0-A7/D0-D3/D5-D7,-(SP)
             
             JSR     CHKDOLLAR
             CMP.B   #1,D2
+            BEQ     REGD4DONE
+            CMP.B   #1,D4
             BEQ     REGD4DONE
             MOVE.L (A4),D4
             MOVE.L  SSPDATA,A2
@@ -91,6 +101,8 @@ D5          MOVEM.L A0-A7/D0-D4/D6-D7,-(SP)
             MOVE.L  #$7395738F,$68008
             CMP.B   #1,D2
             BEQ     REGD5DONE
+            CMP.B   #1,D4
+            BEQ     REGD5DONE
             MOVE.L (A4),D5
             MOVE.L  SSPDATA,A2
             MOVE.L  (A4),20(A2)
@@ -106,6 +118,8 @@ D6          MOVEM.L A0-A7/D0-D5/D7,-(SP)
             
             JSR     CHKDOLLAR
             CMP.B   #1,D2
+            BEQ     REGD6DONE
+            CMP.B   #1,D4
             BEQ     REGD6DONE
             MOVE.L (A4),D6
             MOVE.L  SSPDATA,A2
@@ -123,6 +137,8 @@ D7          MOVEM.L A0-A7/D0-D6,-(SP)
             JSR     CHKDOLLAR
             CMP.B   #1,D2
             BEQ     REGD7DONE
+            CMP.B   #1,D4
+            BEQ     REGD7DONE
             MOVE.L (A4),D7
             MOVE.L  SSPDATA,A2
             MOVE.L  (A4),28(A2)
@@ -138,6 +154,8 @@ A0          MOVEM.L A1-A7/D0-D7,-(SP)
             
             JSR     CHKDOLLAR
             CMP.B   #1,D2
+            BEQ     REGA0DONE
+            CMP.B   #1,D4
             BEQ     REGA0DONE
             MOVE.L (A4),A0
             MOVE.L  SSPDATA,A2
@@ -155,6 +173,8 @@ A1          MOVEM.L A0/A2-A7/D0-D7,-(SP)
             JSR     CHKDOLLAR
             CMP.B   #1,D2
             BEQ     REGA1DONE
+            CMP.B   #1,D4
+            BEQ     REGA1DONE
             MOVE.L (A4),A1
             MOVE.L  SSPDATA,A2
             MOVE.L  (A4),36(A2)
@@ -170,6 +190,8 @@ A2          MOVEM.L A0-A1/A3-A7/D0-D7,-(SP)
             
             JSR     CHKDOLLAR
             CMP.B   #1,D2
+            BEQ     REGA2DONE
+            CMP.B   #1,D4
             BEQ     REGA2DONE
             *MOVE.L (A4),A2
             MOVE.L  SSPDATA,A2
@@ -187,6 +209,8 @@ A3          MOVEM.L A0-A2/A4-A7/D0-D7,-(SP)
             JSR     CHKDOLLAR
             CMP.B   #1,D2
             BEQ     REGA3DONE
+            CMP.B   #1,D4
+            BEQ     REGA3DONE
             MOVE.L (A4),A3
             MOVE.L  SSPDATA,A2
             MOVE.L  (A4),44(A2)
@@ -202,6 +226,8 @@ A4          MOVEM.L A0-A3/A5-A7/D0-D7,-(SP)
             
             JSR     CHKDOLLAR
             CMP.B   #1,D2
+            BEQ     REGA4DONE
+            CMP.B   #1,D4
             BEQ     REGA4DONE
             *MOVE.L (A4),A4
             MOVE.L  SSPDATA,A2
@@ -219,6 +245,8 @@ A5          MOVEM.L A0-A4/A6-A7/D0-D7,-(SP)
             JSR     CHKDOLLAR
             CMP.B   #1,D2
             BEQ     REGA5DONE
+            CMP.B   #1,D4
+            BEQ     REGA5DONE
             MOVE.L (A4),A5
             MOVE.L  SSPDATA,A2
             MOVE.L  (A4),52(A2)
@@ -234,6 +262,8 @@ A6          MOVEM.L A0-A5/A7/D0-D7,-(SP)
             
             JSR     CHKDOLLAR
             CMP.B   #1,D2
+            BEQ     REGA6DONE
+            CMP.B   #1,D4
             BEQ     REGA6DONE
             MOVE.L (A4),A6
             MOVE.L  SSPDATA,A2
@@ -251,6 +281,8 @@ A7          MOVEM.L A0-A6/D0-D7,-(SP)
             JSR     CHKDOLLAR
             CMP.B   #1,D2
             BEQ     REGA7DONE
+            CMP.B   #1,D4
+            BEQ     REGA7DONE
             *MOVE.L (A4),A7
             MOVE.L  SSPDATA,A2
             MOVE.L  (A4),60(A2)
@@ -258,7 +290,7 @@ A7          MOVEM.L A0-A6/D0-D7,-(SP)
 REGA7DONE   MOVEM.L (SP)+,A0-A6/D0-D7
             RTS
 
-SR          MOVEM.L A0-A7/D1-D7,-(SP)
+SR          MOVEM.L A0-A7/D0-D7,-(SP)
             
             JSR     ARGV
             LEA     CMDBUFFER,A0
@@ -267,13 +299,16 @@ SR          MOVEM.L A0-A7/D1-D7,-(SP)
             JSR     CHKDOLLAR
             CMP.B   #1,D2
             BEQ     REGSRDONE
+            CMP.B   #1,D4
+            BEQ     REGSRDONE
             ADDA.W  #2,A4
             *MOVE.W  (A4),SR
             MOVE.L  SSPDATA,A2
             MOVE.W  (A4),64(A2)
 
-REGSRDONE   MOVEM.L (SP)+,A0-A7/D1-D7
+REGSRDONE   MOVEM.L (SP)+,A0-A7/D0-D7
             RTS
+
 
 
 

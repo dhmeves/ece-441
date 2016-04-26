@@ -32,7 +32,9 @@ BTSTCONT    JSR     ARGV
             
             JSR     CHKDOLLAR
             CMP.B   #1,D2
-            BEQ     BMOVDONE
+            BEQ     BTSTDONE
+            CMP.B   #1,D4
+            BEQ     BTSTDONE
             MOVEA.L (A4),A1
             MOVEA.L (A4),A3
             
@@ -47,7 +49,9 @@ BTSTCONT    JSR     ARGV
             
             JSR     CHKDOLLAR
             CMP.B   #1,D2
-            BEQ     BMOVDONE
+            BEQ     BTSTDONE
+            CMP.B   #1,D4
+            BEQ     BTSTDONE
             MOVEA.L (A4),A2
             
             CMPA.L  A1,A2
@@ -127,6 +131,7 @@ BTSTERROR   LEA     ERRORMSG,A1
         
 BTSTDONE    MOVEM.L (SP)+,A0-A7/D0-D7
             RTS
+
 
 
 

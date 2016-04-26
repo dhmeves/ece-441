@@ -33,6 +33,8 @@ BSCHCONT    JSR     ARGV
             JSR     CHKDOLLAR
             CMP.B   #1,D2
             BEQ     BSCHDONE
+            CMP.B   #1,D4
+            BEQ     BSCHDONE
             MOVEA.L (A4),A1
             
             LEA     CMDBUFFER,A0
@@ -47,6 +49,8 @@ BSCHCONT    JSR     ARGV
             
             JSR     CHKDOLLAR
             CMP.B   #1,D2
+            BEQ     BSCHDONE
+            CMP.B   #1,D4
             BEQ     BSCHDONE
             MOVEA.L (A4),A2
             
@@ -176,6 +180,7 @@ BSCHERROR   LEA     ERRORMSG,A1
             
 BSCHDONE    MOVEM.L (SP)+,A0-A7/D0-D7
             RTS
+
 
 
 

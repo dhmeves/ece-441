@@ -33,6 +33,8 @@ BMOVCONT    JSR     ARGV
             JSR     CHKDOLLAR
             CMP.B   #1,D2
             BEQ     BMOVDONE
+            CMP.B   #1,D4
+            BEQ     BMOVDONE
             MOVEA.L (A4),A1
             
             LEA     CMDBUFFER,A0
@@ -46,6 +48,8 @@ BMOVCONT    JSR     ARGV
             
             JSR     CHKDOLLAR
             CMP.B   #1,D2
+            BEQ     BMOVDONE
+            CMP.B   #1,D4
             BEQ     BMOVDONE
             MOVEA.L (A4),A2
             
@@ -64,6 +68,8 @@ BMOVCONT    JSR     ARGV
             JSR     CHKDOLLAR
             CMP.B   #1,D2
             BEQ     BMOVDONE
+            CMP.B   #1,D4
+            BEQ     BMOVDONE
             MOVEA.L (A4),A3
             
 BMOVLOOP    MOVE.B  (A1)+,(A3)+
@@ -78,6 +84,7 @@ BMOVERROR   LEA     ERRORMSG,A1
         
 BMOVDONE    MOVEM.L (SP)+,A0-A7/D0-D7
             RTS
+
 
 
 *~Font name~Courier New~

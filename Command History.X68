@@ -10,6 +10,8 @@ HISTORY         MOVEM.L A0-A7/D0-D7,-(SP)
                 JSR     CHKDOLLAR
                 CMP.B   #1,D2
                 BEQ     HISTORYDONE
+                CMP.B   #1,D4
+                BEQ     HISTORYDONE
                 MOVE.L  (A4),D3
 
                 LEA     HISTORYBUFFER,A1
@@ -32,6 +34,7 @@ INCPOINTER      CMP.B   #NULL,(A1)+
                 
 HISTORYDONE     MOVEM.L (SP)+,A0-A7/D0-D7
                 RTS
+
 
 
 
