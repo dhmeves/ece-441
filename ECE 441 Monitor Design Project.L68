@@ -1,6 +1,6 @@
 00001590 Starting Address
 Assembler used: EASy68K Editor/Assembler v5.15.04
-Created On: 4/25/2016 9:53:35 PM
+Created On: 4/25/2016 11:42:43 PM
 
 00000000                             1  *-----------------------------------------------------------
 00000000                             2  * Title      : ECE 441 Monitor Design Project
@@ -2240,1018 +2240,1020 @@ Created On: 4/25/2016 9:53:35 PM
 00002A46                          2236  
 00002A46                          2237  
 00002A46                          2238  
-00002A46                          2239  -------------------- end include --------------------
-00002A46                          2240      
-00002A46                          2241      INCLUDE "CLEAR.X68"
-00002A46  48E7 FFFF               2242  CLEAR       MOVEM.L A0-A7/D0-D7,-(SP)
-00002A4A                          2243  
-00002A4A  103C 000B               2244              MOVE.B  #11,D0
-00002A4E  323C FF00               2245              MOVE.W  #$FF00,D1
-00002A52  4E4F                    2246              TRAP    #15            
-00002A54                          2247              
-00002A54  4CDF FFFF               2248              MOVEM.L (SP)+,A0-A7/D0-D7
-00002A58  4E75                    2249              RTS
-00002A58  4E75                    2250  -------------------- end include --------------------
-00002A5A                          2251      
-00002A5A                          2252      INCLUDE "Command History.X68"
-00002A5A  48E7 FFFF               2253  HISTORY         MOVEM.L A0-A7/D0-D7,-(SP)
-00002A5E                          2254  
-00002A5E  4EB9 00002AAA           2255                  JSR     ARGV
-00002A64  41F8 105C               2256                  LEA     CMDBUFFER,A0
-00002A68  D0FC 0014               2257                  ADDA.W  #INDEX,A0
-00002A6C                          2258                  
-00002A6C  4EB8 192C               2259                  JSR     CHKDOLLAR
-00002A70  B43C 0001               2260                  CMP.B   #1,D2
-00002A74  6700 002E               2261                  BEQ     HISTORYDONE
-00002A78  2614                    2262                  MOVE.L  (A4),D3
-00002A7A                          2263  
-00002A7A  43F9 00072228           2264                  LEA     HISTORYBUFFER,A1
-00002A80  4284                    2265                  CLR.L   D4
-00002A82                          2266                  
-00002A82  5204                    2267  NEXTHISTORY     ADD.B   #1,D4
-00002A84  103C 000D               2268                  MOVE.B  #13,D0
-00002A88  4E4F                    2269                  TRAP    #15
-00002A8A                          2270                  
-00002A8A  B803                    2271                  CMP.B   D3,D4
-00002A8C  6700 0016               2272                  BEQ     HISTORYDONE
-00002A90                          2273                  
-00002A90  0C11 0000               2274                  CMP.B   #NULL,(A1)
-00002A94  6600 0006               2275                  BNE     INCPOINTER
-00002A98  6000 000A               2276                  BRA     HISTORYDONE
-00002A9C                          2277                  
-00002A9C  0C19 0000               2278  INCPOINTER      CMP.B   #NULL,(A1)+
-00002AA0  67E0                    2279                  BEQ     NEXTHISTORY
-00002AA2  60F8                    2280                  BRA     INCPOINTER     
-00002AA4                          2281                  
-00002AA4  4CDF FFFF               2282  HISTORYDONE     MOVEM.L (SP)+,A0-A7/D0-D7
-00002AA8  4E75                    2283                  RTS
-00002AAA                          2284  
+00002A46                          2239  
+00002A46                          2240  -------------------- end include --------------------
+00002A46                          2241      
+00002A46                          2242      INCLUDE "CLEAR.X68"
+00002A46  48E7 FFFF               2243  CLEAR       MOVEM.L A0-A7/D0-D7,-(SP)
+00002A4A                          2244  
+00002A4A  103C 000B               2245              MOVE.B  #11,D0
+00002A4E  323C FF00               2246              MOVE.W  #$FF00,D1
+00002A52  4E4F                    2247              TRAP    #15            
+00002A54                          2248              
+00002A54  4CDF FFFF               2249              MOVEM.L (SP)+,A0-A7/D0-D7
+00002A58  4E75                    2250              RTS
+00002A58  4E75                    2251  -------------------- end include --------------------
+00002A5A                          2252      
+00002A5A                          2253      INCLUDE "Command History.X68"
+00002A5A  48E7 FFFF               2254  HISTORY         MOVEM.L A0-A7/D0-D7,-(SP)
+00002A5E                          2255  
+00002A5E  4EB9 00002AAA           2256                  JSR     ARGV
+00002A64  41F8 105C               2257                  LEA     CMDBUFFER,A0
+00002A68  D0FC 0014               2258                  ADDA.W  #INDEX,A0
+00002A6C                          2259                  
+00002A6C  4EB8 192C               2260                  JSR     CHKDOLLAR
+00002A70  B43C 0001               2261                  CMP.B   #1,D2
+00002A74  6700 002E               2262                  BEQ     HISTORYDONE
+00002A78  2614                    2263                  MOVE.L  (A4),D3
+00002A7A                          2264  
+00002A7A  43F9 00072228           2265                  LEA     HISTORYBUFFER,A1
+00002A80  4284                    2266                  CLR.L   D4
+00002A82                          2267                  
+00002A82  5204                    2268  NEXTHISTORY     ADD.B   #1,D4
+00002A84  103C 000D               2269                  MOVE.B  #13,D0
+00002A88  4E4F                    2270                  TRAP    #15
+00002A8A                          2271                  
+00002A8A  B803                    2272                  CMP.B   D3,D4
+00002A8C  6700 0016               2273                  BEQ     HISTORYDONE
+00002A90                          2274                  
+00002A90  0C11 0000               2275                  CMP.B   #NULL,(A1)
+00002A94  6600 0006               2276                  BNE     INCPOINTER
+00002A98  6000 000A               2277                  BRA     HISTORYDONE
+00002A9C                          2278                  
+00002A9C  0C19 0000               2279  INCPOINTER      CMP.B   #NULL,(A1)+
+00002AA0  67E0                    2280                  BEQ     NEXTHISTORY
+00002AA2  60F8                    2281                  BRA     INCPOINTER     
+00002AA4                          2282                  
+00002AA4  4CDF FFFF               2283  HISTORYDONE     MOVEM.L (SP)+,A0-A7/D0-D7
+00002AA8  4E75                    2284                  RTS
 00002AAA                          2285  
 00002AAA                          2286  
 00002AAA                          2287  
-00002AAA                          2288  -------------------- end include --------------------
-00002AAA                          2289      
-00002AAA                          2290      INCLUDE "ARGV.X68"
-00002AAA                          2291  
-00002AAA  48E7 DFFF               2292  ARGV        MOVEM.L A0-A7/D0-D1/D3-D7,-(SP)         ; save registers to stack, except D2 = number of arguments returned from subroutine
-00002AAE                          2293  
-00002AAE  41F8 100C               2294              LEA     INPUTBUFFER,A0                  ; load effective address of INPUTBUFFER into A0
-00002AB2  43F8 105C               2295              LEA     CMDBUFFER,A1                    ; load effective address of CMDBUFFER into A1
-00002AB6  45F8 105C               2296              LEA     CMDBUFFER,A2                    ; load effective address of CMDBUFFER into A2
-00002ABA  4282                    2297              CLR.L   D2                              ; clear long word D2
-00002ABC  4283                    2298              CLR.L   D3                              ; clear long word D3
-00002ABE  12D0                    2299  CHECKLOOP   MOVE.B  (A0),(A1)+                      ; move byte from INPUTBUFFER (A0) to CMDBUFFER (A1), post increment A1 by 1
-00002AC0  0C10 0027               2300              CMP.B   #SINGLEQUOTE,(A0)               ; compare byte immediate SINGLEQUOTE to byte at A0
-00002AC4  6700 0024               2301              BEQ     QUOTEFOUND                      ; branch if equal to QUOTEFOUND
-00002AC8  0C10 0022               2302              CMP.B   #DOUBLEQUOTE,(A0)               ; compare byte immediate DOUBLEQUOTE to byte at A0
-00002ACC  6700 001C               2303              BEQ     QUOTEFOUND                      ; branch if equal to QUOTEFOUND
-00002AD0  B63C 0001               2304  FLAGCHK     CMP.B   #1,D3                           ; compare byte immediate 1 to D3, check if quote flag is 1 (used in identifying open and closed quotes)
-00002AD4  6700 000A               2305              BEQ     NULLCHK                         ; branch if equal to NULLCHK
-00002AD8  0C10 0020               2306              CMPI.B  #SP,(A0)                        ; compare byte immediate SPACE (SP) to byte at A0
-00002ADC  6700 0014               2307              BEQ     SPFOUND                         ; branch if equal to SPFOUND
-00002AE0  0C18 0000               2308  NULLCHK     CMPI.B  #NULL,(A0)+                     ; compare byte immediate NULL character to byte at A0, post increment A0 by 1
-00002AE4  6700 0020               2309              BEQ     NULLFOUND                       ; branch if equal to NULLFOUND
-00002AE8  60D4                    2310              BRA     CHECKLOOP                       ; branch always to CHECKLOOP
-00002AEA                          2311              
-00002AEA  5283                    2312  QUOTEFOUND  ADD.L   #1,D3                           ; add long word immediate 1 to D3
-00002AEC  0203 0001               2313              ANDI.B  #1,D3                           ; and byte immediate 1 with D3, toggles D3 between 1 and 0 depending on how many quotes found
-00002AF0                          2314                                                      ; even # of quotes = closed quote = treat as 1 argument in BF command
-00002AF0                          2315                                                      ; odd # of quotes = open quote = treat as separate arguments in BF command
-00002AF0  60DE                    2316              BRA     FLAGCHK                         ; branch always to FLAGCHK
-00002AF2                          2317           
-00002AF2  5349                    2318  SPFOUND     SUBA.W  #1,A1                           ; subtract word immediate 1 from address register A1, undo last post increment 
-00002AF4  12BC 0000               2319              MOVE.B  #NULL,(A1)                      ; move byte immediate NULL character to byte at A1
-00002AF8  5249                    2320              ADDA.W  #1,A1                           ; add word immediate 1 to address register A1, increment beyond NULL character
-00002AFA  5248                    2321              ADDA.W  #1,A0                           ; add word immediate 1 to address register A0, increment A0 if space found
-00002AFC  5202                    2322              ADDI.B  #1,D2                           ; add byte immediate 1 to D2, track number of arguments in command
-00002AFE  D4FC 0014               2323              ADDA.W  #INDEX,A2                       ; add word immediate INDEX (12) to A2, pointer to storing location in CMDBUFFER
-00002B02  224A                    2324              MOVEA.L A2,A1                           ; copy A2 to A1, A1 now points to next storage location in CMDBUFFER
-00002B04  60B8                    2325              BRA     CHECKLOOP                       ; branch always to CHECKLOOP
-00002B06                          2326      
-00002B06  5202                    2327  NULLFOUND   ADDI.B  #1,D2                           ; add byte immediate 1 to D2, track number of arguments in command
-00002B08  4CDF FFFB               2328              MOVEM.L (SP)+,A0-A7/D0-D1/D3-D7         ; restore registers from stack, except D2 = number of arguments returned from subroutine
-00002B0C  4E75                    2329              RTS                                     ; return from subroutine
-00002B0E                          2330  
-00002B0E                          2331  -------------------- end include --------------------
-00002B0E                          2332          
-00002B0E                          2333      INCLUDE "ASCII2HEX.X68"
-00002B0E  48E7 E3F7               2334  ASCII2HEX   MOVEM.L A0-A3/A5-A7/D0-D2/D6-D7,-(SP)           ; save registers to stack, except A4, D3, D4, D5
-00002B12                          2335              
-00002B12  287C 000010AC           2336              MOVEA.L #ASCIIBUFFER,A4                         ; move long word address immediate of ASCIIBUFFER to A4
-00002B18  4283                    2337              CLR.L   D3                                      ; clear long word D3    
-00002B1A  4285                    2338              CLR.L   D5                                      ; clear long word D5
-00002B1C  4282                    2339  ASCIILOOP   CLR.L   D2                                      ; clear long word D2
-00002B1E  BDCD                    2340              CMP.L   A5,A6                                   ; compare A5 (ptr to beginning address) to A6 (ptr to ending address)
-00002B20  6700 004E               2341              BEQ     ASCIIDONE                               ; branch if equal to ASCIIDONE
-00002B24  5205                    2342              ADD.B   #1,D5                                   ; add byte immediate 1 to D5
-00002B26  141D                    2343              MOVE.B  (A5)+,D2                                ; move byte from memory location specified by A5 to D2, post increment A5 by 1 byte
-00002B28  0C02 0030               2344              CMPI.B  #'0',D2                                 ; compare byte immediate ASCII 0 to D2
-00002B2C  6D00 0032               2345              BLT     ASCIIRANGE                              ; branch less than to ASCIIRANGE
-00002B30  0C02 0046               2346              CMPI.B  #'F',D2                                 ; compare byte immediate ASCII F to D2
-00002B34  6E00 002A               2347              BGT     ASCIIRANGE                              ; branch greater than to ASCIIRANGE
-00002B38  0C02 0039               2348              CMPI.B  #'9',D2                                 ; compare byte immediate ASCII 9 to D2
-00002B3C  6F00 0018               2349              BLE     ASCIINUMBER                             ; branch less than or equal to ASCIINUMBER
-00002B40  0C02 0041               2350              CMPI.B  #'A',D2                                 ; compare byte immediate ASCII A to D2
-00002B44  6C00 0006               2351              BGE     ASCIILETTER                             ; branch greater than or equal to ASCIILETTER
-00002B48  6000 0016               2352              BRA     ASCIIRANGE                              ; branch always to ASCIIRANGE
-00002B4C  0402 0037               2353  ASCIILETTER SUBI.B  #$37,D2                                 ; subtract byte immediate $37 from D2, convert ASCII letter to HEX
-00002B50  8602                    2354              OR.B    D2,D3                                   ; OR byte in D2 with D3 (output register)
-00002B52  E99B                    2355              ROL.L   #4,D3                                   ; rotate left long word by 4 bits D3
-00002B54  60C6                    2356              BRA     ASCIILOOP                               ; branch always to ASCIILOOP
-00002B56  0402 0030               2357  ASCIINUMBER SUBI.B  #$30,D2                                 ; subtract byte immediate $30 from D2, convert ASCII number to HEX
-00002B5A  8602                    2358              OR.B    D2,D3                                   ; OR byte in D2 with D3 (output register)
-00002B5C  E99B                    2359              ROL.L   #4,D3                                   ; rotate left long word by 4 bits D3
-00002B5E  60BC                    2360              BRA     ASCIILOOP                               ; branch always ASCIILOOP
-00002B60  7801                    2361  ASCIIRANGE  MOVE.L  #1,D4                                   ; move long word immediate 1 into D4, flag set to non HEX value
-00002B62  43F8 1114               2362              LEA     ASCIIERROR,A1                           ; load effective address of ASCIIERROR into A1
-00002B66  103C 000E               2363              MOVE.B  #14,D0                                  ; trap task #14 in D0, Display the NULL terminated string at (A1) without CR, LF.
-00002B6A  4E4F                    2364              TRAP    #15                                     ; execute trap #15
-00002B6C  6000 0008               2365              BRA     ASCIIFIN                                ; branch always ASCIIFIN
-00002B70  7800                    2366  ASCIIDONE   MOVE.L  #0,D4                                   ; move long word immediate 0 into D4, flag clear to HEX value
-00002B72  E89B                    2367              ROR.L   #4,D3                                   ; rotate right long word by 4 bits D3
-00002B74  2883                    2368              MOVE.L  D3,(A4)                                 ; move long word from D3 to memory address specified by A4 (ASCIIBUFFER)
-00002B76                          2369              
-00002B76  4CDF EFC7               2370  ASCIIFIN    MOVEM.L (SP)+,A0-A3/A5-A7/D0-D2/D6-D7           ; restore registers from stack, except A4, D3, D4, D5
-00002B7A  4E75                    2371              RTS                                             ; return from subroutine
-00002B7C                          2372  
-00002B7C                          2373  
+00002AAA                          2288  
+00002AAA                          2289  
+00002AAA                          2290  -------------------- end include --------------------
+00002AAA                          2291      
+00002AAA                          2292      INCLUDE "ARGV.X68"
+00002AAA                          2293  
+00002AAA  48E7 DFFF               2294  ARGV        MOVEM.L A0-A7/D0-D1/D3-D7,-(SP)         ; save registers to stack, except D2 = number of arguments returned from subroutine
+00002AAE                          2295  
+00002AAE  41F8 100C               2296              LEA     INPUTBUFFER,A0                  ; load effective address of INPUTBUFFER into A0
+00002AB2  43F8 105C               2297              LEA     CMDBUFFER,A1                    ; load effective address of CMDBUFFER into A1
+00002AB6  45F8 105C               2298              LEA     CMDBUFFER,A2                    ; load effective address of CMDBUFFER into A2
+00002ABA  4282                    2299              CLR.L   D2                              ; clear long word D2
+00002ABC  4283                    2300              CLR.L   D3                              ; clear long word D3
+00002ABE  12D0                    2301  CHECKLOOP   MOVE.B  (A0),(A1)+                      ; move byte from INPUTBUFFER (A0) to CMDBUFFER (A1), post increment A1 by 1
+00002AC0  0C10 0027               2302              CMP.B   #SINGLEQUOTE,(A0)               ; compare byte immediate SINGLEQUOTE to byte at A0
+00002AC4  6700 0024               2303              BEQ     QUOTEFOUND                      ; branch if equal to QUOTEFOUND
+00002AC8  0C10 0022               2304              CMP.B   #DOUBLEQUOTE,(A0)               ; compare byte immediate DOUBLEQUOTE to byte at A0
+00002ACC  6700 001C               2305              BEQ     QUOTEFOUND                      ; branch if equal to QUOTEFOUND
+00002AD0  B63C 0001               2306  FLAGCHK     CMP.B   #1,D3                           ; compare byte immediate 1 to D3, check if quote flag is 1 (used in identifying open and closed quotes)
+00002AD4  6700 000A               2307              BEQ     NULLCHK                         ; branch if equal to NULLCHK
+00002AD8  0C10 0020               2308              CMPI.B  #SP,(A0)                        ; compare byte immediate SPACE (SP) to byte at A0
+00002ADC  6700 0014               2309              BEQ     SPFOUND                         ; branch if equal to SPFOUND
+00002AE0  0C18 0000               2310  NULLCHK     CMPI.B  #NULL,(A0)+                     ; compare byte immediate NULL character to byte at A0, post increment A0 by 1
+00002AE4  6700 0020               2311              BEQ     NULLFOUND                       ; branch if equal to NULLFOUND
+00002AE8  60D4                    2312              BRA     CHECKLOOP                       ; branch always to CHECKLOOP
+00002AEA                          2313              
+00002AEA  5283                    2314  QUOTEFOUND  ADD.L   #1,D3                           ; add long word immediate 1 to D3
+00002AEC  0203 0001               2315              ANDI.B  #1,D3                           ; and byte immediate 1 with D3, toggles D3 between 1 and 0 depending on how many quotes found
+00002AF0                          2316                                                      ; even # of quotes = closed quote = treat as 1 argument in BF command
+00002AF0                          2317                                                      ; odd # of quotes = open quote = treat as separate arguments in BF command
+00002AF0  60DE                    2318              BRA     FLAGCHK                         ; branch always to FLAGCHK
+00002AF2                          2319           
+00002AF2  5349                    2320  SPFOUND     SUBA.W  #1,A1                           ; subtract word immediate 1 from address register A1, undo last post increment 
+00002AF4  12BC 0000               2321              MOVE.B  #NULL,(A1)                      ; move byte immediate NULL character to byte at A1
+00002AF8  5249                    2322              ADDA.W  #1,A1                           ; add word immediate 1 to address register A1, increment beyond NULL character
+00002AFA  5248                    2323              ADDA.W  #1,A0                           ; add word immediate 1 to address register A0, increment A0 if space found
+00002AFC  5202                    2324              ADDI.B  #1,D2                           ; add byte immediate 1 to D2, track number of arguments in command
+00002AFE  D4FC 0014               2325              ADDA.W  #INDEX,A2                       ; add word immediate INDEX (12) to A2, pointer to storing location in CMDBUFFER
+00002B02  224A                    2326              MOVEA.L A2,A1                           ; copy A2 to A1, A1 now points to next storage location in CMDBUFFER
+00002B04  60B8                    2327              BRA     CHECKLOOP                       ; branch always to CHECKLOOP
+00002B06                          2328      
+00002B06  5202                    2329  NULLFOUND   ADDI.B  #1,D2                           ; add byte immediate 1 to D2, track number of arguments in command
+00002B08  4CDF FFFB               2330              MOVEM.L (SP)+,A0-A7/D0-D1/D3-D7         ; restore registers from stack, except D2 = number of arguments returned from subroutine
+00002B0C  4E75                    2331              RTS                                     ; return from subroutine
+00002B0E                          2332  
+00002B0E                          2333  -------------------- end include --------------------
+00002B0E                          2334          
+00002B0E                          2335      INCLUDE "ASCII2HEX.X68"
+00002B0E  48E7 E3F7               2336  ASCII2HEX   MOVEM.L A0-A3/A5-A7/D0-D2/D6-D7,-(SP)           ; save registers to stack, except A4, D3, D4, D5
+00002B12                          2337              
+00002B12  287C 000010AC           2338              MOVEA.L #ASCIIBUFFER,A4                         ; move long word address immediate of ASCIIBUFFER to A4
+00002B18  4283                    2339              CLR.L   D3                                      ; clear long word D3    
+00002B1A  4285                    2340              CLR.L   D5                                      ; clear long word D5
+00002B1C  4282                    2341  ASCIILOOP   CLR.L   D2                                      ; clear long word D2
+00002B1E  BDCD                    2342              CMP.L   A5,A6                                   ; compare A5 (ptr to beginning address) to A6 (ptr to ending address)
+00002B20  6700 004E               2343              BEQ     ASCIIDONE                               ; branch if equal to ASCIIDONE
+00002B24  5205                    2344              ADD.B   #1,D5                                   ; add byte immediate 1 to D5
+00002B26  141D                    2345              MOVE.B  (A5)+,D2                                ; move byte from memory location specified by A5 to D2, post increment A5 by 1 byte
+00002B28  0C02 0030               2346              CMPI.B  #'0',D2                                 ; compare byte immediate ASCII 0 to D2
+00002B2C  6D00 0032               2347              BLT     ASCIIRANGE                              ; branch less than to ASCIIRANGE
+00002B30  0C02 0046               2348              CMPI.B  #'F',D2                                 ; compare byte immediate ASCII F to D2
+00002B34  6E00 002A               2349              BGT     ASCIIRANGE                              ; branch greater than to ASCIIRANGE
+00002B38  0C02 0039               2350              CMPI.B  #'9',D2                                 ; compare byte immediate ASCII 9 to D2
+00002B3C  6F00 0018               2351              BLE     ASCIINUMBER                             ; branch less than or equal to ASCIINUMBER
+00002B40  0C02 0041               2352              CMPI.B  #'A',D2                                 ; compare byte immediate ASCII A to D2
+00002B44  6C00 0006               2353              BGE     ASCIILETTER                             ; branch greater than or equal to ASCIILETTER
+00002B48  6000 0016               2354              BRA     ASCIIRANGE                              ; branch always to ASCIIRANGE
+00002B4C  0402 0037               2355  ASCIILETTER SUBI.B  #$37,D2                                 ; subtract byte immediate $37 from D2, convert ASCII letter to HEX
+00002B50  8602                    2356              OR.B    D2,D3                                   ; OR byte in D2 with D3 (output register)
+00002B52  E99B                    2357              ROL.L   #4,D3                                   ; rotate left long word by 4 bits D3
+00002B54  60C6                    2358              BRA     ASCIILOOP                               ; branch always to ASCIILOOP
+00002B56  0402 0030               2359  ASCIINUMBER SUBI.B  #$30,D2                                 ; subtract byte immediate $30 from D2, convert ASCII number to HEX
+00002B5A  8602                    2360              OR.B    D2,D3                                   ; OR byte in D2 with D3 (output register)
+00002B5C  E99B                    2361              ROL.L   #4,D3                                   ; rotate left long word by 4 bits D3
+00002B5E  60BC                    2362              BRA     ASCIILOOP                               ; branch always ASCIILOOP
+00002B60  7801                    2363  ASCIIRANGE  MOVE.L  #1,D4                                   ; move long word immediate 1 into D4, flag set to non HEX value
+00002B62  43F8 1114               2364              LEA     ASCIIERROR,A1                           ; load effective address of ASCIIERROR into A1
+00002B66  103C 000E               2365              MOVE.B  #14,D0                                  ; trap task #14 in D0, Display the NULL terminated string at (A1) without CR, LF.
+00002B6A  4E4F                    2366              TRAP    #15                                     ; execute trap #15
+00002B6C  6000 0008               2367              BRA     ASCIIFIN                                ; branch always ASCIIFIN
+00002B70  7800                    2368  ASCIIDONE   MOVE.L  #0,D4                                   ; move long word immediate 0 into D4, flag clear to HEX value
+00002B72  E89B                    2369              ROR.L   #4,D3                                   ; rotate right long word by 4 bits D3
+00002B74  2883                    2370              MOVE.L  D3,(A4)                                 ; move long word from D3 to memory address specified by A4 (ASCIIBUFFER)
+00002B76                          2371              
+00002B76  4CDF EFC7               2372  ASCIIFIN    MOVEM.L (SP)+,A0-A3/A5-A7/D0-D2/D6-D7           ; restore registers from stack, except A4, D3, D4, D5
+00002B7A  4E75                    2373              RTS                                             ; return from subroutine
 00002B7C                          2374  
-00002B7C                          2375  -------------------- end include --------------------
+00002B7C                          2375  
 00002B7C                          2376  
-00002B7C                          2377      INCLUDE "HEX2ASCII.X68"
-00002B7C  48E7 EFF7               2378  HEX2ASCII   MOVEM.L A0-A3/A5-A7/D0-D2/D4-D7,-(SP)
-00002B80                          2379  
-00002B80  4282                    2380              CLR.L   D2
-00002B82  4283                    2381              CLR.L   D3
-00002B84  49F8 10C0               2382              LEA     HEXBUFFER,A4
-00002B88  18BC 0000               2383              MOVE.B  #NULL,(A4)
-00002B8C  4284                    2384  NEXTHEX     CLR.L   D4
-00002B8E  183C 0001               2385              MOVE.B  #1,D4
-00002B92  BDCD                    2386              CMP.L   A5,A6
-00002B94  6700 0058               2387              BEQ     HEXDONE
-00002B98  1426                    2388              MOVE.B  -(A6),D2
-00002B9A  1602                    2389              MOVE.B  D2,D3
-00002B9C  1403                    2390  HEXLOOP     MOVE.B  D3,D2
-00002B9E  C4BC 0000000F           2391              AND.L   #$0000000F,D2
-00002BA4  0C02 0000               2392              CMPI.B  #$0,D2
-00002BA8  6D00 003A               2393              BLT     HEXRANGE
-00002BAC  0C02 000F               2394              CMPI.B  #$F,D2
-00002BB0  6E00 0032               2395              BGT     HEXRANGE
-00002BB4  0C02 0009               2396              CMPI.B  #$9,D2
-00002BB8  6F00 001C               2397              BLE     HEXNUMBER
-00002BBC  0C02 000A               2398              CMPI.B  #$A,D2
-00002BC0  6C00 0006               2399              BGE     HEXLETTER
-00002BC4  6000 001E               2400              BRA     HEXRANGE
-00002BC8  0602 0037               2401  HEXLETTER   ADDI.B  #$37,D2
-00002BCC  1902                    2402              MOVE.B  D2,-(A4)
-00002BCE  E89B                    2403              ROR.L   #4,D3
-00002BD0  51CC FFCA               2404              DBRA    D4,HEXLOOP
-00002BD4  60B6                    2405              BRA     NEXTHEX
-00002BD6  0602 0030               2406  HEXNUMBER   ADDI.B  #$30,D2
-00002BDA  1902                    2407              MOVE.B  D2,-(A4)
-00002BDC  E89B                    2408              ROR.L   #4,D3
-00002BDE  51CC FFBC               2409              DBRA    D4,HEXLOOP
-00002BE2  60A8                    2410              BRA     NEXTHEX
-00002BE4  43F8 112F               2411  HEXRANGE    LEA     HEXERROR,A1
-00002BE8  103C 000E               2412              MOVE.B  #14,D0
-00002BEC  4E4F                    2413              TRAP    #15
-00002BEE                          2414  
-00002BEE  4CDF EFF7               2415  HEXDONE     MOVEM.L (SP)+,A0-A3/A5-A7/D0-D2/D4-D7
-00002BF2  4E75                    2416              RTS
-00002BF2  4E75                    2417  -------------------- end include --------------------
-00002BF4                          2418      
-00002BF4                          2419      INCLUDE "Exception Handlers.X68"
-00002BF4                          2420              
-00002BF4  48E7 FFFF               2421  BUSERRHDLR  MOVEM.L A0-A7/D0-D7,-(SP) 
-00002BF8                          2422              
-00002BF8  43F8 1308               2423              LEA     BERR,A1
-00002BFC  103C 000D               2424              MOVE.B  #13,D0
-00002C00  4E4F                    2425              TRAP    #15
-00002C02                          2426              
-00002C02  43F8 143A               2427              LEA     SSW,A1
-00002C06  103C 000E               2428              MOVE.B  #14,D0
-00002C0A  4E4F                    2429              TRAP    #15
-00002C0C  4BF8 10D4               2430              LEA     BUFFER,A5
-00002C10  4DF8 10D4               2431              LEA     BUFFER,A6
-00002C14  544E                    2432              ADDA.W  #2,A6
-00002C16  3A9F                    2433              MOVE.W  (A7)+,(A5)
-00002C18  4EB8 2B7C               2434              JSR     HEX2ASCII
-00002C1C  224C                    2435              MOVE.L  A4,A1
-00002C1E  103C 000D               2436              MOVE.B  #13,D0
-00002C22  4E4F                    2437              TRAP    #15
-00002C24                          2438              
-00002C24  43F8 1441               2439              LEA     BA,A1
-00002C28  103C 000E               2440              MOVE.B  #14,D0
-00002C2C  4E4F                    2441              TRAP    #15
-00002C2E  4BF8 10D4               2442              LEA     BUFFER,A5
-00002C32  4DF8 10D4               2443              LEA     BUFFER,A6
-00002C36  584E                    2444              ADDA.W  #4,A6
-00002C38  2A9F                    2445              MOVE.L  (A7)+,(A5)
-00002C3A  4EB8 2B7C               2446              JSR     HEX2ASCII
-00002C3E  224C                    2447              MOVE.L  A4,A1
-00002C40  103C 000D               2448              MOVE.B  #13,D0
-00002C44  4E4F                    2449              TRAP    #15
-00002C46                          2450              
-00002C46  43F8 1447               2451              LEA     IR,A1
-00002C4A  103C 000E               2452              MOVE.B  #14,D0
-00002C4E  4E4F                    2453              TRAP    #15
-00002C50  4BF8 10D4               2454              LEA     BUFFER,A5
-00002C54  4DF8 10D4               2455              LEA     BUFFER,A6
-00002C58  544E                    2456              ADDA.W  #2,A6
-00002C5A  3A9F                    2457              MOVE.W  (A7)+,(A5)
-00002C5C  4EB8 2B7C               2458              JSR     HEX2ASCII
-00002C60  224C                    2459              MOVE.L  A4,A1
-00002C62  103C 000D               2460              MOVE.B  #13,D0
-00002C66  4E4F                    2461              TRAP    #15
-00002C68                          2462              
-00002C68  31DF 12F0               2463              MOVE.W  (A7)+,SRDATA
-00002C6C  21D7 12E8               2464              MOVE.L  (A7),PCDATA
-00002C70  4E6B                    2465              MOVE.L  USP,A3
-00002C72  21CB 12FC               2466              MOVE.L  A3,USPDATA
-00002C76  21CF 12F8               2467              MOVE.L  SP,SSPDATA2
-00002C7A  4EB8 244E               2468              JSR     DF
-00002C7E  21F8 12F4 12F8          2469              MOVE.L  SSPDATA,SSPDATA2
-00002C84  31F8 12F2 12F0          2470              MOVE.W  SRDATA2,SRDATA
-00002C8A  21F8 12EC 12E8          2471              MOVE.L  PCDATA2,PCDATA
-00002C90  21F8 1300 12FC          2472              MOVE.L  USPDATA2,USPDATA
-00002C96                          2473              
-00002C96  4CDF FFFF               2474              MOVEM.L (SP)+,A0-A7/D0-D7
-00002C9A  6000 E946               2475              BRA     NEXTCMD
-00002C9E                          2476            
-00002C9E  48E7 FFFF               2477  ADDERRHDLR  MOVEM.L A0-A7/D0-D7,-(SP)
-00002CA2                          2478  
-00002CA2  43F8 1323               2479              LEA     AERR,A1
-00002CA6  103C 000D               2480              MOVE.B  #13,D0
-00002CAA  4E4F                    2481              TRAP    #15
-00002CAC                          2482              
-00002CAC  43F8 143A               2483              LEA     SSW,A1
-00002CB0  103C 000E               2484              MOVE.B  #14,D0
-00002CB4  4E4F                    2485              TRAP    #15
-00002CB6  4BF8 10D4               2486              LEA     BUFFER,A5
-00002CBA  4DF8 10D4               2487              LEA     BUFFER,A6
-00002CBE  544E                    2488              ADDA.W  #2,A6
-00002CC0  3A9F                    2489              MOVE.W  (A7)+,(A5)
-00002CC2  4EB8 2B7C               2490              JSR     HEX2ASCII
-00002CC6  224C                    2491              MOVE.L  A4,A1
-00002CC8  103C 000D               2492              MOVE.B  #13,D0
-00002CCC  4E4F                    2493              TRAP    #15
-00002CCE                          2494              
-00002CCE  43F8 1441               2495              LEA     BA,A1
-00002CD2  103C 000E               2496              MOVE.B  #14,D0
-00002CD6  4E4F                    2497              TRAP    #15
-00002CD8  4BF8 10D4               2498              LEA     BUFFER,A5
-00002CDC  4DF8 10D4               2499              LEA     BUFFER,A6
-00002CE0  584E                    2500              ADDA.W  #4,A6
-00002CE2  2A9F                    2501              MOVE.L  (A7)+,(A5)
-00002CE4  4EB8 2B7C               2502              JSR     HEX2ASCII
-00002CE8  224C                    2503              MOVE.L  A4,A1
-00002CEA  103C 000D               2504              MOVE.B  #13,D0
-00002CEE  4E4F                    2505              TRAP    #15
-00002CF0                          2506              
-00002CF0  43F8 1447               2507              LEA     IR,A1
-00002CF4  103C 000E               2508              MOVE.B  #14,D0
-00002CF8  4E4F                    2509              TRAP    #15
-00002CFA  4BF8 10D4               2510              LEA     BUFFER,A5
-00002CFE  4DF8 10D4               2511              LEA     BUFFER,A6
-00002D02  544E                    2512              ADDA.W  #2,A6
-00002D04  3A9F                    2513              MOVE.W  (A7)+,(A5)
-00002D06  4EB8 2B7C               2514              JSR     HEX2ASCII
-00002D0A  224C                    2515              MOVE.L  A4,A1
-00002D0C  103C 000D               2516              MOVE.B  #13,D0
-00002D10  4E4F                    2517              TRAP    #15
-00002D12                          2518              
-00002D12  31DF 12F0               2519              MOVE.W  (A7)+,SRDATA
-00002D16  21D7 12E8               2520              MOVE.L  (A7),PCDATA
-00002D1A  4E6B                    2521              MOVE.L  USP,A3
-00002D1C  21CB 12FC               2522              MOVE.L  A3,USPDATA
-00002D20  21CF 12F8               2523              MOVE.L  SP,SSPDATA2
-00002D24  4EB8 244E               2524              JSR     DF
-00002D28  21F8 12F4 12F8          2525              MOVE.L  SSPDATA,SSPDATA2
-00002D2E  31F8 12F2 12F0          2526              MOVE.W  SRDATA2,SRDATA
-00002D34  21F8 12EC 12E8          2527              MOVE.L  PCDATA2,PCDATA
-00002D3A  21F8 1300 12FC          2528              MOVE.L  USPDATA2,USPDATA
-00002D40                          2529              
-00002D40  4CDF FFFF               2530              MOVEM.L (SP)+,A0-A7/D0-D7
-00002D44  6000 E89C               2531              BRA     NEXTCMD
-00002D48                          2532              
-00002D48  48E7 FFFF               2533  ILLINSTHDLR MOVEM.L A0-A7/D0-D7,-(SP)
-00002D4C                          2534  
-00002D4C  43F8 1343               2535              LEA     ILL_INST,A1
-00002D50  103C 000D               2536              MOVE.B  #13,D0
-00002D54  4E4F                    2537              TRAP    #15
-00002D56                          2538   
-00002D56  31DF 12F0               2539              MOVE.W  (A7)+,SRDATA
-00002D5A  21D7 12E8               2540              MOVE.L  (A7),PCDATA
-00002D5E  4E6B                    2541              MOVE.L  USP,A3
-00002D60  21CB 12FC               2542              MOVE.L  A3,USPDATA
-00002D64  21CF 12F8               2543              MOVE.L  SP,SSPDATA2
-00002D68  4EB8 244E               2544              JSR     DF
-00002D6C  21F8 12F4 12F8          2545              MOVE.L  SSPDATA,SSPDATA2
-00002D72  31F8 12F2 12F0          2546              MOVE.W  SRDATA2,SRDATA
-00002D78  21F8 12EC 12E8          2547              MOVE.L  PCDATA2,PCDATA
-00002D7E  21F8 1300 12FC          2548              MOVE.L  USPDATA2,USPDATA
-00002D84                          2549              
-00002D84  4CDF FFFF               2550              MOVEM.L (SP)+,A0-A7/D0-D7
-00002D88  6000 E858               2551              BRA     NEXTCMD
-00002D8C                          2552           
-00002D8C  48E7 FFFF               2553  PRIV_VHDLR  MOVEM.L A0-A7/D0-D7,-(SP)
-00002D90                          2554  
-00002D90  43F8 1368               2555              LEA     PRIV_V,A1
-00002D94  103C 000D               2556              MOVE.B  #13,D0
-00002D98  4E4F                    2557              TRAP    #15
-00002D9A                          2558              
-00002D9A  31DF 12F0               2559              MOVE.W  (A7)+,SRDATA
-00002D9E  21D7 12E8               2560              MOVE.L  (A7),PCDATA
-00002DA2  4E6B                    2561              MOVE.L  USP,A3
-00002DA4  21CB 12FC               2562              MOVE.L  A3,USPDATA
-00002DA8  21CF 12F8               2563              MOVE.L  SP,SSPDATA2
-00002DAC  4EB8 244E               2564              JSR     DF
-00002DB0  21F8 12F4 12F8          2565              MOVE.L  SSPDATA,SSPDATA2
-00002DB6  31F8 12F2 12F0          2566              MOVE.W  SRDATA2,SRDATA
-00002DBC  21F8 12EC 12E8          2567              MOVE.L  PCDATA2,PCDATA
-00002DC2  21F8 1300 12FC          2568              MOVE.L  USPDATA2,USPDATA
-00002DC8                          2569              
-00002DC8  4CDF FFFF               2570              MOVEM.L (SP)+,A0-A7/D0-D7
-00002DCC  6000 E814               2571              BRA     NEXTCMD
-00002DD0                          2572              
-00002DD0  48E7 FFFF               2573  DIV_ZHDLR   MOVEM.L A0-A7/D0-D7,-(SP)
-00002DD4                          2574  
-00002DD4  43F8 138D               2575              LEA     DIV_ZERO,A1
-00002DD8  103C 000D               2576              MOVE.B  #13,D0
-00002DDC  4E4F                    2577              TRAP    #15
-00002DDE                          2578              
-00002DDE  31DF 12F0               2579              MOVE.W  (A7)+,SRDATA
-00002DE2  21D7 12E8               2580              MOVE.L  (A7),PCDATA
-00002DE6  4E6B                    2581              MOVE.L  USP,A3
-00002DE8  21CB 12FC               2582              MOVE.L  A3,USPDATA
-00002DEC  21CF 12F8               2583              MOVE.L  SP,SSPDATA2
-00002DF0  4EB8 244E               2584              JSR     DF
-00002DF4  21F8 12F4 12F8          2585              MOVE.L  SSPDATA,SSPDATA2
-00002DFA  31F8 12F2 12F0          2586              MOVE.W  SRDATA2,SRDATA
-00002E00  21F8 12EC 12E8          2587              MOVE.L  PCDATA2,PCDATA
-00002E06  21F8 1300 12FC          2588              MOVE.L  USPDATA2,USPDATA
-00002E0C                          2589              
-00002E0C  4CDF FFFF               2590              MOVEM.L (SP)+,A0-A7/D0-D7
-00002E10  6000 E7D0               2591              BRA     NEXTCMD
-00002E14                          2592              
-00002E14  48E7 FFFF               2593  CHK_IHDLR   MOVEM.L A0-A7/D0-D7,-(SP)
-00002E18                          2594  
-00002E18  43F8 13B7               2595              LEA     CHK_INST,A1
-00002E1C  103C 000D               2596              MOVE.B  #13,D0
-00002E20  4E4F                    2597              TRAP    #15
-00002E22                          2598              
-00002E22  31DF 12F0               2599              MOVE.W  (A7)+,SRDATA
-00002E26  21D7 12E8               2600              MOVE.L  (A7),PCDATA
-00002E2A  4E6B                    2601              MOVE.L  USP,A3
-00002E2C  21CB 12FC               2602              MOVE.L  A3,USPDATA
-00002E30  21CF 12F8               2603              MOVE.L  SP,SSPDATA2
-00002E34  4EB8 244E               2604              JSR     DF
-00002E38  21F8 12F4 12F8          2605              MOVE.L  SSPDATA,SSPDATA2
-00002E3E  31F8 12F2 12F0          2606              MOVE.W  SRDATA2,SRDATA
-00002E44  21F8 12EC 12E8          2607              MOVE.L  PCDATA2,PCDATA
-00002E4A  21F8 1300 12FC          2608              MOVE.L  USPDATA2,USPDATA
-00002E50                          2609              
-00002E50  4CDF FFFF               2610              MOVEM.L (SP)+,A0-A7/D0-D7
-00002E54  6000 E78C               2611              BRA     NEXTCMD
-00002E58                          2612              
-00002E58  48E7 FFFF               2613  LINE_AHDLR  MOVEM.L A0-A7/D0-D7,-(SP)
-00002E5C                          2614  
-00002E5C  43F8 13E4               2615              LEA     LINE_A,A1
-00002E60  103C 000D               2616              MOVE.B  #13,D0
-00002E64  4E4F                    2617              TRAP    #15
-00002E66                          2618              
-00002E66  31DF 12F0               2619              MOVE.W  (A7)+,SRDATA
-00002E6A  21D7 12E8               2620              MOVE.L  (A7),PCDATA
-00002E6E  4E6B                    2621              MOVE.L  USP,A3
-00002E70  21CB 12FC               2622              MOVE.L  A3,USPDATA
-00002E74  21CF 12F8               2623              MOVE.L  SP,SSPDATA2
-00002E78  4EB8 244E               2624              JSR     DF
-00002E7C  21F8 12F4 12F8          2625              MOVE.L  SSPDATA,SSPDATA2
-00002E82  31F8 12F2 12F0          2626              MOVE.W  SRDATA2,SRDATA
-00002E88  21F8 12EC 12E8          2627              MOVE.L  PCDATA2,PCDATA
-00002E8E  21F8 1300 12FC          2628              MOVE.L  USPDATA2,USPDATA
-00002E94                          2629              
-00002E94  4CDF FFFF               2630              MOVEM.L (SP)+,A0-A7/D0-D7
-00002E98  6000 E748               2631              BRA     NEXTCMD
-00002E9C                          2632              
-00002E9C  48E7 FFFF               2633  LINE_FHDLR  MOVEM.L A0-A7/D0-D7,-(SP)
-00002EA0                          2634  
-00002EA0  43F8 140F               2635              LEA     LINE_F,A1
-00002EA4  103C 000D               2636              MOVE.B  #13,D0
-00002EA8  4E4F                    2637              TRAP    #15
-00002EAA                          2638              
-00002EAA  31DF 12F0               2639              MOVE.W  (A7)+,SRDATA
-00002EAE  21D7 12E8               2640              MOVE.L  (A7),PCDATA
-00002EB2  4E6B                    2641              MOVE.L  USP,A3
-00002EB4  21CB 12FC               2642              MOVE.L  A3,USPDATA
-00002EB8  21CF 12F8               2643              MOVE.L  SP,SSPDATA2
-00002EBC  4EB8 244E               2644              JSR     DF
-00002EC0  21F8 12F4 12F8          2645              MOVE.L  SSPDATA,SSPDATA2
-00002EC6  31F8 12F2 12F0          2646              MOVE.W  SRDATA2,SRDATA
-00002ECC  21F8 12EC 12E8          2647              MOVE.L  PCDATA2,PCDATA
-00002ED2  21F8 1300 12FC          2648              MOVE.L  USPDATA2,USPDATA
-00002ED8                          2649              
-00002ED8  4CDF FFFF               2650              MOVEM.L (SP)+,A0-A7/D0-D7
-00002EDC  6000 E704               2651              BRA     NEXTCMD
-00002EE0                          2652  
-00002EE0                          2653  -------------------- end include --------------------
-00002EE0                          2654      
-00002EE0                          2655      INCLUDE "Man Pages.X68"
-00070000                          2656          ORG     $70000
-00070000= 0D 0A 2A 2A 2A 2A ...   2657  CMDMSG          DC.B    CR,LF,'*****ALL MONITOR441 COMMANDS*****',CR,LF,LF,0
-00070027= 0D 0A 20 20 20 48 ...   2658  HELPMSG         DC.B    CR,LF,'   HELP: Displays this message',CR,LF,LF,0
-0007004B                          2659                  
-0007004B= 0D 0A 20 20 20 4D ...   2660  MDSPMSG         DC.B    CR,LF,'   MDSP: Outputs Address And Memory Contents',CR,LF
-0007007B= 20 20 20 4D 44 53 ...   2661                  DC.B    '   MDSP <address1> <address2> eg: MDSP $908 $90A<CR>',CR,LF,LF,0
-000700B3                          2662                  
-000700B3= 0D 0A 20 20 20 53 ...   2663  SORTWMSG        DC.B    CR,LF,'   SORTW: Sorts A Block Of Memory',CR,LF
-000700D8= 20 20 20 44 65 66 ...   2664                  DC.B    '   Default: Descending Order',CR,LF
-000700F6= 20 20 20 3B 41 3A ...   2665                  DC.B    '   ;A: Ascending Order',CR,LF
-0007010E= 20 20 20 3B 44 3A ...   2666                  DC.B    '   ;D: Descending Order',CR,LF
-00070127= 20 20 20 53 4F 52 ...   2667                  DC.B    '   SORTW <address1> <address2> [;order] eg: SORTW $904 $90E ;A<CR>',CR,LF,LF,0
-0007016D                          2668                  
-0007016D= 0D 0A 20 20 20 4D ...   2669  MMMSG           DC.B    CR,LF,'   MM: Modifies Data In Memory',CR,LF
-0007018F= 20 20 20 44 65 66 ...   2670                  DC.B    '   Default: Displays One Byte',CR,LF
-000701AE= 20 20 20 3B 57 3A ...   2671                  DC.B    '   ;W: Displays One Word',CR,LF
-000701C8= 20 20 20 3B 4C 3A ...   2672                  DC.B    '   ;L: Displays One Long Word',CR,LF
-000701E7= 20 20 20 4D 4D 20 ...   2673                  DC.B    '   MM <address>[;size] eg: MM $904;W<CR>',CR,LF,LF,0
-00070213                          2674                  
-00070213= 0D 0A 20 20 20 4D ...   2675  MSMSG           DC.B    CR,LF,'   MS - Memory Set.',CR,LF
-0007022A= 20 20 20 4D 53 20 ...   2676                  DC.B    '   MS <address> [data] eg: MS $904 $FFFF<CR>',CR,LF,LF,0
-0007025A                          2677                  
-0007025A= 0D 0A 20 20 20 42 ...   2678  BFMSG           DC.B    CR,LF,'   BF: Fills A Block Of Memory',CR,LF
-0007027C= 20 20 20 42 46 20 ...   2679                  DC.B    '   BF <address1> <address2> <word> eg: BF $904 $908 475A<CR>',CR,LF,LF,0
-000702BC                          2680                  
-000702BC= 0D 0A 20 20 20 42 ...   2681  BMOVMSG         DC.B    CR,LF,'   BMOV: Moves A Block of Memory To Another Area',CR,LF
-000702F0= 20 20 20 42 4D 4F ...   2682                  DC.B    '   BMOV <address1> <address2> <address3> eg: BMOV $908 $90B $909<CR>',CR,LF,LF,0
-00070338                          2683                  
-00070338= 0D 0A 20 20 20 42 ...   2684  BTSTMSG         DC.B    CR,LF,'   BTST - Block Test.',CR,LF,LF,0
-00070353                          2685                  
-00070353= 0D 0A 20 20 20 42 ...   2686  BSCHMSG         DC.B    CR,LF,'   BSCH: Searches A Literal String In The Memory',CR,LF
-00070387= 20 20 20 42 53 43 ...   2687                  DC.B    '   BSCH <address1> <address2> "literal string" eg: BSCH $900 $910 "MATCH"<CR>',CR,LF,LF,0
-000703D8                          2688                  
-000703D8= 0D 0A 20 20 20 47 ...   2689  GOMSG           DC.B    CR,LF,'   GO: Starts Execution From Given Address',CR,LF
-00070406= 20 20 20 47 4F 20 ...   2690                  DC.B    '   GO <address> eg: GO $900<CR>',CR,LF,LF,0
-00070429                          2691                  
-00070429= 0D 0A 20 20 20 44 ...   2692  DFMSG           DC.B    CR,LF,'   DF - Display Formatted Registers.',CR,LF,LF,0
-00070453                          2693                  
-00070453= 0D 0A 20 20 20 45 ...   2694  EXITMSG         DC.B    CR,LF,'   EXIT - Exit the monitor program eg: EXIT<CR>',CR,LF,LF,0
-00070488                          2695                  
-00070488= 0D 0A 2A 2A 2A 2A ...   2696  CMDMSG2         DC.B    CR,LF,'*****Try HELP <command> or MAN <command> to view man page.*****',CR,LF,LF,0
-000704CD                          2697  
-000704CD                          2698      
-000704CD= 0D 0A 48 45 4C 50 ...   2699  HELPMANPAGE     DC.B    CR,LF,'HELP(1)                       MC68000/SANPER-1 ELU                       HELP(1)',CR,LF,LF
-00070522                          2700                  
-00070522= 4E 41 4D 45 0D 0A       2701                  DC.B    'NAME',CR,LF
-00070528= 20 20 20 48 45 4C ...   2702                  DC.B    '   HELP - Help.',CR,LF,LF
-0007053A                          2703                  
-0007053A= 53 59 4E 4F 50 53 ...   2704                  DC.B    'SYNOPSYS',CR,LF
-00070544= 20 20 20 48 45 4C ...   2705                  DC.B    '   HELP',CR,LF,LF
-0007054E                          2706                  
-0007054E= 44 45 53 43 52 49 ...   2707                  DC.B    'DESCRIPTION',CR,LF
-0007055B= 20 20 20 54 68 65 ...   2708                  DC.B    '   The Help command must display all available commands and usage descriptions.',CR,LF,LF
-000705AD                          2709                  
-000705AD                          2710                  *DC.B    'OPTIONS',CR,LF
-000705AD                          2711                  *DC.B    '   none',CR,LF,LF
-000705AD                          2712                  
-000705AD                          2713                  *DC.B    'NOTES',CR,LF
-000705AD                          2714                  *DC.B    '   none',CR,LF,LF
-000705AD                          2715                  
-000705AD                          2716                  *DC.B    'FILES',CR,LF
-000705AD                          2717                  *DC.B    '   none',CR,LF,LF
-000705AD                          2718                  
-000705AD                          2719                  *DC.B    'ENVIRONMENT',CR,LF
-000705AD                          2720                  *DC.B    '   none',CR,LF,LF
-000705AD                          2721                  
-000705AD                          2722                  *DC.B    'DIAGNOSTICS',CR,LF
-000705AD                          2723                  *DC.B    '   none',CR,LF,LF
-000705AD                          2724                  
-000705AD                          2725                  *DC.B    'BUGS',CR,LF
-000705AD                          2726                  *DC.B    '   none known atm',CR,LF,LF
-000705AD                          2727                  
-000705AD= 41 55 54 48 4F 52 ...   2728                  DC.B    'AUTHOR',CR,LF
-000705B5= 20 20 20 44 61 6E ...   2729                  DC.B    '   Daniel H. Meves',CR,LF,LF
-000705CA                          2730                  
-000705CA                          2731                  *DC.B    'HISTORY',CR,LF
-000705CA                          2732                  *DC.B    '   none',CR,LF,LF
-000705CA                          2733                  
-000705CA= 53 45 45 20 41 4C ...   2734                  DC.B    'SEE ALSO',CR,LF
-000705D4= 20 20 20 4D 44 53 ...   2735                  DC.B    '   MDSP(1), SORTW(1), MM(1), MS(1), BF(1), BMOV(1), BTST(1), BSCH(1), GO(1), DF(1), EXIT(1), MAN(1)',CR,LF,LF
-0007063A                          2736                  
-0007063A= 44 61 6E 69 65 6C ...   2737                  DC.B    'Daniel H. Meves                    27 April 2016                        HELP(1)',CR,LF,LF,0
-0007068D                          2738  
-0007068D= 0D 0A 4D 44 53 50 ...   2739  MDSPMANPAGE     DC.B    CR,LF,'MDSP(1)                       MC68000/SANPER-1 ELU                       MDSP(1)',CR,LF,LF
-000706E2                          2740                  
-000706E2= 4E 41 4D 45 0D 0A       2741                  DC.B    'NAME',CR,LF
-000706E8= 20 20 20 4D 44 53 ...   2742                  DC.B    '   MDSP - Memory Display.',CR,LF,LF
-00070704                          2743                  
-00070704= 53 59 4E 4F 50 53 ...   2744                  DC.B    'SYNOPSYS',CR,LF
-0007070E= 20 20 20 4D 44 53 ...   2745                  DC.B    '   MDSP <address1> <address2>',CR,LF,LF
-0007072E                          2746                  
-0007072E= 44 45 53 43 52 49 ...   2747                  DC.B    'DESCRIPTION',CR,LF
-0007073B= 20 20 20 54 68 65 ...   2748                  DC.B    '   The MDSP (Memory Display) command outputs the address and memory contents from',CR,LF
-0007078E= 20 20 20 3C 61 64 ...   2749                  DC.B    '   <address1> to <address2>. The MDSP (Memory Display) command ALSO outputs the',CR,LF
-000707DF= 20 20 20 61 64 64 ...   2750                  DC.B    '   address and memory contents from <address1> to <address1 + 16bytes>.',CR,LF,LF
-00070829                          2751                  
-00070829                          2752                  *DC.B    'OPTIONS',CR,LF
-00070829                          2753                  *DC.B    '   none',CR,LF,LF
-00070829                          2754                  
-00070829                          2755                  *DC.B    'NOTES',CR,LF
-00070829                          2756                  *DC.B    '   none',CR,LF,LF
-00070829                          2757                  
-00070829                          2758                  *DC.B    'FILES',CR,LF
-00070829                          2759                  *DC.B    '   none',CR,LF,LF
-00070829                          2760                  
-00070829                          2761                  *DC.B    'ENVIRONMENT',CR,LF
-00070829                          2762                  *DC.B    '   none',CR,LF,LF
-00070829                          2763                  
-00070829                          2764                  *DC.B    'DIAGNOSTICS',CR,LF
-00070829                          2765                  *DC.B    '   none',CR,LF,LF
-00070829                          2766                  
-00070829                          2767                  *DC.B    'BUGS',CR,LF
-00070829                          2768                  *DC.B    '   none known atm',CR,LF,LF
-00070829                          2769                  
-00070829= 41 55 54 48 4F 52 ...   2770                  DC.B    'AUTHOR',CR,LF
-00070831= 20 20 20 44 61 6E ...   2771                  DC.B    '   Daniel H. Meves',CR,LF,LF
-00070846                          2772                  
-00070846                          2773                  *DC.B    'HISTORY',CR,LF
-00070846                          2774                  *DC.B    '   none',CR,LF,LF
-00070846                          2775                  
-00070846= 53 45 45 20 41 4C ...   2776                  DC.B    'SEE ALSO',CR,LF
-00070850= 20 20 20 48 45 4C ...   2777                  DC.B    '   HELP(1), SORTW(1), MM(1), MS(1), BF(1), BMOV(1), BTST(1), BSCH(1), GO(1), DF(1), EXIT(1), MAN(1)',CR,LF,LF
-000708B6                          2778                  
-000708B6= 44 61 6E 69 65 6C ...   2779                  DC.B    'Daniel H. Meves                    27 April 2016                        MDSP(1)',CR,LF,LF,0
-00070909                          2780                  
-00070909= 0D 0A 53 4F 52 54 ...   2781  SORTWMANPAGE    DC.B    CR,LF,'SORTW(1)                       MC68000/SANPER-1 ELU                       SORTW(1)',CR,LF,LF
-00070960                          2782                  
-00070960= 4E 41 4D 45 0D 0A       2783                  DC.B    'NAME',CR,LF
-00070966= 20 20 20 53 4F 52 ...   2784                  DC.B    '   SORTW - Sort.',CR,LF,LF
-00070979                          2785                  
-00070979= 53 59 4E 4F 50 53 ...   2786                  DC.B    'SYNOPSYS',CR,LF
-00070983= 20 20 20 53 4F 52 ...   2787                  DC.B    '   SORTW <address1> <address2> [;order]',CR,LF,LF
-000709AD                          2788                  
-000709AD= 44 45 53 43 52 49 ...   2789                  DC.B    'DESCRIPTION',CR,LF
-000709BA= 20 20 20 54 68 65 ...   2790                  DC.B    '   The SORT command sorts a block of memory. The starting address <address1> and the',CR,LF
-00070A10= 20 20 20 65 6E 64 ...   2791                  DC.B    '   ending address <address2> of the memory block are specified in the command. The order',CR,LF
-00070A6A= 20 20 20 28 41 20 ...   2792                  DC.B    '   (A or D) specifies whether the list is sorted in Ascending or Descending order. (The size of',CR,LF
-00070ACB= 20 20 20 74 68 65 ...   2793                  DC.B    '   the data to be sorted is a word)',CR,LF,LF
-00070AF1                          2794                  
-00070AF1                          2795                  *DC.B    'OPTIONS',CR,LF
-00070AF1                          2796                  *DC.B    '   none',CR,LF,LF
-00070AF1                          2797                  
-00070AF1                          2798                  *DC.B    'NOTES',CR,LF
-00070AF1                          2799                  *DC.B    '   none',CR,LF,LF
-00070AF1                          2800                  
-00070AF1                          2801                  *DC.B    'FILES',CR,LF
-00070AF1                          2802                  *DC.B    '   none',CR,LF,LF
-00070AF1                          2803                  
-00070AF1                          2804                  *DC.B    'ENVIRONMENT',CR,LF
-00070AF1                          2805                  *DC.B    '   none',CR,LF,LF
-00070AF1                          2806                  
-00070AF1                          2807                  *DC.B    'DIAGNOSTICS',CR,LF
-00070AF1                          2808                  *DC.B    '   none',CR,LF,LF
-00070AF1                          2809                  
-00070AF1                          2810                  *DC.B    'BUGS',CR,LF
-00070AF1                          2811                  *DC.B    '   none known atm',CR,LF,LF
-00070AF1                          2812                  
-00070AF1= 41 55 54 48 4F 52 ...   2813                  DC.B    'AUTHOR',CR,LF
-00070AF9= 20 20 20 44 61 6E ...   2814                  DC.B    '   Daniel H. Meves',CR,LF,LF
-00070B0E                          2815                  
-00070B0E                          2816                  *DC.B    'HISTORY',CR,LF
-00070B0E                          2817                  *DC.B    '   none',CR,LF,LF
-00070B0E                          2818                  
-00070B0E= 53 45 45 20 41 4C ...   2819                  DC.B    'SEE ALSO',CR,LF
-00070B18= 20 20 20 48 45 4C ...   2820                  DC.B    '   HELP(1), MDSP(1), MM(1), MS(1), BF(1), BMOV(1), BTST(1), BSCH(1), GO(1), DF(1), EXIT(1), MAN(1)',CR,LF,LF
-00070B7D                          2821                  
-00070B7D= 44 61 6E 69 65 6C ...   2822                  DC.B    'Daniel H. Meves                    27 April 2016                        SORTW(1)',CR,LF,LF,0
-00070BD1                          2823                  
-00070BD1= 0D 0A 4D 4D 28 31 ...   2824  MMMANPAGE       DC.B    CR,LF,'MM(1)                       MC68000/SANPER-1 ELU                       MM(1)',CR,LF,LF
-00070C22                          2825                  
-00070C22= 4E 41 4D 45 0D 0A       2826                  DC.B    'NAME',CR,LF
-00070C28= 20 20 20 4D 4D 20 ...   2827                  DC.B    '   MM - Memory Modify.',CR,LF,LF
-00070C41                          2828                  
-00070C41= 53 59 4E 4F 50 53 ...   2829                  DC.B    'SYNOPSYS',CR,LF
-00070C4B= 20 20 20 4D 4D 20 ...   2830                  DC.B    '   MM <address> [;size]',CR,LF,LF
-00070C65                          2831                  
-00070C65= 44 45 53 43 52 49 ...   2832                  DC.B    'DESCRIPTION',CR,LF
-00070C72= 20 20 20 4D 4D 20 ...   2833                  DC.B    '   MM (Memory Modify) command is used to display memory and, as required, modify data',CR,LF
-00070CC9= 20 20 20 6F 72 20 ...   2834                  DC.B    '   or enter new data. The size (byte, word, long word) controls the number of bytes displayed',CR,LF
-00070D28= 20 20 20 66 6F 72 ...   2835                  DC.B    '   for each address.',CR,LF,LF
-00070D3F                          2836                  
-00070D3F                          2837                  *DC.B    'OPTIONS',CR,LF
-00070D3F                          2838                  *DC.B    '   none',CR,LF,LF
-00070D3F                          2839                  
-00070D3F                          2840                  *DC.B    'NOTES',CR,LF
-00070D3F                          2841                  *DC.B    '   none',CR,LF,LF
-00070D3F                          2842                  
-00070D3F                          2843                  *DC.B    'FILES',CR,LF
-00070D3F                          2844                  *DC.B    '   none',CR,LF,LF
-00070D3F                          2845                  
-00070D3F                          2846                  *DC.B    'ENVIRONMENT',CR,LF
-00070D3F                          2847                  *DC.B    '   none',CR,LF,LF
-00070D3F                          2848                  
-00070D3F                          2849                  *DC.B    'DIAGNOSTICS',CR,LF
-00070D3F                          2850                  *DC.B    '   none',CR,LF,LF
-00070D3F                          2851                  
-00070D3F                          2852                  *DC.B    'BUGS',CR,LF
-00070D3F                          2853                  *DC.B    '   none known atm',CR,LF,LF
-00070D3F                          2854                  
-00070D3F= 41 55 54 48 4F 52 ...   2855                  DC.B    'AUTHOR',CR,LF
-00070D47= 20 20 20 44 61 6E ...   2856                  DC.B    '   Daniel H. Meves',CR,LF,LF
-00070D5C                          2857                  
-00070D5C                          2858                  *DC.B    'HISTORY',CR,LF
-00070D5C                          2859                  *DC.B    '   none',CR,LF,LF
-00070D5C                          2860                  
-00070D5C= 53 45 45 20 41 4C ...   2861                  DC.B    'SEE ALSO',CR,LF
-00070D66= 20 20 20 48 45 4C ...   2862                  DC.B    '   HELP(1), MDSP(1), SORTW(1), MS(1), BF(1), BMOV(1), BTST(1), BSCH(1), GO(1), DF(1), EXIT(1), MAN(1)',CR,LF,LF
-00070DCE                          2863                  
-00070DCE= 44 61 6E 69 65 6C ...   2864                  DC.B    'Daniel H. Meves                    27 April 2016                        MM(1)',CR,LF,LF,0
-00070E1F                          2865                  
-00070E1F= 0D 0A 4D 53 28 31 ...   2866  MSMANPAGE       DC.B    CR,LF,'MS(1)                       MC68000/SANPER-1 ELU                       MS(1)',CR,LF,LF
-00070E70                          2867                  
-00070E70= 4E 41 4D 45 0D 0A       2868                  DC.B    'NAME',CR,LF
-00070E76= 20 20 20 4D 53 20 ...   2869                  DC.B    '   MS - Memory Set.',CR,LF,LF
-00070E8C                          2870                  
-00070E8C= 53 59 4E 4F 50 53 ...   2871                  DC.B    'SYNOPSYS',CR,LF
-00070E96= 20 20 20 4D 53 20 ...   2872                  DC.B    '   MS <address> [data]',CR,LF,LF
-00070EAF                          2873                  
-00070EAF= 44 45 53 43 52 49 ...   2874                  DC.B    'DESCRIPTION',CR,LF
-00070EBC= 20 20 20 54 68 65 ...   2875                  DC.B    '   The Memory Set (MS) command alters memory by setting data into the address specified. The',CR,LF
-00070F1A= 20 20 20 64 61 74 ...   2876                  DC.B    '   data can take the form of ASCII string or hexadecimal data.',CR,LF,LF
-00070F5B                          2877                  
-00070F5B                          2878                  *DC.B    'OPTIONS',CR,LF
-00070F5B                          2879                  *DC.B    '   none',CR,LF,LF
-00070F5B                          2880                  
-00070F5B                          2881                  *DC.B    'NOTES',CR,LF
-00070F5B                          2882                  *DC.B    '   none',CR,LF,LF
-00070F5B                          2883                  
-00070F5B                          2884                  *DC.B    'FILES',CR,LF
-00070F5B                          2885                  *DC.B    '   none',CR,LF,LF
-00070F5B                          2886                  
-00070F5B                          2887                  *DC.B    'ENVIRONMENT',CR,LF
-00070F5B                          2888                  *DC.B    '   none',CR,LF,LF
-00070F5B                          2889                  
-00070F5B                          2890                  *DC.B    'DIAGNOSTICS',CR,LF
-00070F5B                          2891                  *DC.B    '   none',CR,LF,LF
-00070F5B                          2892                  
-00070F5B                          2893                  *DC.B    'BUGS',CR,LF
-00070F5B                          2894                  *DC.B    '   none known atm',CR,LF,LF
-00070F5B                          2895                  
-00070F5B= 41 55 54 48 4F 52 ...   2896                  DC.B    'AUTHOR',CR,LF
-00070F63= 20 20 20 44 61 6E ...   2897                  DC.B    '   Daniel H. Meves',CR,LF,LF
-00070F78                          2898                  
-00070F78                          2899                  *DC.B    'HISTORY',CR,LF
-00070F78                          2900                  *DC.B    '   none',CR,LF,LF
-00070F78                          2901                  
-00070F78= 53 45 45 20 41 4C ...   2902                  DC.B    'SEE ALSO',CR,LF
-00070F82= 20 20 20 48 45 4C ...   2903                  DC.B    '   HELP(1), MDSP(1), SORTW(1), MM(1), BF(1), BMOV(1), BTST(1), BSCH(1), GO(1), DF(1), EXIT(1), MAN(1)',CR,LF,LF
-00070FEA                          2904                  
-00070FEA= 44 61 6E 69 65 6C ...   2905                  DC.B    'Daniel H. Meves                    27 April 2016                        MS(1)',CR,LF,LF,0
-0007103B                          2906                  
-0007103B= 0D 0A 42 46 28 31 ...   2907  BFMANPAGE       DC.B    CR,LF,'BF(1)                       MC68000/SANPER-1 ELU                       BF(1)',CR,LF,LF
-0007108C                          2908                  
-0007108C= 4E 41 4D 45 0D 0A       2909                  DC.B    'NAME',CR,LF
-00071092= 20 20 20 42 46 20 ...   2910                  DC.B    '   BF - Block Fill.',CR,LF,LF
-000710A8                          2911                  
-000710A8= 53 59 4E 4F 50 53 ...   2912                  DC.B    'SYNOPSYS',CR,LF
-000710B2= 20 20 20 42 46 20 ...   2913                  DC.B    '   BF <address1> <address2> <word>',CR,LF,LF
-000710D7                          2914                  
-000710D7= 44 45 53 43 52 49 ...   2915                  DC.B    'DESCRIPTION',CR,LF
-000710E4= 20 20 20 54 68 65 ...   2916                  DC.B    '   The Block Fill (BF) command fills memory starting with the word boundary <address1> through',CR,LF
-00071144= 20 20 20 3C 61 64 ...   2917                  DC.B    '   <address2>. Both <address1> and <address2> must be even addresses. This command only',CR,LF
-0007119D= 20 20 20 66 69 6C ...   2918                  DC.B    '   fills with a word-size (2 bytes) data pattern. If an entire word-size data pattern is not entered,',CR,LF
-00071204= 20 20 20 74 68 65 ...   2919                  DC.B    '   the pattern is right justified and leading zeros are inserted.',CR,LF,LF
-00071248                          2920                  
-00071248                          2921                  *DC.B    'OPTIONS',CR,LF
-00071248                          2922                  *DC.B    '   none',CR,LF,LF
-00071248                          2923                  
-00071248                          2924                  *DC.B    'NOTES',CR,LF
-00071248                          2925                  *DC.B    '   none',CR,LF,LF
-00071248                          2926                  
-00071248                          2927                  *DC.B    'FILES',CR,LF
-00071248                          2928                  *DC.B    '   none',CR,LF,LF
-00071248                          2929                  
-00071248                          2930                  *DC.B    'ENVIRONMENT',CR,LF
-00071248                          2931                  *DC.B    '   none',CR,LF,LF
-00071248                          2932                  
-00071248                          2933                  *DC.B    'DIAGNOSTICS',CR,LF
-00071248                          2934                  *DC.B    '   none',CR,LF,LF
-00071248                          2935                  
-00071248                          2936                  *DC.B    'BUGS',CR,LF
-00071248                          2937                  *DC.B    '   none known atm',CR,LF,LF
-00071248                          2938                  
-00071248= 41 55 54 48 4F 52 ...   2939                  DC.B    'AUTHOR',CR,LF
-00071250= 20 20 20 44 61 6E ...   2940                  DC.B    '   Daniel H. Meves',CR,LF,LF
-00071265                          2941                  
-00071265                          2942                  *DC.B    'HISTORY',CR,LF
-00071265                          2943                  *DC.B    '   none',CR,LF,LF
-00071265                          2944                  
-00071265= 53 45 45 20 41 4C ...   2945                  DC.B    'SEE ALSO',CR,LF
-0007126F= 20 20 20 48 45 4C ...   2946                  DC.B    '   HELP(1), MDSP(1), SORTW(1), MM(1), MS(1), BMOV(1), BTST(1), BSCH(1), GO(1), DF(1), EXIT(1), MAN(1)',CR,LF,LF
-000712D7                          2947                  
-000712D7= 44 61 6E 69 65 6C ...   2948                  DC.B    'Daniel H. Meves                    27 April 2016                        BF(1)',CR,LF,LF,0
-00071328                          2949                  
-00071328= 0D 0A 42 4D 4F 56 ...   2950  BMOVMANPAGE     DC.B    CR,LF,'BMOV(1)                       MC68000/SANPER-1 ELU                       BMOV(1)',CR,LF,LF
-0007137D                          2951                  
-0007137D= 4E 41 4D 45 0D 0A       2952                  DC.B    'NAME',CR,LF
-00071383= 20 20 20 42 4D 4F ...   2953                  DC.B    '   BMOV - Block Move.',CR,LF,LF
-0007139B                          2954                  
-0007139B= 53 59 4E 4F 50 53 ...   2955                  DC.B    'SYNOPSYS',CR,LF
-000713A5= 20 20 20 42 4D 4F ...   2956                  DC.B    '   BMOV <address1> <address2> <address3>',CR,LF,LF
-000713D0                          2957                  
-000713D0= 44 45 53 43 52 49 ...   2958                  DC.B    'DESCRIPTION',CR,LF
-000713DD= 20 20 20 54 68 65 ...   2959                  DC.B    '   The Block Move (BMOV) command is used to move (duplicate) blocks of memory from one area to another.',CR,LF,LF
-00071447                          2960                  
-00071447                          2961                  *DC.B    'OPTIONS',CR,LF
-00071447                          2962                  *DC.B    '   none',CR,LF,LF
-00071447                          2963                  
-00071447                          2964                  *DC.B    'NOTES',CR,LF
-00071447                          2965                  *DC.B    '   none',CR,LF,LF
-00071447                          2966                  
-00071447                          2967                  *DC.B    'FILES',CR,LF
-00071447                          2968                  *DC.B    '   none',CR,LF,LF
-00071447                          2969                  
-00071447                          2970                  *DC.B    'ENVIRONMENT',CR,LF
-00071447                          2971                  *DC.B    '   none',CR,LF,LF
-00071447                          2972                  
-00071447                          2973                  *DC.B    'DIAGNOSTICS',CR,LF
-00071447                          2974                  *DC.B    '   none',CR,LF,LF
-00071447                          2975                  
-00071447                          2976                  *DC.B    'BUGS',CR,LF
-00071447                          2977                  *DC.B    '   none known atm',CR,LF,LF
-00071447                          2978                  
-00071447= 41 55 54 48 4F 52 ...   2979                  DC.B    'AUTHOR',CR,LF
-0007144F= 20 20 20 44 61 6E ...   2980                  DC.B    '   Daniel H. Meves',CR,LF,LF
-00071464                          2981                  
-00071464                          2982                  *DC.B    'HISTORY',CR,LF
-00071464                          2983                  *DC.B    '   none',CR,LF,LF
-00071464                          2984                  
-00071464= 53 45 45 20 41 4C ...   2985                  DC.B    'SEE ALSO',CR,LF
-0007146E= 20 20 20 48 45 4C ...   2986                  DC.B    '   HELP(1), MDSP(1), SORTW(1), MM(1), MS(1), BF(1), BTST(1), BSCH(1), GO(1), DF(1), EXIT(1), MAN(1)',CR,LF,LF
-000714D4                          2987                  
-000714D4= 44 61 6E 69 65 6C ...   2988                  DC.B    'Daniel H. Meves                    27 April 2016                        BMOV(1)',CR,LF,LF,0
-00071527                          2989                  
-00071527= 0D 0A 42 54 53 54 ...   2990  BTSTMANPAGE     DC.B    CR,LF,'BTST(1)                       MC68000/SANPER-1 ELU                       BTST(1)',CR,LF,LF
-0007157C                          2991                  
-0007157C= 4E 41 4D 45 0D 0A       2992                  DC.B    'NAME',CR,LF
-00071582= 20 20 20 42 54 53 ...   2993                  DC.B    '   BTST - Block Test.',CR,LF,LF
-0007159A                          2994                  
-0007159A= 53 59 4E 4F 50 53 ...   2995                  DC.B    'SYNOPSYS',CR,LF
-000715A4= 20 20 20 42 54 53 ...   2996                  DC.B    '   BTST <address1> <address2>',CR,LF,LF
-000715C4                          2997                  
-000715C4= 44 45 53 43 52 49 ...   2998                  DC.B    'DESCRIPTION',CR,LF
-000715D1= 20 20 20 54 68 65 ...   2999                  DC.B    '   The Block Test (BT) command is a destructive test of a block of memory beginning at <address1>',CR,LF
-00071634= 20 20 20 74 68 72 ...   3000                  DC.B    '   through <address2>. If this test runs to completion without detecting errors, and display a',CR,LF
-00071694= 20 20 20 6D 65 73 ...   3001                  DC.B    '   message that no error was detected. If memory problems are found, a message is displayed',CR,LF
-000716F1= 20 20 20 69 6E 64 ...   3002                  DC.B    '   indicating the address, the data stored, and the data read of the failing memory.',CR,LF,LF
-00071748                          3003                  
-00071748                          3004                  *DC.B    'OPTIONS',CR,LF
-00071748                          3005                  *DC.B    '   none',CR,LF,LF
-00071748                          3006                  
-00071748                          3007                  *DC.B    'NOTES',CR,LF
-00071748                          3008                  *DC.B    '   none',CR,LF,LF
-00071748                          3009                  
-00071748                          3010                  *DC.B    'FILES',CR,LF
-00071748                          3011                  *DC.B    '   none',CR,LF,LF
-00071748                          3012                  
-00071748                          3013                  *DC.B    'ENVIRONMENT',CR,LF
-00071748                          3014                  *DC.B    '   none',CR,LF,LF
-00071748                          3015                  
-00071748                          3016                  *DC.B    'DIAGNOSTICS',CR,LF
-00071748                          3017                  *DC.B    '   none',CR,LF,LF
-00071748                          3018                  
-00071748                          3019                  *DC.B    'BUGS',CR,LF
-00071748                          3020                  *DC.B    '   none known atm',CR,LF,LF
-00071748                          3021                  
-00071748= 41 55 54 48 4F 52 ...   3022                  DC.B    'AUTHOR',CR,LF
-00071750= 20 20 20 44 61 6E ...   3023                  DC.B    '   Daniel H. Meves',CR,LF,LF
-00071765                          3024                  
-00071765                          3025                  *DC.B    'HISTORY',CR,LF
-00071765                          3026                  *DC.B    '   none',CR,LF,LF
-00071765                          3027                  
-00071765= 53 45 45 20 41 4C ...   3028                  DC.B    'SEE ALSO',CR,LF
-0007176F= 20 20 20 48 45 4C ...   3029                  DC.B    '   HELP(1), MDSP(1), SORTW(1), MM(1), MS(1), BF(1), BMOV(1), BSCH(1), GO(1), DF(1), EXIT(1), MAN(1)',CR,LF,LF
-000717D5                          3030                  
-000717D5= 44 61 6E 69 65 6C ...   3031                  DC.B    'Daniel H. Meves                    27 April 2016                        BTST(1)',CR,LF,LF,0     
-00071828                          3032  
-00071828= 0D 0A 42 53 43 48 ...   3033  BSCHMANPAGE     DC.B    CR,LF,'BSCH(1)                       MC68000/SANPER-1 ELU                       BSCH(1)',CR,LF,LF
-0007187D                          3034                  
-0007187D= 4E 41 4D 45 0D 0A       3035                  DC.B    'NAME',CR,LF
-00071883= 20 20 20 42 53 43 ...   3036                  DC.B    '   BSCH - Block Search.',CR,LF,LF
-0007189D                          3037                  
-0007189D= 53 59 4E 4F 50 53 ...   3038                  DC.B    'SYNOPSYS',CR,LF
-000718A7= 20 20 20 42 53 43 ...   3039                  DC.B    '   BSCH <address1> <address2> "StringLiteral"',CR,LF,LF
-000718D7                          3040                  
-000718D7= 44 45 53 43 52 49 ...   3041                  DC.B    'DESCRIPTION',CR,LF
-000718E4= 20 20 20 54 68 65 ...   3042                  DC.B    '   The BSCH (Block Search) command is used to search a literal string in a memory block starting',CR,LF
-00071946= 20 20 20 61 74 20 ...   3043                  DC.B    '   at <address1> through <address2> both inclusive. In BSCH command, if search finds matching data,',CR,LF 
-000719AB= 20 20 20 74 68 65 ...   3044                  DC.B    '   the data and address(es) must be displayed.',CR,LF,LF
-000719DC                          3045                  
-000719DC                          3046                  *DC.B    'OPTIONS',CR,LF
-000719DC                          3047                  *DC.B    '   none',CR,LF,LF
-000719DC                          3048                  
-000719DC                          3049                  *DC.B    'NOTES',CR,LF
-000719DC                          3050                  *DC.B    '   none',CR,LF,LF
-000719DC                          3051                  
-000719DC                          3052                  *DC.B    'FILES',CR,LF
-000719DC                          3053                  *DC.B    '   none',CR,LF,LF
-000719DC                          3054                  
-000719DC                          3055                  *DC.B    'ENVIRONMENT',CR,LF
-000719DC                          3056                  *DC.B    '   none',CR,LF,LF
-000719DC                          3057                  
-000719DC                          3058                  *DC.B    'DIAGNOSTICS',CR,LF
-000719DC                          3059                  *DC.B    '   none',CR,LF,LF
-000719DC                          3060                  
-000719DC                          3061                  *DC.B    'BUGS',CR,LF
-000719DC                          3062                  *DC.B    '   none known atm',CR,LF,LF
-000719DC                          3063                  
-000719DC= 41 55 54 48 4F 52 ...   3064                  DC.B    'AUTHOR',CR,LF
-000719E4= 20 20 20 44 61 6E ...   3065                  DC.B    '   Daniel H. Meves',CR,LF,LF
-000719F9                          3066                  
-000719F9                          3067                  *DC.B    'HISTORY',CR,LF
-000719F9                          3068                  *DC.B    '   none',CR,LF,LF
-000719F9                          3069                  
-000719F9= 53 45 45 20 41 4C ...   3070                  DC.B    'SEE ALSO',CR,LF
-00071A03= 20 20 20 48 45 4C ...   3071                  DC.B    '   HELP(1), MDSP(1), SORTW(1), MM(1), MS(1), BF(1), BMOV(1), BTST(1), GO(1), DF(1), EXIT(1), MAN(1)',CR,LF,LF
-00071A69                          3072                  
-00071A69= 44 61 6E 69 65 6C ...   3073                  DC.B    'Daniel H. Meves                    27 April 2016                        BSCH(1)',CR,LF,LF,0
-00071ABC                          3074                  
-00071ABC= 0D 0A 47 4F 28 31 ...   3075  GOMANPAGE       DC.B    CR,LF,'GO(1)                       MC68000/SANPER-1 ELU                       GO(1)',CR,LF,LF
-00071B0D                          3076                  
-00071B0D= 4E 41 4D 45 0D 0A       3077                  DC.B    'NAME',CR,LF
-00071B13= 20 20 20 47 4F 20 ...   3078                  DC.B    '   GO - Execute Program.',CR,LF,LF
-00071B2E                          3079                  
-00071B2E= 53 59 4E 4F 50 53 ...   3080                  DC.B    'SYNOPSYS',CR,LF
-00071B38= 20 20 20 47 4F 20 ...   3081                  DC.B    '   GO <address>',CR,LF,LF
-00071B4A                          3082                  
-00071B4A= 44 45 53 43 52 49 ...   3083                  DC.B    'DESCRIPTION',CR,LF
-00071B57= 20 20 20 54 68 65 ...   3084                  DC.B    '   The GO command is used to start execution from a given address.',CR,LF,LF
-00071B9C                          3085                  
-00071B9C                          3086                  *DC.B    'OPTIONS',CR,LF
-00071B9C                          3087                  *DC.B    '   none',CR,LF,LF
-00071B9C                          3088                  
-00071B9C                          3089                  *DC.B    'NOTES',CR,LF
-00071B9C                          3090                  *DC.B    '   none',CR,LF,LF
-00071B9C                          3091                  
-00071B9C                          3092                  *DC.B    'FILES',CR,LF
-00071B9C                          3093                  *DC.B    '   none',CR,LF,LF
-00071B9C                          3094                  
-00071B9C                          3095                  *DC.B    'ENVIRONMENT',CR,LF
-00071B9C                          3096                  *DC.B    '   none',CR,LF,LF
-00071B9C                          3097                  
-00071B9C                          3098                  *DC.B    'DIAGNOSTICS',CR,LF
-00071B9C                          3099                  *DC.B    '   none',CR,LF,LF
-00071B9C                          3100                  
-00071B9C                          3101                  *DC.B    'BUGS',CR,LF
-00071B9C                          3102                  *DC.B    '   none known atm',CR,LF,LF
-00071B9C                          3103                  
-00071B9C= 41 55 54 48 4F 52 ...   3104                  DC.B    'AUTHOR',CR,LF
-00071BA4= 20 20 20 44 61 6E ...   3105                  DC.B    '   Daniel H. Meves',CR,LF,LF
-00071BB9                          3106                  
-00071BB9                          3107                  *DC.B    'HISTORY',CR,LF
-00071BB9                          3108                  *DC.B    '   none',CR,LF,LF
-00071BB9                          3109                  
-00071BB9= 53 45 45 20 41 4C ...   3110                  DC.B    'SEE ALSO',CR,LF
-00071BC3= 20 20 20 48 45 4C ...   3111                  DC.B    '   HELP(1), MDSP(1), SORTW(1), MM(1), MS(1), BF(1), BMOV(1), BTST(1), BSCH(1), DF(1), EXIT(1), MAN(1)',CR,LF,LF
-00071C2B                          3112                  
-00071C2B= 44 61 6E 69 65 6C ...   3113                  DC.B    'Daniel H. Meves                    27 April 2016                        GO(1)',CR,LF,LF,0
-00071C7C                          3114  
-00071C7C= 0D 0A 44 46 28 31 ...   3115  DFMANPAGE       DC.B    CR,LF,'DF(1)                       MC68000/SANPER-1 ELU                       DF(1)',CR,LF,LF
-00071CCD                          3116                  
-00071CCD= 4E 41 4D 45 0D 0A       3117                  DC.B    'NAME',CR,LF
-00071CD3= 20 20 20 44 46 20 ...   3118                  DC.B    '   DF - Display Formatted Registers.',CR,LF,LF
-00071CFA                          3119                  
-00071CFA= 53 59 4E 4F 50 53 ...   3120                  DC.B    'SYNOPSYS',CR,LF
-00071D04= 20 20 20 44 46 0D ...   3121                  DC.B    '   DF',CR,LF,LF
-00071D0C                          3122                  
-00071D0C= 44 45 53 43 52 49 ...   3123                  DC.B    'DESCRIPTION',CR,LF
-00071D19= 20 20 20 54 68 65 ...   3124                  DC.B    '   The Display Formatted Registers (DF) command is used to display the MC68000 processor registers.',CR,LF 
-00071D7E= 20 20 20 54 68 69 ...   3125                  DC.B    '   This command should display current PC, SR, US, SS and D, A registers.',CR,LF,LF
-00071DCA                          3126                  
-00071DCA                          3127                  *DC.B    'OPTIONS',CR,LF
-00071DCA                          3128                  *DC.B    '   none',CR,LF,LF
-00071DCA                          3129                  
-00071DCA                          3130                  *DC.B    'NOTES',CR,LF
-00071DCA                          3131                  *DC.B    '   none',CR,LF,LF
-00071DCA                          3132                  
-00071DCA                          3133                  *DC.B    'FILES',CR,LF
-00071DCA                          3134                  *DC.B    '   none',CR,LF,LF
-00071DCA                          3135                  
-00071DCA                          3136                  *DC.B    'ENVIRONMENT',CR,LF
-00071DCA                          3137                  *DC.B    '   none',CR,LF,LF
-00071DCA                          3138                  
-00071DCA                          3139                  *DC.B    'DIAGNOSTICS',CR,LF
-00071DCA                          3140                  *DC.B    '   none',CR,LF,LF
-00071DCA                          3141                  
-00071DCA                          3142                  *DC.B    'BUGS',CR,LF
-00071DCA                          3143                  *DC.B    '   none known atm',CR,LF,LF
-00071DCA                          3144                  
-00071DCA= 41 55 54 48 4F 52 ...   3145                  DC.B    'AUTHOR',CR,LF
-00071DD2= 20 20 20 44 61 6E ...   3146                  DC.B    '   Daniel H. Meves',CR,LF,LF
-00071DE7                          3147                  
-00071DE7                          3148                  *DC.B    'HISTORY',CR,LF
-00071DE7                          3149                  *DC.B    '   none',CR,LF,LF
-00071DE7                          3150                  
-00071DE7= 53 45 45 20 41 4C ...   3151                  DC.B    'SEE ALSO',CR,LF
-00071DF1= 20 20 20 48 45 4C ...   3152                  DC.B    '   HELP(1), MDSP(1), SORTW(1), MM(1), MS(1), BF(1), BMOV(1), BTST(1), BSCH(1), GO(1), EXIT(1), MAN(1)',CR,LF,LF
-00071E59                          3153                  
-00071E59= 44 61 6E 69 65 6C ...   3154                  DC.B    'Daniel H. Meves                    27 April 2016                        DF(1)',CR,LF,LF,0
-00071EAA                          3155                  
-00071EAA= 0D 0A 45 58 49 54 ...   3156  EXITMANPAGE     DC.B    CR,LF,'EXIT(1)                       MC68000/SANPER-1 ELU                       EXIT(1)',CR,LF,LF
-00071EFF                          3157                  
-00071EFF= 4E 41 4D 45 0D 0A       3158                  DC.B    'NAME',CR,LF
-00071F05= 20 20 20 45 58 49 ...   3159                  DC.B    '   EXIT - Exit Monitor Program.',CR,LF,LF
-00071F27                          3160                  
-00071F27= 53 59 4E 4F 50 53 ...   3161                  DC.B    'SYNOPSYS',CR,LF
-00071F31= 20 20 20 45 58 49 ...   3162                  DC.B    '   EXIT',CR,LF,LF
-00071F3B                          3163                  
-00071F3B= 44 45 53 43 52 49 ...   3164                  DC.B    'DESCRIPTION',CR,LF
-00071F48= 20 20 20 54 68 65 ...   3165                  DC.B    '   The EXIT command terminates/exits your Monitor program.',CR,LF,LF
-00071F85                          3166                  
-00071F85                          3167                  *DC.B    'OPTIONS',CR,LF
-00071F85                          3168                  *DC.B    '   none',CR,LF,LF
-00071F85                          3169                  
-00071F85                          3170                  *DC.B    'NOTES',CR,LF
-00071F85                          3171                  *DC.B    '   none',CR,LF,LF
-00071F85                          3172                  
-00071F85                          3173                  *DC.B    'FILES',CR,LF
-00071F85                          3174                  *DC.B    '   none',CR,LF,LF
-00071F85                          3175                  
-00071F85                          3176                  *DC.B    'ENVIRONMENT',CR,LF
-00071F85                          3177                  *DC.B    '   none',CR,LF,LF
-00071F85                          3178                  
-00071F85                          3179                  *DC.B    'DIAGNOSTICS',CR,LF
-00071F85                          3180                  *DC.B    '   none',CR,LF,LF
-00071F85                          3181                  
-00071F85                          3182                  *DC.B    'BUGS',CR,LF
-00071F85                          3183                  *DC.B    '   none known atm',CR,LF,LF
-00071F85                          3184                  
-00071F85= 41 55 54 48 4F 52 ...   3185                  DC.B    'AUTHOR',CR,LF
-00071F8D= 20 20 20 44 61 6E ...   3186                  DC.B    '   Daniel H. Meves',CR,LF,LF
-00071FA2                          3187                  
-00071FA2                          3188                  *DC.B    'HISTORY',CR,LF
-00071FA2                          3189                  *DC.B    '   none',CR,LF,LF
-00071FA2                          3190                  
-00071FA2= 53 45 45 20 41 4C ...   3191                  DC.B    'SEE ALSO',CR,LF
-00071FAC= 20 20 20 48 45 4C ...   3192                  DC.B    '   HELP(1), MDSP(1), SORTW(1), MM(1), MS(1), BF(1), BMOV(1), BTST(1), BSCH(1), GO(1), DF(1), MAN(1)',CR,LF,LF
-00072012                          3193                  
-00072012= 44 61 6E 69 65 6C ...   3194                  DC.B    'Daniel H. Meves                    27 April 2016                        EXIT(1)',CR,LF,LF,0   
-00072065                          3195  
-00072065= 0D 0A 4D 41 4E 28 ...   3196  MANMANPAGE      DC.B    CR,LF,'MAN(1)                       MC68000/SANPER-1 ELU                       MAN(1)',CR,LF,LF
-000720B8                          3197                  
-000720B8= 4E 41 4D 45 0D 0A       3198                  DC.B    'NAME',CR,LF
-000720BE= 20 20 20 4D 41 4E ...   3199                  DC.B    '   MAN - An interface to the on-line reference manuals.',CR,LF,LF
-000720F8                          3200                  
-000720F8= 53 59 4E 4F 50 53 ...   3201                  DC.B    'SYNOPSYS',CR,LF
-00072102= 20 20 20 4D 41 4E ...   3202                  DC.B    '   MAN [command]',CR,LF,LF
-00072115                          3203                  
-00072115= 44 45 53 43 52 49 ...   3204                  DC.B    'DESCRIPTION',CR,LF
-00072122= 20 20 20 4D 41 4E ...   3205                  DC.B    '   MAN is the systems manual pager.',CR,LF,LF
-00072148                          3206                  
-00072148                          3207                  *DC.B    'OPTIONS',CR,LF
-00072148                          3208                  *DC.B    '   none',CR,LF,LF
-00072148                          3209                  
-00072148                          3210                  *DC.B    'NOTES',CR,LF
-00072148                          3211                  *DC.B    '   none',CR,LF,LF
-00072148                          3212                  
-00072148                          3213                  *DC.B    'FILES',CR,LF
-00072148                          3214                  *DC.B    '   none',CR,LF,LF
-00072148                          3215                  
-00072148                          3216                  *DC.B    'ENVIRONMENT',CR,LF
-00072148                          3217                  *DC.B    '   none',CR,LF,LF
-00072148                          3218                  
-00072148                          3219                  *DC.B    'DIAGNOSTICS',CR,LF
-00072148                          3220                  *DC.B    '   none',CR,LF,LF
-00072148                          3221                  
-00072148                          3222                  *DC.B    'BUGS',CR,LF
-00072148                          3223                  *DC.B    '   none known atm',CR,LF,LF
-00072148                          3224                  
-00072148= 41 55 54 48 4F 52 ...   3225                  DC.B    'AUTHOR',CR,LF
-00072150= 20 20 20 44 61 6E ...   3226                  DC.B    '   Daniel H. Meves',CR,LF,LF
-00072165                          3227                  
-00072165                          3228                  *DC.B    'HISTORY',CR,LF
-00072165                          3229                  *DC.B    '   none',CR,LF,LF
-00072165                          3230                  
-00072165= 53 45 45 20 41 4C ...   3231                  DC.B    'SEE ALSO',CR,LF
-0007216F= 20 20 20 48 45 4C ...   3232                  DC.B    '   HELP(1), MDSP(1), SORTW(1), MM(1), MS(1), BF(1), BMOV(1), BTST(1), BSCH(1), GO(1), DF(1), EXIT(1)',CR,LF,LF
-000721D6                          3233                  
-000721D6= 44 61 6E 69 65 6C ...   3234                  DC.B    'Daniel H. Meves                    27 April 2016                        MAN(1)',CR,LF,LF,0        
-00072228                          3235  
-00072228                          3236  HISTORYBUFFER   DS.L    500
-000729F8                          3237  
-000729F8                          3238  
+00002B7C                          2377  -------------------- end include --------------------
+00002B7C                          2378  
+00002B7C                          2379      INCLUDE "HEX2ASCII.X68"
+00002B7C  48E7 EFF7               2380  HEX2ASCII   MOVEM.L A0-A3/A5-A7/D0-D2/D4-D7,-(SP)
+00002B80                          2381  
+00002B80  4282                    2382              CLR.L   D2
+00002B82  4283                    2383              CLR.L   D3
+00002B84  49F8 10C0               2384              LEA     HEXBUFFER,A4
+00002B88  18BC 0000               2385              MOVE.B  #NULL,(A4)
+00002B8C  4284                    2386  NEXTHEX     CLR.L   D4
+00002B8E  183C 0001               2387              MOVE.B  #1,D4
+00002B92  BDCD                    2388              CMP.L   A5,A6
+00002B94  6700 0058               2389              BEQ     HEXDONE
+00002B98  1426                    2390              MOVE.B  -(A6),D2
+00002B9A  1602                    2391              MOVE.B  D2,D3
+00002B9C  1403                    2392  HEXLOOP     MOVE.B  D3,D2
+00002B9E  C4BC 0000000F           2393              AND.L   #$0000000F,D2
+00002BA4  0C02 0000               2394              CMPI.B  #$0,D2
+00002BA8  6D00 003A               2395              BLT     HEXRANGE
+00002BAC  0C02 000F               2396              CMPI.B  #$F,D2
+00002BB0  6E00 0032               2397              BGT     HEXRANGE
+00002BB4  0C02 0009               2398              CMPI.B  #$9,D2
+00002BB8  6F00 001C               2399              BLE     HEXNUMBER
+00002BBC  0C02 000A               2400              CMPI.B  #$A,D2
+00002BC0  6C00 0006               2401              BGE     HEXLETTER
+00002BC4  6000 001E               2402              BRA     HEXRANGE
+00002BC8  0602 0037               2403  HEXLETTER   ADDI.B  #$37,D2
+00002BCC  1902                    2404              MOVE.B  D2,-(A4)
+00002BCE  E89B                    2405              ROR.L   #4,D3
+00002BD0  51CC FFCA               2406              DBRA    D4,HEXLOOP
+00002BD4  60B6                    2407              BRA     NEXTHEX
+00002BD6  0602 0030               2408  HEXNUMBER   ADDI.B  #$30,D2
+00002BDA  1902                    2409              MOVE.B  D2,-(A4)
+00002BDC  E89B                    2410              ROR.L   #4,D3
+00002BDE  51CC FFBC               2411              DBRA    D4,HEXLOOP
+00002BE2  60A8                    2412              BRA     NEXTHEX
+00002BE4  43F8 112F               2413  HEXRANGE    LEA     HEXERROR,A1
+00002BE8  103C 000E               2414              MOVE.B  #14,D0
+00002BEC  4E4F                    2415              TRAP    #15
+00002BEE                          2416  
+00002BEE  4CDF EFF7               2417  HEXDONE     MOVEM.L (SP)+,A0-A3/A5-A7/D0-D2/D4-D7
+00002BF2  4E75                    2418              RTS
+00002BF2  4E75                    2419  -------------------- end include --------------------
+00002BF4                          2420      
+00002BF4                          2421      INCLUDE "Exception Handlers.X68"
+00002BF4                          2422              
+00002BF4  48E7 FFFF               2423  BUSERRHDLR  MOVEM.L A0-A7/D0-D7,-(SP) 
+00002BF8                          2424              
+00002BF8  43F8 1308               2425              LEA     BERR,A1
+00002BFC  103C 000D               2426              MOVE.B  #13,D0
+00002C00  4E4F                    2427              TRAP    #15
+00002C02                          2428              
+00002C02  43F8 143A               2429              LEA     SSW,A1
+00002C06  103C 000E               2430              MOVE.B  #14,D0
+00002C0A  4E4F                    2431              TRAP    #15
+00002C0C  4BF8 10D4               2432              LEA     BUFFER,A5
+00002C10  4DF8 10D4               2433              LEA     BUFFER,A6
+00002C14  544E                    2434              ADDA.W  #2,A6
+00002C16  3A9F                    2435              MOVE.W  (A7)+,(A5)
+00002C18  4EB8 2B7C               2436              JSR     HEX2ASCII
+00002C1C  224C                    2437              MOVE.L  A4,A1
+00002C1E  103C 000D               2438              MOVE.B  #13,D0
+00002C22  4E4F                    2439              TRAP    #15
+00002C24                          2440              
+00002C24  43F8 1441               2441              LEA     BA,A1
+00002C28  103C 000E               2442              MOVE.B  #14,D0
+00002C2C  4E4F                    2443              TRAP    #15
+00002C2E  4BF8 10D4               2444              LEA     BUFFER,A5
+00002C32  4DF8 10D4               2445              LEA     BUFFER,A6
+00002C36  584E                    2446              ADDA.W  #4,A6
+00002C38  2A9F                    2447              MOVE.L  (A7)+,(A5)
+00002C3A  4EB8 2B7C               2448              JSR     HEX2ASCII
+00002C3E  224C                    2449              MOVE.L  A4,A1
+00002C40  103C 000D               2450              MOVE.B  #13,D0
+00002C44  4E4F                    2451              TRAP    #15
+00002C46                          2452              
+00002C46  43F8 1447               2453              LEA     IR,A1
+00002C4A  103C 000E               2454              MOVE.B  #14,D0
+00002C4E  4E4F                    2455              TRAP    #15
+00002C50  4BF8 10D4               2456              LEA     BUFFER,A5
+00002C54  4DF8 10D4               2457              LEA     BUFFER,A6
+00002C58  544E                    2458              ADDA.W  #2,A6
+00002C5A  3A9F                    2459              MOVE.W  (A7)+,(A5)
+00002C5C  4EB8 2B7C               2460              JSR     HEX2ASCII
+00002C60  224C                    2461              MOVE.L  A4,A1
+00002C62  103C 000D               2462              MOVE.B  #13,D0
+00002C66  4E4F                    2463              TRAP    #15
+00002C68                          2464              
+00002C68  31DF 12F0               2465              MOVE.W  (A7)+,SRDATA
+00002C6C  21D7 12E8               2466              MOVE.L  (A7),PCDATA
+00002C70  4E6B                    2467              MOVE.L  USP,A3
+00002C72  21CB 12FC               2468              MOVE.L  A3,USPDATA
+00002C76  21CF 12F8               2469              MOVE.L  SP,SSPDATA2
+00002C7A  4EB8 244E               2470              JSR     DF
+00002C7E  21F8 12F4 12F8          2471              MOVE.L  SSPDATA,SSPDATA2
+00002C84  31F8 12F2 12F0          2472              MOVE.W  SRDATA2,SRDATA
+00002C8A  21F8 12EC 12E8          2473              MOVE.L  PCDATA2,PCDATA
+00002C90  21F8 1300 12FC          2474              MOVE.L  USPDATA2,USPDATA
+00002C96                          2475              
+00002C96  4CDF FFFF               2476              MOVEM.L (SP)+,A0-A7/D0-D7
+00002C9A  6000 E946               2477              BRA     NEXTCMD
+00002C9E                          2478            
+00002C9E  48E7 FFFF               2479  ADDERRHDLR  MOVEM.L A0-A7/D0-D7,-(SP)
+00002CA2                          2480  
+00002CA2  43F8 1323               2481              LEA     AERR,A1
+00002CA6  103C 000D               2482              MOVE.B  #13,D0
+00002CAA  4E4F                    2483              TRAP    #15
+00002CAC                          2484              
+00002CAC  43F8 143A               2485              LEA     SSW,A1
+00002CB0  103C 000E               2486              MOVE.B  #14,D0
+00002CB4  4E4F                    2487              TRAP    #15
+00002CB6  4BF8 10D4               2488              LEA     BUFFER,A5
+00002CBA  4DF8 10D4               2489              LEA     BUFFER,A6
+00002CBE  544E                    2490              ADDA.W  #2,A6
+00002CC0  3A9F                    2491              MOVE.W  (A7)+,(A5)
+00002CC2  4EB8 2B7C               2492              JSR     HEX2ASCII
+00002CC6  224C                    2493              MOVE.L  A4,A1
+00002CC8  103C 000D               2494              MOVE.B  #13,D0
+00002CCC  4E4F                    2495              TRAP    #15
+00002CCE                          2496              
+00002CCE  43F8 1441               2497              LEA     BA,A1
+00002CD2  103C 000E               2498              MOVE.B  #14,D0
+00002CD6  4E4F                    2499              TRAP    #15
+00002CD8  4BF8 10D4               2500              LEA     BUFFER,A5
+00002CDC  4DF8 10D4               2501              LEA     BUFFER,A6
+00002CE0  584E                    2502              ADDA.W  #4,A6
+00002CE2  2A9F                    2503              MOVE.L  (A7)+,(A5)
+00002CE4  4EB8 2B7C               2504              JSR     HEX2ASCII
+00002CE8  224C                    2505              MOVE.L  A4,A1
+00002CEA  103C 000D               2506              MOVE.B  #13,D0
+00002CEE  4E4F                    2507              TRAP    #15
+00002CF0                          2508              
+00002CF0  43F8 1447               2509              LEA     IR,A1
+00002CF4  103C 000E               2510              MOVE.B  #14,D0
+00002CF8  4E4F                    2511              TRAP    #15
+00002CFA  4BF8 10D4               2512              LEA     BUFFER,A5
+00002CFE  4DF8 10D4               2513              LEA     BUFFER,A6
+00002D02  544E                    2514              ADDA.W  #2,A6
+00002D04  3A9F                    2515              MOVE.W  (A7)+,(A5)
+00002D06  4EB8 2B7C               2516              JSR     HEX2ASCII
+00002D0A  224C                    2517              MOVE.L  A4,A1
+00002D0C  103C 000D               2518              MOVE.B  #13,D0
+00002D10  4E4F                    2519              TRAP    #15
+00002D12                          2520              
+00002D12  31DF 12F0               2521              MOVE.W  (A7)+,SRDATA
+00002D16  21D7 12E8               2522              MOVE.L  (A7),PCDATA
+00002D1A  4E6B                    2523              MOVE.L  USP,A3
+00002D1C  21CB 12FC               2524              MOVE.L  A3,USPDATA
+00002D20  21CF 12F8               2525              MOVE.L  SP,SSPDATA2
+00002D24  4EB8 244E               2526              JSR     DF
+00002D28  21F8 12F4 12F8          2527              MOVE.L  SSPDATA,SSPDATA2
+00002D2E  31F8 12F2 12F0          2528              MOVE.W  SRDATA2,SRDATA
+00002D34  21F8 12EC 12E8          2529              MOVE.L  PCDATA2,PCDATA
+00002D3A  21F8 1300 12FC          2530              MOVE.L  USPDATA2,USPDATA
+00002D40                          2531              
+00002D40  4CDF FFFF               2532              MOVEM.L (SP)+,A0-A7/D0-D7
+00002D44  6000 E89C               2533              BRA     NEXTCMD
+00002D48                          2534              
+00002D48  48E7 FFFF               2535  ILLINSTHDLR MOVEM.L A0-A7/D0-D7,-(SP)
+00002D4C                          2536  
+00002D4C  43F8 1343               2537              LEA     ILL_INST,A1
+00002D50  103C 000D               2538              MOVE.B  #13,D0
+00002D54  4E4F                    2539              TRAP    #15
+00002D56                          2540   
+00002D56  31DF 12F0               2541              MOVE.W  (A7)+,SRDATA
+00002D5A  21D7 12E8               2542              MOVE.L  (A7),PCDATA
+00002D5E  4E6B                    2543              MOVE.L  USP,A3
+00002D60  21CB 12FC               2544              MOVE.L  A3,USPDATA
+00002D64  21CF 12F8               2545              MOVE.L  SP,SSPDATA2
+00002D68  4EB8 244E               2546              JSR     DF
+00002D6C  21F8 12F4 12F8          2547              MOVE.L  SSPDATA,SSPDATA2
+00002D72  31F8 12F2 12F0          2548              MOVE.W  SRDATA2,SRDATA
+00002D78  21F8 12EC 12E8          2549              MOVE.L  PCDATA2,PCDATA
+00002D7E  21F8 1300 12FC          2550              MOVE.L  USPDATA2,USPDATA
+00002D84                          2551              
+00002D84  4CDF FFFF               2552              MOVEM.L (SP)+,A0-A7/D0-D7
+00002D88  6000 E858               2553              BRA     NEXTCMD
+00002D8C                          2554           
+00002D8C  48E7 FFFF               2555  PRIV_VHDLR  MOVEM.L A0-A7/D0-D7,-(SP)
+00002D90                          2556  
+00002D90  43F8 1368               2557              LEA     PRIV_V,A1
+00002D94  103C 000D               2558              MOVE.B  #13,D0
+00002D98  4E4F                    2559              TRAP    #15
+00002D9A                          2560              
+00002D9A  31DF 12F0               2561              MOVE.W  (A7)+,SRDATA
+00002D9E  21D7 12E8               2562              MOVE.L  (A7),PCDATA
+00002DA2  4E6B                    2563              MOVE.L  USP,A3
+00002DA4  21CB 12FC               2564              MOVE.L  A3,USPDATA
+00002DA8  21CF 12F8               2565              MOVE.L  SP,SSPDATA2
+00002DAC  4EB8 244E               2566              JSR     DF
+00002DB0  21F8 12F4 12F8          2567              MOVE.L  SSPDATA,SSPDATA2
+00002DB6  31F8 12F2 12F0          2568              MOVE.W  SRDATA2,SRDATA
+00002DBC  21F8 12EC 12E8          2569              MOVE.L  PCDATA2,PCDATA
+00002DC2  21F8 1300 12FC          2570              MOVE.L  USPDATA2,USPDATA
+00002DC8                          2571              
+00002DC8  4CDF FFFF               2572              MOVEM.L (SP)+,A0-A7/D0-D7
+00002DCC  6000 E814               2573              BRA     NEXTCMD
+00002DD0                          2574              
+00002DD0  48E7 FFFF               2575  DIV_ZHDLR   MOVEM.L A0-A7/D0-D7,-(SP)
+00002DD4                          2576  
+00002DD4  43F8 138D               2577              LEA     DIV_ZERO,A1
+00002DD8  103C 000D               2578              MOVE.B  #13,D0
+00002DDC  4E4F                    2579              TRAP    #15
+00002DDE                          2580              
+00002DDE  31DF 12F0               2581              MOVE.W  (A7)+,SRDATA
+00002DE2  21D7 12E8               2582              MOVE.L  (A7),PCDATA
+00002DE6  4E6B                    2583              MOVE.L  USP,A3
+00002DE8  21CB 12FC               2584              MOVE.L  A3,USPDATA
+00002DEC  21CF 12F8               2585              MOVE.L  SP,SSPDATA2
+00002DF0  4EB8 244E               2586              JSR     DF
+00002DF4  21F8 12F4 12F8          2587              MOVE.L  SSPDATA,SSPDATA2
+00002DFA  31F8 12F2 12F0          2588              MOVE.W  SRDATA2,SRDATA
+00002E00  21F8 12EC 12E8          2589              MOVE.L  PCDATA2,PCDATA
+00002E06  21F8 1300 12FC          2590              MOVE.L  USPDATA2,USPDATA
+00002E0C                          2591              
+00002E0C  4CDF FFFF               2592              MOVEM.L (SP)+,A0-A7/D0-D7
+00002E10  6000 E7D0               2593              BRA     NEXTCMD
+00002E14                          2594              
+00002E14  48E7 FFFF               2595  CHK_IHDLR   MOVEM.L A0-A7/D0-D7,-(SP)
+00002E18                          2596  
+00002E18  43F8 13B7               2597              LEA     CHK_INST,A1
+00002E1C  103C 000D               2598              MOVE.B  #13,D0
+00002E20  4E4F                    2599              TRAP    #15
+00002E22                          2600              
+00002E22  31DF 12F0               2601              MOVE.W  (A7)+,SRDATA
+00002E26  21D7 12E8               2602              MOVE.L  (A7),PCDATA
+00002E2A  4E6B                    2603              MOVE.L  USP,A3
+00002E2C  21CB 12FC               2604              MOVE.L  A3,USPDATA
+00002E30  21CF 12F8               2605              MOVE.L  SP,SSPDATA2
+00002E34  4EB8 244E               2606              JSR     DF
+00002E38  21F8 12F4 12F8          2607              MOVE.L  SSPDATA,SSPDATA2
+00002E3E  31F8 12F2 12F0          2608              MOVE.W  SRDATA2,SRDATA
+00002E44  21F8 12EC 12E8          2609              MOVE.L  PCDATA2,PCDATA
+00002E4A  21F8 1300 12FC          2610              MOVE.L  USPDATA2,USPDATA
+00002E50                          2611              
+00002E50  4CDF FFFF               2612              MOVEM.L (SP)+,A0-A7/D0-D7
+00002E54  6000 E78C               2613              BRA     NEXTCMD
+00002E58                          2614              
+00002E58  48E7 FFFF               2615  LINE_AHDLR  MOVEM.L A0-A7/D0-D7,-(SP)
+00002E5C                          2616  
+00002E5C  43F8 13E4               2617              LEA     LINE_A,A1
+00002E60  103C 000D               2618              MOVE.B  #13,D0
+00002E64  4E4F                    2619              TRAP    #15
+00002E66                          2620              
+00002E66  31DF 12F0               2621              MOVE.W  (A7)+,SRDATA
+00002E6A  21D7 12E8               2622              MOVE.L  (A7),PCDATA
+00002E6E  4E6B                    2623              MOVE.L  USP,A3
+00002E70  21CB 12FC               2624              MOVE.L  A3,USPDATA
+00002E74  21CF 12F8               2625              MOVE.L  SP,SSPDATA2
+00002E78  4EB8 244E               2626              JSR     DF
+00002E7C  21F8 12F4 12F8          2627              MOVE.L  SSPDATA,SSPDATA2
+00002E82  31F8 12F2 12F0          2628              MOVE.W  SRDATA2,SRDATA
+00002E88  21F8 12EC 12E8          2629              MOVE.L  PCDATA2,PCDATA
+00002E8E  21F8 1300 12FC          2630              MOVE.L  USPDATA2,USPDATA
+00002E94                          2631              
+00002E94  4CDF FFFF               2632              MOVEM.L (SP)+,A0-A7/D0-D7
+00002E98  6000 E748               2633              BRA     NEXTCMD
+00002E9C                          2634              
+00002E9C  48E7 FFFF               2635  LINE_FHDLR  MOVEM.L A0-A7/D0-D7,-(SP)
+00002EA0                          2636  
+00002EA0  43F8 140F               2637              LEA     LINE_F,A1
+00002EA4  103C 000D               2638              MOVE.B  #13,D0
+00002EA8  4E4F                    2639              TRAP    #15
+00002EAA                          2640              
+00002EAA  31DF 12F0               2641              MOVE.W  (A7)+,SRDATA
+00002EAE  21D7 12E8               2642              MOVE.L  (A7),PCDATA
+00002EB2  4E6B                    2643              MOVE.L  USP,A3
+00002EB4  21CB 12FC               2644              MOVE.L  A3,USPDATA
+00002EB8  21CF 12F8               2645              MOVE.L  SP,SSPDATA2
+00002EBC  4EB8 244E               2646              JSR     DF
+00002EC0  21F8 12F4 12F8          2647              MOVE.L  SSPDATA,SSPDATA2
+00002EC6  31F8 12F2 12F0          2648              MOVE.W  SRDATA2,SRDATA
+00002ECC  21F8 12EC 12E8          2649              MOVE.L  PCDATA2,PCDATA
+00002ED2  21F8 1300 12FC          2650              MOVE.L  USPDATA2,USPDATA
+00002ED8                          2651              
+00002ED8  4CDF FFFF               2652              MOVEM.L (SP)+,A0-A7/D0-D7
+00002EDC  6000 E704               2653              BRA     NEXTCMD
+00002EE0                          2654  
+00002EE0                          2655  -------------------- end include --------------------
+00002EE0                          2656      
+00002EE0                          2657      INCLUDE "Man Pages.X68"
+00070000                          2658          ORG     $70000
+00070000= 0D 0A 2A 2A 2A 2A ...   2659  CMDMSG          DC.B    CR,LF,'*****ALL MONITOR441 COMMANDS*****',CR,LF,LF,0
+00070027= 0D 0A 20 20 20 48 ...   2660  HELPMSG         DC.B    CR,LF,'   HELP: Displays this message',CR,LF,LF,0
+0007004B                          2661                  
+0007004B= 0D 0A 20 20 20 4D ...   2662  MDSPMSG         DC.B    CR,LF,'   MDSP: Outputs Address And Memory Contents',CR,LF
+0007007B= 20 20 20 4D 44 53 ...   2663                  DC.B    '   MDSP <address1> <address2> eg: MDSP $908 $90A<CR>',CR,LF,LF,0
+000700B3                          2664                  
+000700B3= 0D 0A 20 20 20 53 ...   2665  SORTWMSG        DC.B    CR,LF,'   SORTW: Sorts A Block Of Memory',CR,LF
+000700D8= 20 20 20 44 65 66 ...   2666                  DC.B    '   Default: Descending Order',CR,LF
+000700F6= 20 20 20 3B 41 3A ...   2667                  DC.B    '   ;A: Ascending Order',CR,LF
+0007010E= 20 20 20 3B 44 3A ...   2668                  DC.B    '   ;D: Descending Order',CR,LF
+00070127= 20 20 20 53 4F 52 ...   2669                  DC.B    '   SORTW <address1> <address2> [;order] eg: SORTW $904 $90E ;A<CR>',CR,LF,LF,0
+0007016D                          2670                  
+0007016D= 0D 0A 20 20 20 4D ...   2671  MMMSG           DC.B    CR,LF,'   MM: Modifies Data In Memory',CR,LF
+0007018F= 20 20 20 44 65 66 ...   2672                  DC.B    '   Default: Displays One Byte',CR,LF
+000701AE= 20 20 20 3B 57 3A ...   2673                  DC.B    '   ;W: Displays One Word',CR,LF
+000701C8= 20 20 20 3B 4C 3A ...   2674                  DC.B    '   ;L: Displays One Long Word',CR,LF
+000701E7= 20 20 20 4D 4D 20 ...   2675                  DC.B    '   MM <address>[;size] eg: MM $904;W<CR>',CR,LF,LF,0
+00070213                          2676                  
+00070213= 0D 0A 20 20 20 4D ...   2677  MSMSG           DC.B    CR,LF,'   MS - Memory Set.',CR,LF
+0007022A= 20 20 20 4D 53 20 ...   2678                  DC.B    '   MS <address> [data] eg: MS $904 $FFFF<CR>',CR,LF,LF,0
+0007025A                          2679                  
+0007025A= 0D 0A 20 20 20 42 ...   2680  BFMSG           DC.B    CR,LF,'   BF: Fills A Block Of Memory',CR,LF
+0007027C= 20 20 20 42 46 20 ...   2681                  DC.B    '   BF <address1> <address2> <word> eg: BF $904 $908 475A<CR>',CR,LF,LF,0
+000702BC                          2682                  
+000702BC= 0D 0A 20 20 20 42 ...   2683  BMOVMSG         DC.B    CR,LF,'   BMOV: Moves A Block of Memory To Another Area',CR,LF
+000702F0= 20 20 20 42 4D 4F ...   2684                  DC.B    '   BMOV <address1> <address2> <address3> eg: BMOV $908 $90B $909<CR>',CR,LF,LF,0
+00070338                          2685                  
+00070338= 0D 0A 20 20 20 42 ...   2686  BTSTMSG         DC.B    CR,LF,'   BTST - Block Test.',CR,LF,LF,0
+00070353                          2687                  
+00070353= 0D 0A 20 20 20 42 ...   2688  BSCHMSG         DC.B    CR,LF,'   BSCH: Searches A Literal String In The Memory',CR,LF
+00070387= 20 20 20 42 53 43 ...   2689                  DC.B    '   BSCH <address1> <address2> "literal string" eg: BSCH $900 $910 "MATCH"<CR>',CR,LF,LF,0
+000703D8                          2690                  
+000703D8= 0D 0A 20 20 20 47 ...   2691  GOMSG           DC.B    CR,LF,'   GO: Starts Execution From Given Address',CR,LF
+00070406= 20 20 20 47 4F 20 ...   2692                  DC.B    '   GO <address> eg: GO $900<CR>',CR,LF,LF,0
+00070429                          2693                  
+00070429= 0D 0A 20 20 20 44 ...   2694  DFMSG           DC.B    CR,LF,'   DF - Display Formatted Registers.',CR,LF,LF,0
+00070453                          2695                  
+00070453= 0D 0A 20 20 20 45 ...   2696  EXITMSG         DC.B    CR,LF,'   EXIT - Exit the monitor program eg: EXIT<CR>',CR,LF,LF,0
+00070488                          2697                  
+00070488= 0D 0A 2A 2A 2A 2A ...   2698  CMDMSG2         DC.B    CR,LF,'*****Try HELP <command> or MAN <command> to view man page.*****',CR,LF,LF,0
+000704CD                          2699  
+000704CD                          2700      
+000704CD= 0D 0A 48 45 4C 50 ...   2701  HELPMANPAGE     DC.B    CR,LF,'HELP(1)                       MC68000/SANPER-1 ELU                       HELP(1)',CR,LF,LF
+00070522                          2702                  
+00070522= 4E 41 4D 45 0D 0A       2703                  DC.B    'NAME',CR,LF
+00070528= 20 20 20 48 45 4C ...   2704                  DC.B    '   HELP - Help.',CR,LF,LF
+0007053A                          2705                  
+0007053A= 53 59 4E 4F 50 53 ...   2706                  DC.B    'SYNOPSYS',CR,LF
+00070544= 20 20 20 48 45 4C ...   2707                  DC.B    '   HELP',CR,LF,LF
+0007054E                          2708                  
+0007054E= 44 45 53 43 52 49 ...   2709                  DC.B    'DESCRIPTION',CR,LF
+0007055B= 20 20 20 54 68 65 ...   2710                  DC.B    '   The Help command must display all available commands and usage descriptions.',CR,LF,LF
+000705AD                          2711                  
+000705AD                          2712                  *DC.B    'OPTIONS',CR,LF
+000705AD                          2713                  *DC.B    '   none',CR,LF,LF
+000705AD                          2714                  
+000705AD                          2715                  *DC.B    'NOTES',CR,LF
+000705AD                          2716                  *DC.B    '   none',CR,LF,LF
+000705AD                          2717                  
+000705AD                          2718                  *DC.B    'FILES',CR,LF
+000705AD                          2719                  *DC.B    '   none',CR,LF,LF
+000705AD                          2720                  
+000705AD                          2721                  *DC.B    'ENVIRONMENT',CR,LF
+000705AD                          2722                  *DC.B    '   none',CR,LF,LF
+000705AD                          2723                  
+000705AD                          2724                  *DC.B    'DIAGNOSTICS',CR,LF
+000705AD                          2725                  *DC.B    '   none',CR,LF,LF
+000705AD                          2726                  
+000705AD                          2727                  *DC.B    'BUGS',CR,LF
+000705AD                          2728                  *DC.B    '   none known atm',CR,LF,LF
+000705AD                          2729                  
+000705AD= 41 55 54 48 4F 52 ...   2730                  DC.B    'AUTHOR',CR,LF
+000705B5= 20 20 20 44 61 6E ...   2731                  DC.B    '   Daniel H. Meves',CR,LF,LF
+000705CA                          2732                  
+000705CA                          2733                  *DC.B    'HISTORY',CR,LF
+000705CA                          2734                  *DC.B    '   none',CR,LF,LF
+000705CA                          2735                  
+000705CA= 53 45 45 20 41 4C ...   2736                  DC.B    'SEE ALSO',CR,LF
+000705D4= 20 20 20 4D 44 53 ...   2737                  DC.B    '   MDSP(1), SORTW(1), MM(1), MS(1), BF(1), BMOV(1), BTST(1), BSCH(1), GO(1), DF(1), EXIT(1), MAN(1)',CR,LF,LF
+0007063A                          2738                  
+0007063A= 44 61 6E 69 65 6C ...   2739                  DC.B    'Daniel H. Meves                    27 April 2016                        HELP(1)',CR,LF,LF,0
+0007068D                          2740  
+0007068D= 0D 0A 4D 44 53 50 ...   2741  MDSPMANPAGE     DC.B    CR,LF,'MDSP(1)                       MC68000/SANPER-1 ELU                       MDSP(1)',CR,LF,LF
+000706E2                          2742                  
+000706E2= 4E 41 4D 45 0D 0A       2743                  DC.B    'NAME',CR,LF
+000706E8= 20 20 20 4D 44 53 ...   2744                  DC.B    '   MDSP - Memory Display.',CR,LF,LF
+00070704                          2745                  
+00070704= 53 59 4E 4F 50 53 ...   2746                  DC.B    'SYNOPSYS',CR,LF
+0007070E= 20 20 20 4D 44 53 ...   2747                  DC.B    '   MDSP <address1> <address2>',CR,LF,LF
+0007072E                          2748                  
+0007072E= 44 45 53 43 52 49 ...   2749                  DC.B    'DESCRIPTION',CR,LF
+0007073B= 20 20 20 54 68 65 ...   2750                  DC.B    '   The MDSP (Memory Display) command outputs the address and memory contents from',CR,LF
+0007078E= 20 20 20 3C 61 64 ...   2751                  DC.B    '   <address1> to <address2>. The MDSP (Memory Display) command ALSO outputs the',CR,LF
+000707DF= 20 20 20 61 64 64 ...   2752                  DC.B    '   address and memory contents from <address1> to <address1 + 16bytes>.',CR,LF,LF
+00070829                          2753                  
+00070829                          2754                  *DC.B    'OPTIONS',CR,LF
+00070829                          2755                  *DC.B    '   none',CR,LF,LF
+00070829                          2756                  
+00070829                          2757                  *DC.B    'NOTES',CR,LF
+00070829                          2758                  *DC.B    '   none',CR,LF,LF
+00070829                          2759                  
+00070829                          2760                  *DC.B    'FILES',CR,LF
+00070829                          2761                  *DC.B    '   none',CR,LF,LF
+00070829                          2762                  
+00070829                          2763                  *DC.B    'ENVIRONMENT',CR,LF
+00070829                          2764                  *DC.B    '   none',CR,LF,LF
+00070829                          2765                  
+00070829                          2766                  *DC.B    'DIAGNOSTICS',CR,LF
+00070829                          2767                  *DC.B    '   none',CR,LF,LF
+00070829                          2768                  
+00070829                          2769                  *DC.B    'BUGS',CR,LF
+00070829                          2770                  *DC.B    '   none known atm',CR,LF,LF
+00070829                          2771                  
+00070829= 41 55 54 48 4F 52 ...   2772                  DC.B    'AUTHOR',CR,LF
+00070831= 20 20 20 44 61 6E ...   2773                  DC.B    '   Daniel H. Meves',CR,LF,LF
+00070846                          2774                  
+00070846                          2775                  *DC.B    'HISTORY',CR,LF
+00070846                          2776                  *DC.B    '   none',CR,LF,LF
+00070846                          2777                  
+00070846= 53 45 45 20 41 4C ...   2778                  DC.B    'SEE ALSO',CR,LF
+00070850= 20 20 20 48 45 4C ...   2779                  DC.B    '   HELP(1), SORTW(1), MM(1), MS(1), BF(1), BMOV(1), BTST(1), BSCH(1), GO(1), DF(1), EXIT(1), MAN(1)',CR,LF,LF
+000708B6                          2780                  
+000708B6= 44 61 6E 69 65 6C ...   2781                  DC.B    'Daniel H. Meves                    27 April 2016                        MDSP(1)',CR,LF,LF,0
+00070909                          2782                  
+00070909= 0D 0A 53 4F 52 54 ...   2783  SORTWMANPAGE    DC.B    CR,LF,'SORTW(1)                       MC68000/SANPER-1 ELU                       SORTW(1)',CR,LF,LF
+00070960                          2784                  
+00070960= 4E 41 4D 45 0D 0A       2785                  DC.B    'NAME',CR,LF
+00070966= 20 20 20 53 4F 52 ...   2786                  DC.B    '   SORTW - Sort.',CR,LF,LF
+00070979                          2787                  
+00070979= 53 59 4E 4F 50 53 ...   2788                  DC.B    'SYNOPSYS',CR,LF
+00070983= 20 20 20 53 4F 52 ...   2789                  DC.B    '   SORTW <address1> <address2> [;order]',CR,LF,LF
+000709AD                          2790                  
+000709AD= 44 45 53 43 52 49 ...   2791                  DC.B    'DESCRIPTION',CR,LF
+000709BA= 20 20 20 54 68 65 ...   2792                  DC.B    '   The SORT command sorts a block of memory. The starting address <address1> and the',CR,LF
+00070A10= 20 20 20 65 6E 64 ...   2793                  DC.B    '   ending address <address2> of the memory block are specified in the command. The order',CR,LF
+00070A6A= 20 20 20 28 41 20 ...   2794                  DC.B    '   (A or D) specifies whether the list is sorted in Ascending or Descending order. (The size of',CR,LF
+00070ACB= 20 20 20 74 68 65 ...   2795                  DC.B    '   the data to be sorted is a word)',CR,LF,LF
+00070AF1                          2796                  
+00070AF1                          2797                  *DC.B    'OPTIONS',CR,LF
+00070AF1                          2798                  *DC.B    '   none',CR,LF,LF
+00070AF1                          2799                  
+00070AF1                          2800                  *DC.B    'NOTES',CR,LF
+00070AF1                          2801                  *DC.B    '   none',CR,LF,LF
+00070AF1                          2802                  
+00070AF1                          2803                  *DC.B    'FILES',CR,LF
+00070AF1                          2804                  *DC.B    '   none',CR,LF,LF
+00070AF1                          2805                  
+00070AF1                          2806                  *DC.B    'ENVIRONMENT',CR,LF
+00070AF1                          2807                  *DC.B    '   none',CR,LF,LF
+00070AF1                          2808                  
+00070AF1                          2809                  *DC.B    'DIAGNOSTICS',CR,LF
+00070AF1                          2810                  *DC.B    '   none',CR,LF,LF
+00070AF1                          2811                  
+00070AF1                          2812                  *DC.B    'BUGS',CR,LF
+00070AF1                          2813                  *DC.B    '   none known atm',CR,LF,LF
+00070AF1                          2814                  
+00070AF1= 41 55 54 48 4F 52 ...   2815                  DC.B    'AUTHOR',CR,LF
+00070AF9= 20 20 20 44 61 6E ...   2816                  DC.B    '   Daniel H. Meves',CR,LF,LF
+00070B0E                          2817                  
+00070B0E                          2818                  *DC.B    'HISTORY',CR,LF
+00070B0E                          2819                  *DC.B    '   none',CR,LF,LF
+00070B0E                          2820                  
+00070B0E= 53 45 45 20 41 4C ...   2821                  DC.B    'SEE ALSO',CR,LF
+00070B18= 20 20 20 48 45 4C ...   2822                  DC.B    '   HELP(1), MDSP(1), MM(1), MS(1), BF(1), BMOV(1), BTST(1), BSCH(1), GO(1), DF(1), EXIT(1), MAN(1)',CR,LF,LF
+00070B7D                          2823                  
+00070B7D= 44 61 6E 69 65 6C ...   2824                  DC.B    'Daniel H. Meves                    27 April 2016                        SORTW(1)',CR,LF,LF,0
+00070BD1                          2825                  
+00070BD1= 0D 0A 4D 4D 28 31 ...   2826  MMMANPAGE       DC.B    CR,LF,'MM(1)                       MC68000/SANPER-1 ELU                       MM(1)',CR,LF,LF
+00070C22                          2827                  
+00070C22= 4E 41 4D 45 0D 0A       2828                  DC.B    'NAME',CR,LF
+00070C28= 20 20 20 4D 4D 20 ...   2829                  DC.B    '   MM - Memory Modify.',CR,LF,LF
+00070C41                          2830                  
+00070C41= 53 59 4E 4F 50 53 ...   2831                  DC.B    'SYNOPSYS',CR,LF
+00070C4B= 20 20 20 4D 4D 20 ...   2832                  DC.B    '   MM <address> [;size]',CR,LF,LF
+00070C65                          2833                  
+00070C65= 44 45 53 43 52 49 ...   2834                  DC.B    'DESCRIPTION',CR,LF
+00070C72= 20 20 20 4D 4D 20 ...   2835                  DC.B    '   MM (Memory Modify) command is used to display memory and, as required, modify data',CR,LF
+00070CC9= 20 20 20 6F 72 20 ...   2836                  DC.B    '   or enter new data. The size (byte, word, long word) controls the number of bytes displayed',CR,LF
+00070D28= 20 20 20 66 6F 72 ...   2837                  DC.B    '   for each address.',CR,LF,LF
+00070D3F                          2838                  
+00070D3F                          2839                  *DC.B    'OPTIONS',CR,LF
+00070D3F                          2840                  *DC.B    '   none',CR,LF,LF
+00070D3F                          2841                  
+00070D3F                          2842                  *DC.B    'NOTES',CR,LF
+00070D3F                          2843                  *DC.B    '   none',CR,LF,LF
+00070D3F                          2844                  
+00070D3F                          2845                  *DC.B    'FILES',CR,LF
+00070D3F                          2846                  *DC.B    '   none',CR,LF,LF
+00070D3F                          2847                  
+00070D3F                          2848                  *DC.B    'ENVIRONMENT',CR,LF
+00070D3F                          2849                  *DC.B    '   none',CR,LF,LF
+00070D3F                          2850                  
+00070D3F                          2851                  *DC.B    'DIAGNOSTICS',CR,LF
+00070D3F                          2852                  *DC.B    '   none',CR,LF,LF
+00070D3F                          2853                  
+00070D3F                          2854                  *DC.B    'BUGS',CR,LF
+00070D3F                          2855                  *DC.B    '   none known atm',CR,LF,LF
+00070D3F                          2856                  
+00070D3F= 41 55 54 48 4F 52 ...   2857                  DC.B    'AUTHOR',CR,LF
+00070D47= 20 20 20 44 61 6E ...   2858                  DC.B    '   Daniel H. Meves',CR,LF,LF
+00070D5C                          2859                  
+00070D5C                          2860                  *DC.B    'HISTORY',CR,LF
+00070D5C                          2861                  *DC.B    '   none',CR,LF,LF
+00070D5C                          2862                  
+00070D5C= 53 45 45 20 41 4C ...   2863                  DC.B    'SEE ALSO',CR,LF
+00070D66= 20 20 20 48 45 4C ...   2864                  DC.B    '   HELP(1), MDSP(1), SORTW(1), MS(1), BF(1), BMOV(1), BTST(1), BSCH(1), GO(1), DF(1), EXIT(1), MAN(1)',CR,LF,LF
+00070DCE                          2865                  
+00070DCE= 44 61 6E 69 65 6C ...   2866                  DC.B    'Daniel H. Meves                    27 April 2016                        MM(1)',CR,LF,LF,0
+00070E1F                          2867                  
+00070E1F= 0D 0A 4D 53 28 31 ...   2868  MSMANPAGE       DC.B    CR,LF,'MS(1)                       MC68000/SANPER-1 ELU                       MS(1)',CR,LF,LF
+00070E70                          2869                  
+00070E70= 4E 41 4D 45 0D 0A       2870                  DC.B    'NAME',CR,LF
+00070E76= 20 20 20 4D 53 20 ...   2871                  DC.B    '   MS - Memory Set.',CR,LF,LF
+00070E8C                          2872                  
+00070E8C= 53 59 4E 4F 50 53 ...   2873                  DC.B    'SYNOPSYS',CR,LF
+00070E96= 20 20 20 4D 53 20 ...   2874                  DC.B    '   MS <address> [data]',CR,LF,LF
+00070EAF                          2875                  
+00070EAF= 44 45 53 43 52 49 ...   2876                  DC.B    'DESCRIPTION',CR,LF
+00070EBC= 20 20 20 54 68 65 ...   2877                  DC.B    '   The Memory Set (MS) command alters memory by setting data into the address specified. The',CR,LF
+00070F1A= 20 20 20 64 61 74 ...   2878                  DC.B    '   data can take the form of ASCII string or hexadecimal data.',CR,LF,LF
+00070F5B                          2879                  
+00070F5B                          2880                  *DC.B    'OPTIONS',CR,LF
+00070F5B                          2881                  *DC.B    '   none',CR,LF,LF
+00070F5B                          2882                  
+00070F5B                          2883                  *DC.B    'NOTES',CR,LF
+00070F5B                          2884                  *DC.B    '   none',CR,LF,LF
+00070F5B                          2885                  
+00070F5B                          2886                  *DC.B    'FILES',CR,LF
+00070F5B                          2887                  *DC.B    '   none',CR,LF,LF
+00070F5B                          2888                  
+00070F5B                          2889                  *DC.B    'ENVIRONMENT',CR,LF
+00070F5B                          2890                  *DC.B    '   none',CR,LF,LF
+00070F5B                          2891                  
+00070F5B                          2892                  *DC.B    'DIAGNOSTICS',CR,LF
+00070F5B                          2893                  *DC.B    '   none',CR,LF,LF
+00070F5B                          2894                  
+00070F5B                          2895                  *DC.B    'BUGS',CR,LF
+00070F5B                          2896                  *DC.B    '   none known atm',CR,LF,LF
+00070F5B                          2897                  
+00070F5B= 41 55 54 48 4F 52 ...   2898                  DC.B    'AUTHOR',CR,LF
+00070F63= 20 20 20 44 61 6E ...   2899                  DC.B    '   Daniel H. Meves',CR,LF,LF
+00070F78                          2900                  
+00070F78                          2901                  *DC.B    'HISTORY',CR,LF
+00070F78                          2902                  *DC.B    '   none',CR,LF,LF
+00070F78                          2903                  
+00070F78= 53 45 45 20 41 4C ...   2904                  DC.B    'SEE ALSO',CR,LF
+00070F82= 20 20 20 48 45 4C ...   2905                  DC.B    '   HELP(1), MDSP(1), SORTW(1), MM(1), BF(1), BMOV(1), BTST(1), BSCH(1), GO(1), DF(1), EXIT(1), MAN(1)',CR,LF,LF
+00070FEA                          2906                  
+00070FEA= 44 61 6E 69 65 6C ...   2907                  DC.B    'Daniel H. Meves                    27 April 2016                        MS(1)',CR,LF,LF,0
+0007103B                          2908                  
+0007103B= 0D 0A 42 46 28 31 ...   2909  BFMANPAGE       DC.B    CR,LF,'BF(1)                       MC68000/SANPER-1 ELU                       BF(1)',CR,LF,LF
+0007108C                          2910                  
+0007108C= 4E 41 4D 45 0D 0A       2911                  DC.B    'NAME',CR,LF
+00071092= 20 20 20 42 46 20 ...   2912                  DC.B    '   BF - Block Fill.',CR,LF,LF
+000710A8                          2913                  
+000710A8= 53 59 4E 4F 50 53 ...   2914                  DC.B    'SYNOPSYS',CR,LF
+000710B2= 20 20 20 42 46 20 ...   2915                  DC.B    '   BF <address1> <address2> <word>',CR,LF,LF
+000710D7                          2916                  
+000710D7= 44 45 53 43 52 49 ...   2917                  DC.B    'DESCRIPTION',CR,LF
+000710E4= 20 20 20 54 68 65 ...   2918                  DC.B    '   The Block Fill (BF) command fills memory starting with the word boundary <address1> through',CR,LF
+00071144= 20 20 20 3C 61 64 ...   2919                  DC.B    '   <address2>. Both <address1> and <address2> must be even addresses. This command only',CR,LF
+0007119D= 20 20 20 66 69 6C ...   2920                  DC.B    '   fills with a word-size (2 bytes) data pattern. If an entire word-size data pattern is not entered,',CR,LF
+00071204= 20 20 20 74 68 65 ...   2921                  DC.B    '   the pattern is right justified and leading zeros are inserted.',CR,LF,LF
+00071248                          2922                  
+00071248                          2923                  *DC.B    'OPTIONS',CR,LF
+00071248                          2924                  *DC.B    '   none',CR,LF,LF
+00071248                          2925                  
+00071248                          2926                  *DC.B    'NOTES',CR,LF
+00071248                          2927                  *DC.B    '   none',CR,LF,LF
+00071248                          2928                  
+00071248                          2929                  *DC.B    'FILES',CR,LF
+00071248                          2930                  *DC.B    '   none',CR,LF,LF
+00071248                          2931                  
+00071248                          2932                  *DC.B    'ENVIRONMENT',CR,LF
+00071248                          2933                  *DC.B    '   none',CR,LF,LF
+00071248                          2934                  
+00071248                          2935                  *DC.B    'DIAGNOSTICS',CR,LF
+00071248                          2936                  *DC.B    '   none',CR,LF,LF
+00071248                          2937                  
+00071248                          2938                  *DC.B    'BUGS',CR,LF
+00071248                          2939                  *DC.B    '   none known atm',CR,LF,LF
+00071248                          2940                  
+00071248= 41 55 54 48 4F 52 ...   2941                  DC.B    'AUTHOR',CR,LF
+00071250= 20 20 20 44 61 6E ...   2942                  DC.B    '   Daniel H. Meves',CR,LF,LF
+00071265                          2943                  
+00071265                          2944                  *DC.B    'HISTORY',CR,LF
+00071265                          2945                  *DC.B    '   none',CR,LF,LF
+00071265                          2946                  
+00071265= 53 45 45 20 41 4C ...   2947                  DC.B    'SEE ALSO',CR,LF
+0007126F= 20 20 20 48 45 4C ...   2948                  DC.B    '   HELP(1), MDSP(1), SORTW(1), MM(1), MS(1), BMOV(1), BTST(1), BSCH(1), GO(1), DF(1), EXIT(1), MAN(1)',CR,LF,LF
+000712D7                          2949                  
+000712D7= 44 61 6E 69 65 6C ...   2950                  DC.B    'Daniel H. Meves                    27 April 2016                        BF(1)',CR,LF,LF,0
+00071328                          2951                  
+00071328= 0D 0A 42 4D 4F 56 ...   2952  BMOVMANPAGE     DC.B    CR,LF,'BMOV(1)                       MC68000/SANPER-1 ELU                       BMOV(1)',CR,LF,LF
+0007137D                          2953                  
+0007137D= 4E 41 4D 45 0D 0A       2954                  DC.B    'NAME',CR,LF
+00071383= 20 20 20 42 4D 4F ...   2955                  DC.B    '   BMOV - Block Move.',CR,LF,LF
+0007139B                          2956                  
+0007139B= 53 59 4E 4F 50 53 ...   2957                  DC.B    'SYNOPSYS',CR,LF
+000713A5= 20 20 20 42 4D 4F ...   2958                  DC.B    '   BMOV <address1> <address2> <address3>',CR,LF,LF
+000713D0                          2959                  
+000713D0= 44 45 53 43 52 49 ...   2960                  DC.B    'DESCRIPTION',CR,LF
+000713DD= 20 20 20 54 68 65 ...   2961                  DC.B    '   The Block Move (BMOV) command is used to move (duplicate) blocks of memory from one area to another.',CR,LF,LF
+00071447                          2962                  
+00071447                          2963                  *DC.B    'OPTIONS',CR,LF
+00071447                          2964                  *DC.B    '   none',CR,LF,LF
+00071447                          2965                  
+00071447                          2966                  *DC.B    'NOTES',CR,LF
+00071447                          2967                  *DC.B    '   none',CR,LF,LF
+00071447                          2968                  
+00071447                          2969                  *DC.B    'FILES',CR,LF
+00071447                          2970                  *DC.B    '   none',CR,LF,LF
+00071447                          2971                  
+00071447                          2972                  *DC.B    'ENVIRONMENT',CR,LF
+00071447                          2973                  *DC.B    '   none',CR,LF,LF
+00071447                          2974                  
+00071447                          2975                  *DC.B    'DIAGNOSTICS',CR,LF
+00071447                          2976                  *DC.B    '   none',CR,LF,LF
+00071447                          2977                  
+00071447                          2978                  *DC.B    'BUGS',CR,LF
+00071447                          2979                  *DC.B    '   none known atm',CR,LF,LF
+00071447                          2980                  
+00071447= 41 55 54 48 4F 52 ...   2981                  DC.B    'AUTHOR',CR,LF
+0007144F= 20 20 20 44 61 6E ...   2982                  DC.B    '   Daniel H. Meves',CR,LF,LF
+00071464                          2983                  
+00071464                          2984                  *DC.B    'HISTORY',CR,LF
+00071464                          2985                  *DC.B    '   none',CR,LF,LF
+00071464                          2986                  
+00071464= 53 45 45 20 41 4C ...   2987                  DC.B    'SEE ALSO',CR,LF
+0007146E= 20 20 20 48 45 4C ...   2988                  DC.B    '   HELP(1), MDSP(1), SORTW(1), MM(1), MS(1), BF(1), BTST(1), BSCH(1), GO(1), DF(1), EXIT(1), MAN(1)',CR,LF,LF
+000714D4                          2989                  
+000714D4= 44 61 6E 69 65 6C ...   2990                  DC.B    'Daniel H. Meves                    27 April 2016                        BMOV(1)',CR,LF,LF,0
+00071527                          2991                  
+00071527= 0D 0A 42 54 53 54 ...   2992  BTSTMANPAGE     DC.B    CR,LF,'BTST(1)                       MC68000/SANPER-1 ELU                       BTST(1)',CR,LF,LF
+0007157C                          2993                  
+0007157C= 4E 41 4D 45 0D 0A       2994                  DC.B    'NAME',CR,LF
+00071582= 20 20 20 42 54 53 ...   2995                  DC.B    '   BTST - Block Test.',CR,LF,LF
+0007159A                          2996                  
+0007159A= 53 59 4E 4F 50 53 ...   2997                  DC.B    'SYNOPSYS',CR,LF
+000715A4= 20 20 20 42 54 53 ...   2998                  DC.B    '   BTST <address1> <address2>',CR,LF,LF
+000715C4                          2999                  
+000715C4= 44 45 53 43 52 49 ...   3000                  DC.B    'DESCRIPTION',CR,LF
+000715D1= 20 20 20 54 68 65 ...   3001                  DC.B    '   The Block Test (BT) command is a destructive test of a block of memory beginning at <address1>',CR,LF
+00071634= 20 20 20 74 68 72 ...   3002                  DC.B    '   through <address2>. If this test runs to completion without detecting errors, and display a',CR,LF
+00071694= 20 20 20 6D 65 73 ...   3003                  DC.B    '   message that no error was detected. If memory problems are found, a message is displayed',CR,LF
+000716F1= 20 20 20 69 6E 64 ...   3004                  DC.B    '   indicating the address, the data stored, and the data read of the failing memory.',CR,LF,LF
+00071748                          3005                  
+00071748                          3006                  *DC.B    'OPTIONS',CR,LF
+00071748                          3007                  *DC.B    '   none',CR,LF,LF
+00071748                          3008                  
+00071748                          3009                  *DC.B    'NOTES',CR,LF
+00071748                          3010                  *DC.B    '   none',CR,LF,LF
+00071748                          3011                  
+00071748                          3012                  *DC.B    'FILES',CR,LF
+00071748                          3013                  *DC.B    '   none',CR,LF,LF
+00071748                          3014                  
+00071748                          3015                  *DC.B    'ENVIRONMENT',CR,LF
+00071748                          3016                  *DC.B    '   none',CR,LF,LF
+00071748                          3017                  
+00071748                          3018                  *DC.B    'DIAGNOSTICS',CR,LF
+00071748                          3019                  *DC.B    '   none',CR,LF,LF
+00071748                          3020                  
+00071748                          3021                  *DC.B    'BUGS',CR,LF
+00071748                          3022                  *DC.B    '   none known atm',CR,LF,LF
+00071748                          3023                  
+00071748= 41 55 54 48 4F 52 ...   3024                  DC.B    'AUTHOR',CR,LF
+00071750= 20 20 20 44 61 6E ...   3025                  DC.B    '   Daniel H. Meves',CR,LF,LF
+00071765                          3026                  
+00071765                          3027                  *DC.B    'HISTORY',CR,LF
+00071765                          3028                  *DC.B    '   none',CR,LF,LF
+00071765                          3029                  
+00071765= 53 45 45 20 41 4C ...   3030                  DC.B    'SEE ALSO',CR,LF
+0007176F= 20 20 20 48 45 4C ...   3031                  DC.B    '   HELP(1), MDSP(1), SORTW(1), MM(1), MS(1), BF(1), BMOV(1), BSCH(1), GO(1), DF(1), EXIT(1), MAN(1)',CR,LF,LF
+000717D5                          3032                  
+000717D5= 44 61 6E 69 65 6C ...   3033                  DC.B    'Daniel H. Meves                    27 April 2016                        BTST(1)',CR,LF,LF,0     
+00071828                          3034  
+00071828= 0D 0A 42 53 43 48 ...   3035  BSCHMANPAGE     DC.B    CR,LF,'BSCH(1)                       MC68000/SANPER-1 ELU                       BSCH(1)',CR,LF,LF
+0007187D                          3036                  
+0007187D= 4E 41 4D 45 0D 0A       3037                  DC.B    'NAME',CR,LF
+00071883= 20 20 20 42 53 43 ...   3038                  DC.B    '   BSCH - Block Search.',CR,LF,LF
+0007189D                          3039                  
+0007189D= 53 59 4E 4F 50 53 ...   3040                  DC.B    'SYNOPSYS',CR,LF
+000718A7= 20 20 20 42 53 43 ...   3041                  DC.B    '   BSCH <address1> <address2> "StringLiteral"',CR,LF,LF
+000718D7                          3042                  
+000718D7= 44 45 53 43 52 49 ...   3043                  DC.B    'DESCRIPTION',CR,LF
+000718E4= 20 20 20 54 68 65 ...   3044                  DC.B    '   The BSCH (Block Search) command is used to search a literal string in a memory block starting',CR,LF
+00071946= 20 20 20 61 74 20 ...   3045                  DC.B    '   at <address1> through <address2> both inclusive. In BSCH command, if search finds matching data,',CR,LF 
+000719AB= 20 20 20 74 68 65 ...   3046                  DC.B    '   the data and address(es) must be displayed.',CR,LF,LF
+000719DC                          3047                  
+000719DC                          3048                  *DC.B    'OPTIONS',CR,LF
+000719DC                          3049                  *DC.B    '   none',CR,LF,LF
+000719DC                          3050                  
+000719DC                          3051                  *DC.B    'NOTES',CR,LF
+000719DC                          3052                  *DC.B    '   none',CR,LF,LF
+000719DC                          3053                  
+000719DC                          3054                  *DC.B    'FILES',CR,LF
+000719DC                          3055                  *DC.B    '   none',CR,LF,LF
+000719DC                          3056                  
+000719DC                          3057                  *DC.B    'ENVIRONMENT',CR,LF
+000719DC                          3058                  *DC.B    '   none',CR,LF,LF
+000719DC                          3059                  
+000719DC                          3060                  *DC.B    'DIAGNOSTICS',CR,LF
+000719DC                          3061                  *DC.B    '   none',CR,LF,LF
+000719DC                          3062                  
+000719DC                          3063                  *DC.B    'BUGS',CR,LF
+000719DC                          3064                  *DC.B    '   none known atm',CR,LF,LF
+000719DC                          3065                  
+000719DC= 41 55 54 48 4F 52 ...   3066                  DC.B    'AUTHOR',CR,LF
+000719E4= 20 20 20 44 61 6E ...   3067                  DC.B    '   Daniel H. Meves',CR,LF,LF
+000719F9                          3068                  
+000719F9                          3069                  *DC.B    'HISTORY',CR,LF
+000719F9                          3070                  *DC.B    '   none',CR,LF,LF
+000719F9                          3071                  
+000719F9= 53 45 45 20 41 4C ...   3072                  DC.B    'SEE ALSO',CR,LF
+00071A03= 20 20 20 48 45 4C ...   3073                  DC.B    '   HELP(1), MDSP(1), SORTW(1), MM(1), MS(1), BF(1), BMOV(1), BTST(1), GO(1), DF(1), EXIT(1), MAN(1)',CR,LF,LF
+00071A69                          3074                  
+00071A69= 44 61 6E 69 65 6C ...   3075                  DC.B    'Daniel H. Meves                    27 April 2016                        BSCH(1)',CR,LF,LF,0
+00071ABC                          3076                  
+00071ABC= 0D 0A 47 4F 28 31 ...   3077  GOMANPAGE       DC.B    CR,LF,'GO(1)                       MC68000/SANPER-1 ELU                       GO(1)',CR,LF,LF
+00071B0D                          3078                  
+00071B0D= 4E 41 4D 45 0D 0A       3079                  DC.B    'NAME',CR,LF
+00071B13= 20 20 20 47 4F 20 ...   3080                  DC.B    '   GO - Execute Program.',CR,LF,LF
+00071B2E                          3081                  
+00071B2E= 53 59 4E 4F 50 53 ...   3082                  DC.B    'SYNOPSYS',CR,LF
+00071B38= 20 20 20 47 4F 20 ...   3083                  DC.B    '   GO <address>',CR,LF,LF
+00071B4A                          3084                  
+00071B4A= 44 45 53 43 52 49 ...   3085                  DC.B    'DESCRIPTION',CR,LF
+00071B57= 20 20 20 54 68 65 ...   3086                  DC.B    '   The GO command is used to start execution from a given address.',CR,LF,LF
+00071B9C                          3087                  
+00071B9C                          3088                  *DC.B    'OPTIONS',CR,LF
+00071B9C                          3089                  *DC.B    '   none',CR,LF,LF
+00071B9C                          3090                  
+00071B9C                          3091                  *DC.B    'NOTES',CR,LF
+00071B9C                          3092                  *DC.B    '   none',CR,LF,LF
+00071B9C                          3093                  
+00071B9C                          3094                  *DC.B    'FILES',CR,LF
+00071B9C                          3095                  *DC.B    '   none',CR,LF,LF
+00071B9C                          3096                  
+00071B9C                          3097                  *DC.B    'ENVIRONMENT',CR,LF
+00071B9C                          3098                  *DC.B    '   none',CR,LF,LF
+00071B9C                          3099                  
+00071B9C                          3100                  *DC.B    'DIAGNOSTICS',CR,LF
+00071B9C                          3101                  *DC.B    '   none',CR,LF,LF
+00071B9C                          3102                  
+00071B9C                          3103                  *DC.B    'BUGS',CR,LF
+00071B9C                          3104                  *DC.B    '   none known atm',CR,LF,LF
+00071B9C                          3105                  
+00071B9C= 41 55 54 48 4F 52 ...   3106                  DC.B    'AUTHOR',CR,LF
+00071BA4= 20 20 20 44 61 6E ...   3107                  DC.B    '   Daniel H. Meves',CR,LF,LF
+00071BB9                          3108                  
+00071BB9                          3109                  *DC.B    'HISTORY',CR,LF
+00071BB9                          3110                  *DC.B    '   none',CR,LF,LF
+00071BB9                          3111                  
+00071BB9= 53 45 45 20 41 4C ...   3112                  DC.B    'SEE ALSO',CR,LF
+00071BC3= 20 20 20 48 45 4C ...   3113                  DC.B    '   HELP(1), MDSP(1), SORTW(1), MM(1), MS(1), BF(1), BMOV(1), BTST(1), BSCH(1), DF(1), EXIT(1), MAN(1)',CR,LF,LF
+00071C2B                          3114                  
+00071C2B= 44 61 6E 69 65 6C ...   3115                  DC.B    'Daniel H. Meves                    27 April 2016                        GO(1)',CR,LF,LF,0
+00071C7C                          3116  
+00071C7C= 0D 0A 44 46 28 31 ...   3117  DFMANPAGE       DC.B    CR,LF,'DF(1)                       MC68000/SANPER-1 ELU                       DF(1)',CR,LF,LF
+00071CCD                          3118                  
+00071CCD= 4E 41 4D 45 0D 0A       3119                  DC.B    'NAME',CR,LF
+00071CD3= 20 20 20 44 46 20 ...   3120                  DC.B    '   DF - Display Formatted Registers.',CR,LF,LF
+00071CFA                          3121                  
+00071CFA= 53 59 4E 4F 50 53 ...   3122                  DC.B    'SYNOPSYS',CR,LF
+00071D04= 20 20 20 44 46 0D ...   3123                  DC.B    '   DF',CR,LF,LF
+00071D0C                          3124                  
+00071D0C= 44 45 53 43 52 49 ...   3125                  DC.B    'DESCRIPTION',CR,LF
+00071D19= 20 20 20 54 68 65 ...   3126                  DC.B    '   The Display Formatted Registers (DF) command is used to display the MC68000 processor registers.',CR,LF 
+00071D7E= 20 20 20 54 68 69 ...   3127                  DC.B    '   This command should display current PC, SR, US, SS and D, A registers.',CR,LF,LF
+00071DCA                          3128                  
+00071DCA                          3129                  *DC.B    'OPTIONS',CR,LF
+00071DCA                          3130                  *DC.B    '   none',CR,LF,LF
+00071DCA                          3131                  
+00071DCA                          3132                  *DC.B    'NOTES',CR,LF
+00071DCA                          3133                  *DC.B    '   none',CR,LF,LF
+00071DCA                          3134                  
+00071DCA                          3135                  *DC.B    'FILES',CR,LF
+00071DCA                          3136                  *DC.B    '   none',CR,LF,LF
+00071DCA                          3137                  
+00071DCA                          3138                  *DC.B    'ENVIRONMENT',CR,LF
+00071DCA                          3139                  *DC.B    '   none',CR,LF,LF
+00071DCA                          3140                  
+00071DCA                          3141                  *DC.B    'DIAGNOSTICS',CR,LF
+00071DCA                          3142                  *DC.B    '   none',CR,LF,LF
+00071DCA                          3143                  
+00071DCA                          3144                  *DC.B    'BUGS',CR,LF
+00071DCA                          3145                  *DC.B    '   none known atm',CR,LF,LF
+00071DCA                          3146                  
+00071DCA= 41 55 54 48 4F 52 ...   3147                  DC.B    'AUTHOR',CR,LF
+00071DD2= 20 20 20 44 61 6E ...   3148                  DC.B    '   Daniel H. Meves',CR,LF,LF
+00071DE7                          3149                  
+00071DE7                          3150                  *DC.B    'HISTORY',CR,LF
+00071DE7                          3151                  *DC.B    '   none',CR,LF,LF
+00071DE7                          3152                  
+00071DE7= 53 45 45 20 41 4C ...   3153                  DC.B    'SEE ALSO',CR,LF
+00071DF1= 20 20 20 48 45 4C ...   3154                  DC.B    '   HELP(1), MDSP(1), SORTW(1), MM(1), MS(1), BF(1), BMOV(1), BTST(1), BSCH(1), GO(1), EXIT(1), MAN(1)',CR,LF,LF
+00071E59                          3155                  
+00071E59= 44 61 6E 69 65 6C ...   3156                  DC.B    'Daniel H. Meves                    27 April 2016                        DF(1)',CR,LF,LF,0
+00071EAA                          3157                  
+00071EAA= 0D 0A 45 58 49 54 ...   3158  EXITMANPAGE     DC.B    CR,LF,'EXIT(1)                       MC68000/SANPER-1 ELU                       EXIT(1)',CR,LF,LF
+00071EFF                          3159                  
+00071EFF= 4E 41 4D 45 0D 0A       3160                  DC.B    'NAME',CR,LF
+00071F05= 20 20 20 45 58 49 ...   3161                  DC.B    '   EXIT - Exit Monitor Program.',CR,LF,LF
+00071F27                          3162                  
+00071F27= 53 59 4E 4F 50 53 ...   3163                  DC.B    'SYNOPSYS',CR,LF
+00071F31= 20 20 20 45 58 49 ...   3164                  DC.B    '   EXIT',CR,LF,LF
+00071F3B                          3165                  
+00071F3B= 44 45 53 43 52 49 ...   3166                  DC.B    'DESCRIPTION',CR,LF
+00071F48= 20 20 20 54 68 65 ...   3167                  DC.B    '   The EXIT command terminates/exits your Monitor program.',CR,LF,LF
+00071F85                          3168                  
+00071F85                          3169                  *DC.B    'OPTIONS',CR,LF
+00071F85                          3170                  *DC.B    '   none',CR,LF,LF
+00071F85                          3171                  
+00071F85                          3172                  *DC.B    'NOTES',CR,LF
+00071F85                          3173                  *DC.B    '   none',CR,LF,LF
+00071F85                          3174                  
+00071F85                          3175                  *DC.B    'FILES',CR,LF
+00071F85                          3176                  *DC.B    '   none',CR,LF,LF
+00071F85                          3177                  
+00071F85                          3178                  *DC.B    'ENVIRONMENT',CR,LF
+00071F85                          3179                  *DC.B    '   none',CR,LF,LF
+00071F85                          3180                  
+00071F85                          3181                  *DC.B    'DIAGNOSTICS',CR,LF
+00071F85                          3182                  *DC.B    '   none',CR,LF,LF
+00071F85                          3183                  
+00071F85                          3184                  *DC.B    'BUGS',CR,LF
+00071F85                          3185                  *DC.B    '   none known atm',CR,LF,LF
+00071F85                          3186                  
+00071F85= 41 55 54 48 4F 52 ...   3187                  DC.B    'AUTHOR',CR,LF
+00071F8D= 20 20 20 44 61 6E ...   3188                  DC.B    '   Daniel H. Meves',CR,LF,LF
+00071FA2                          3189                  
+00071FA2                          3190                  *DC.B    'HISTORY',CR,LF
+00071FA2                          3191                  *DC.B    '   none',CR,LF,LF
+00071FA2                          3192                  
+00071FA2= 53 45 45 20 41 4C ...   3193                  DC.B    'SEE ALSO',CR,LF
+00071FAC= 20 20 20 48 45 4C ...   3194                  DC.B    '   HELP(1), MDSP(1), SORTW(1), MM(1), MS(1), BF(1), BMOV(1), BTST(1), BSCH(1), GO(1), DF(1), MAN(1)',CR,LF,LF
+00072012                          3195                  
+00072012= 44 61 6E 69 65 6C ...   3196                  DC.B    'Daniel H. Meves                    27 April 2016                        EXIT(1)',CR,LF,LF,0   
+00072065                          3197  
+00072065= 0D 0A 4D 41 4E 28 ...   3198  MANMANPAGE      DC.B    CR,LF,'MAN(1)                       MC68000/SANPER-1 ELU                       MAN(1)',CR,LF,LF
+000720B8                          3199                  
+000720B8= 4E 41 4D 45 0D 0A       3200                  DC.B    'NAME',CR,LF
+000720BE= 20 20 20 4D 41 4E ...   3201                  DC.B    '   MAN - An interface to the on-line reference manuals.',CR,LF,LF
+000720F8                          3202                  
+000720F8= 53 59 4E 4F 50 53 ...   3203                  DC.B    'SYNOPSYS',CR,LF
+00072102= 20 20 20 4D 41 4E ...   3204                  DC.B    '   MAN [command]',CR,LF,LF
+00072115                          3205                  
+00072115= 44 45 53 43 52 49 ...   3206                  DC.B    'DESCRIPTION',CR,LF
+00072122= 20 20 20 4D 41 4E ...   3207                  DC.B    '   MAN is the systems manual pager.',CR,LF,LF
+00072148                          3208                  
+00072148                          3209                  *DC.B    'OPTIONS',CR,LF
+00072148                          3210                  *DC.B    '   none',CR,LF,LF
+00072148                          3211                  
+00072148                          3212                  *DC.B    'NOTES',CR,LF
+00072148                          3213                  *DC.B    '   none',CR,LF,LF
+00072148                          3214                  
+00072148                          3215                  *DC.B    'FILES',CR,LF
+00072148                          3216                  *DC.B    '   none',CR,LF,LF
+00072148                          3217                  
+00072148                          3218                  *DC.B    'ENVIRONMENT',CR,LF
+00072148                          3219                  *DC.B    '   none',CR,LF,LF
+00072148                          3220                  
+00072148                          3221                  *DC.B    'DIAGNOSTICS',CR,LF
+00072148                          3222                  *DC.B    '   none',CR,LF,LF
+00072148                          3223                  
+00072148                          3224                  *DC.B    'BUGS',CR,LF
+00072148                          3225                  *DC.B    '   none known atm',CR,LF,LF
+00072148                          3226                  
+00072148= 41 55 54 48 4F 52 ...   3227                  DC.B    'AUTHOR',CR,LF
+00072150= 20 20 20 44 61 6E ...   3228                  DC.B    '   Daniel H. Meves',CR,LF,LF
+00072165                          3229                  
+00072165                          3230                  *DC.B    'HISTORY',CR,LF
+00072165                          3231                  *DC.B    '   none',CR,LF,LF
+00072165                          3232                  
+00072165= 53 45 45 20 41 4C ...   3233                  DC.B    'SEE ALSO',CR,LF
+0007216F= 20 20 20 48 45 4C ...   3234                  DC.B    '   HELP(1), MDSP(1), SORTW(1), MM(1), MS(1), BF(1), BMOV(1), BTST(1), BSCH(1), GO(1), DF(1), EXIT(1)',CR,LF,LF
+000721D6                          3235                  
+000721D6= 44 61 6E 69 65 6C ...   3236                  DC.B    'Daniel H. Meves                    27 April 2016                        MAN(1)',CR,LF,LF,0        
+00072228                          3237  
+00072228                          3238  HISTORYBUFFER   DS.L    500
 000729F8                          3239  
 000729F8                          3240  
 000729F8                          3241  
-000729F8                          3242  -------------------- end include --------------------
-000729F8                          3243             
-000729F8                          3244  * Put program code here
-000729F8                          3245  
-000729F8  FFFF FFFF               3246      SIMHALT             ; halt simulator
-000729FC                          3247  
-000729FC                          3248  * Put variables and constants here
+000729F8                          3242  
+000729F8                          3243  
+000729F8                          3244  -------------------- end include --------------------
+000729F8                          3245             
+000729F8                          3246  * Put program code here
+000729F8                          3247  
+000729F8  FFFF FFFF               3248      SIMHALT             ; halt simulator
 000729FC                          3249  
-000729FC                          3250      END    START        ; last line of source
+000729FC                          3250  * Put variables and constants here
+000729FC                          3251  
+000729FC                          3252      END    START        ; last line of source
 
 No errors detected
 No warnings generated
