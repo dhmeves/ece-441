@@ -63,7 +63,7 @@ A7HDLR      DC.L   A7
 SRHDLR      DC.L   SR
 CLRHDLR     DC.L   CLEAR
 HISTHDLR    DC.L   HISTORY
-NOCMD       DS.B   1
+NOCMD       DS.W   1
 
 HELPSTR     DC.L    HELPOUT
 MDSPSTR     DC.L    MDSPOUT
@@ -78,6 +78,8 @@ GOSTR       DC.L    GOOUT
 DFSTR       DC.L    DFOUT
 EXITSTR     DC.L    EXITOUT
 MANSTR      DC.L    MANOUT 
+NOHELP      DS.W    1
+
 
 
 

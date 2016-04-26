@@ -55,8 +55,7 @@ PRTMDSP     LEA     MDSPMSG,A1
             TRAP    #15
             BRA     MDSPDONE
             
-MDSPCONT    CLR.L   D3
-            JSR     ARGV
+MDSPCONT    JSR     ARGV
             MOVE.L  D2,D6
             LEA     CMDBUFFER,A0
             ADDA.W  #INDEX,A0
@@ -116,6 +115,7 @@ MDSPERROR   LEA     ERRORMSG,A1
             
 MDSPDONE    MOVEM.L (SP)+,A0-A7/D0-D7
             RTS
+
 
 
 *~Font name~Courier New~
