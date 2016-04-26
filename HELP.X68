@@ -20,7 +20,7 @@ CMPSTR1         SUBA.W  #1,A3
                 CMPI.B  #1,D4
                 BEQ     MANPAGEJMP
                 ADDA.W  #4,A5
-                CMP.W  #$4834,A5
+                CMP.W   #NOHELP,A5
                 BEQ     HELPONLY
                 BRA     NEXTPAGEMAN
 
@@ -40,7 +40,7 @@ CMPSTR2         SUBA.W  #1,A3
 CHECK           CMPI.B  #1,D4
                 BEQ     MANPAGEJMP
                 ADDA.W  #4,A5
-                CMP.W  #$4834,A5
+                CMP.W   #NOHELP,A5
                 BEQ     HELPONLY
                 BRA     NEXTPAGE
                 
@@ -197,6 +197,7 @@ HELPONLY        LEA     CMDMSG,A1
                 
 ENDHELP         MOVEM.L (SP)+,A0-A7/D0-D7
                 RTS
+
 *~Font name~Courier New~
 *~Font size~12~
 *~Tab type~1~
