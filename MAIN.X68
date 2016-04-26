@@ -21,6 +21,7 @@ CLRHISTBUF      CLR.L   (A4)+                   ; clear long address specified b
                 DBRA    D4,CLRHISTBUF           ; test condition, decrement, and branch to CLRHISTBUF if D4 not equal to -1
                 
                 LEA     HISTORYBUFFER,A5
+                MOVE.L  A5,HISTORYPTR
                                 
                 *MOVE.L $005001,A1              ;ADDRESS ERROR EXCEPTION
                 *MOVE.W  #$AA,(A1)
@@ -52,6 +53,9 @@ CLRCMDBUF       CLR.B   (A3)+                   ; clear byte address specified b
                 MOVE.B  #2,D0                   ; trap task #2 in D0, Read string from keyboard and store at (A1), NULL terminated, length returned in D1.W (max 80)
                 TRAP    #15                     ; execute trap #15
 
+                LEA     HISTORYPTR,A6
+                MOVE.L  (A6),A5
+                
 MOVEHISTORY     MOVE.B  (A1)+,(A5)+             ; move byte from INPUTBUFFER to HISTORYBUFFER, post increment A1 and A5 by 1
                 CMP.B   #NULL,(A1)              ; compare NULL character to byte stored at A1
                 BEQ     COPYDONE                ; branch if equal to COPYDONE
@@ -65,6 +69,7 @@ COPYDONE        ADDA.W  #1,A5                   ; increment A5 by 1, NULL charac
                 JSR     INTERPRETER             ; jump to command interpreter subroutine
                 
                 BRA     NEXTCMD                 ; branch always to NEXTCMD
+
 
 
 
