@@ -51,7 +51,7 @@ MSCONT      JSR     ARGV
             BEQ     ASCIIDATA
             CMP.B   #1,D2
             BEQ     MSDONE
-            MOVEA.L A1,A0
+   
 INCPTR      CMP.B   #NULL,(A4)+
             BEQ     INCPTR
             LEA     ASCIIBUFFER,A3
@@ -72,8 +72,6 @@ DATALOOP    CMP.B   #NULL,(A0)
             MOVE.B  (A0)+,(A2)+
             BRA     DATALOOP
             
-            BRA     MSDONE
-            
 MSERROR     LEA     ERRORMSG,A1
             MOVE.B  #14,D0
             TRAP    #15
@@ -81,6 +79,7 @@ MSERROR     LEA     ERRORMSG,A1
         
 MSDONE      MOVEM.L (SP)+,A0-A7/D0-D7
             RTS
+
 
 *~Font name~Courier New~
 *~Font size~12~
