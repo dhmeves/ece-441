@@ -139,6 +139,27 @@ MANOUT          MOVEM.L A0-A7/D0-D7,-(SP)
                 MOVEM.L (SP)+,A0-A7/D0-D7
                 RTS
                 
+CHGREGOUT       MOVEM.L A0-A7/D0-D7,-(SP)
+                LEA     CHGREGMANPAGE,A1
+                MOVE.B  #14,D0
+                TRAP    #15
+                MOVEM.L (SP)+,A0-A7/D0-D7
+                RTS
+                
+HISTOUT         MOVEM.L A0-A7/D0-D7,-(SP)
+                LEA     HISTMANPAGE,A1
+                MOVE.B  #14,D0
+                TRAP    #15
+                MOVEM.L (SP)+,A0-A7/D0-D7
+                RTS
+                
+CLEAROUT        MOVEM.L A0-A7/D0-D7,-(SP)
+                LEA     CLEARMANPAGE,A1
+                MOVE.B  #14,D0
+                TRAP    #15
+                MOVEM.L (SP)+,A0-A7/D0-D7
+                RTS
+                
 HELPONLY        LEA     CMDMSG,A1
                 MOVE.B  #14,D0
                 TRAP    #15
@@ -191,12 +212,23 @@ HELPONLY        LEA     CMDMSG,A1
                 MOVE.B  #14,D0
                 TRAP    #15
                 
+                LEA     CHGREGMSG,A1
+                MOVE.B  #14,D0
+                TRAP    #15
+                
+                LEA     HISTMSG,A1
+                MOVE.B  #14,D0
+                TRAP    #15
+                
                 LEA     CMDMSG2,A1
                 MOVE.B  #14,D0
                 TRAP    #15
                 
 ENDHELP         MOVEM.L (SP)+,A0-A7/D0-D7
                 RTS
+
+
+
 
 *~Font name~Courier New~
 *~Font size~12~

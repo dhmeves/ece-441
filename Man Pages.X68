@@ -7,17 +7,18 @@ MDSPMSG         DC.B    CR,LF,'   MDSP: Outputs Address And Memory Contents',CR,
                 
 SORTWMSG        DC.B    CR,LF,'   SORTW: Sorts A Block Of Memory',CR,LF
                 DC.B    '   Default: Descending Order',CR,LF
-                DC.B    '   ;A: Ascending Order',CR,LF
-                DC.B    '   ;D: Descending Order',CR,LF
-                DC.B    '   SORTW <address1> <address2> [;order] eg: SORTW $904 $90E ;A<CR>',CR,LF,LF,0
+                DC.B    '   A: Ascending Order',CR,LF
+                DC.B    '   D: Descending Order',CR,LF
+                DC.B    '   SORTW <address1> <address2> [;order] eg: SORTW $904 $90E A<CR>',CR,LF,LF,0
                 
 MMMSG           DC.B    CR,LF,'   MM: Modifies Data In Memory',CR,LF
                 DC.B    '   Default: Displays One Byte',CR,LF
-                DC.B    '   ;W: Displays One Word',CR,LF
-                DC.B    '   ;L: Displays One Long Word',CR,LF
-                DC.B    '   MM <address>[;size] eg: MM $904;W<CR>',CR,LF,LF,0
+                DC.B    '   W: Displays One Word',CR,LF
+                DC.B    '   L: Displays One Long Word',CR,LF
+                DC.B    '   MM <address>[;size] eg: MM $904 W<CR>',CR,LF
+                DC.B    '   Exit MM commmand by typing "."<CR>',CR,LF,LF,0
                 
-MSMSG           DC.B    CR,LF,'   MS - Memory Set.',CR,LF
+MSMSG           DC.B    CR,LF,'   MS: Memory Set.',CR,LF
                 DC.B    '   MS <address> [data] eg: MS $904 $FFFF<CR>',CR,LF,LF,0
                 
 BFMSG           DC.B    CR,LF,'   BF: Fills A Block Of Memory',CR,LF
@@ -26,7 +27,8 @@ BFMSG           DC.B    CR,LF,'   BF: Fills A Block Of Memory',CR,LF
 BMOVMSG         DC.B    CR,LF,'   BMOV: Moves A Block of Memory To Another Area',CR,LF
                 DC.B    '   BMOV <address1> <address2> <address3> eg: BMOV $908 $90B $909<CR>',CR,LF,LF,0
                 
-BTSTMSG         DC.B    CR,LF,'   BTST - Block Test.',CR,LF,LF,0
+BTSTMSG         DC.B    CR,LF,'   BTST: Block Test',CR,LF
+                DC.B    '   BTST <address1> <address2> eg: BTST $900 $90A<CR>',CR,LF,LF,0
                 
 BSCHMSG         DC.B    CR,LF,'   BSCH: Searches A Literal String In The Memory',CR,LF
                 DC.B    '   BSCH <address1> <address2> "literal string" eg: BSCH $900 $910 "MATCH"<CR>',CR,LF,LF,0
@@ -34,9 +36,17 @@ BSCHMSG         DC.B    CR,LF,'   BSCH: Searches A Literal String In The Memory'
 GOMSG           DC.B    CR,LF,'   GO: Starts Execution From Given Address',CR,LF
                 DC.B    '   GO <address> eg: GO $900<CR>',CR,LF,LF,0
                 
-DFMSG           DC.B    CR,LF,'   DF - Display Formatted Registers.',CR,LF,LF,0
+DFMSG           DC.B    CR,LF,'   DF: Display Formatted Registers eg: DF<CR>',CR,LF,LF,0
                 
-EXITMSG         DC.B    CR,LF,'   EXIT - Exit the monitor program eg: EXIT<CR>',CR,LF,LF,0
+EXITMSG         DC.B    CR,LF,'   EXIT: Exit the monitor program eg: EXIT<CR>',CR,LF,LF,0
+
+CHGREGMSG       DC.B    CR,LF,'   Modify Registers: Modify the contents of each register individually',CR,LF
+                DC.B    '   .D[0-7] [data] .A[0-7] [data] .SR [data] eg: .D4 $ABCD',CR,LF,LF,0
+                
+HISTMSG         DC.B    CR,LF,'   HISTORY: Display Command History',CR,LF
+                DC.B    '   N: Number of commands to display',CR,LF
+                DC.B    '   HISTORY with no arguments prints all history',CR,LF
+                DC.B    '   HISTORY [N] eg: HISTORY 10',CR,LF,LF,0
                 
 CMDMSG2         DC.B    CR,LF,'*****Try HELP <command> or MAN <command> to view man page.*****',CR,LF,LF,0
 
@@ -80,7 +90,7 @@ HELPMANPAGE     DC.B    CR,LF,'HELP(1)                       MC68000/SANPER-1 EL
                 *DC.B    '   none',CR,LF,LF
                 
                 DC.B    'SEE ALSO',CR,LF
-                DC.B    '   MDSP(1), SORTW(1), MM(1), MS(1), BF(1), BMOV(1), BTST(1), BSCH(1), GO(1), DF(1), EXIT(1), MAN(1)',CR,LF,LF
+                DC.B    '   MDSP(1), SORTW(1), MM(1), MS(1), BF(1), BMOV(1), BTST(1), BSCH(1), GO(1), DF(1), EXIT(1), MAN(1), CHGREG(1), HISTORY(1)',CR,LF,LF
                 
                 DC.B    'Daniel H. Meves                    27 April 2016                        HELP(1)',CR,LF,LF,0
 
@@ -122,7 +132,7 @@ MDSPMANPAGE     DC.B    CR,LF,'MDSP(1)                       MC68000/SANPER-1 EL
                 *DC.B    '   none',CR,LF,LF
                 
                 DC.B    'SEE ALSO',CR,LF
-                DC.B    '   HELP(1), SORTW(1), MM(1), MS(1), BF(1), BMOV(1), BTST(1), BSCH(1), GO(1), DF(1), EXIT(1), MAN(1)',CR,LF,LF
+                DC.B    '   HELP(1), SORTW(1), MM(1), MS(1), BF(1), BMOV(1), BTST(1), BSCH(1), GO(1), DF(1), EXIT(1), MAN(1), CHGREG(1), HISTORY(1)',CR,LF,LF
                 
                 DC.B    'Daniel H. Meves                    27 April 2016                        MDSP(1)',CR,LF,LF,0
                 
@@ -132,7 +142,7 @@ SORTWMANPAGE    DC.B    CR,LF,'SORTW(1)                       MC68000/SANPER-1 E
                 DC.B    '   SORTW - Sort.',CR,LF,LF
                 
                 DC.B    'SYNOPSYS',CR,LF
-                DC.B    '   SORTW <address1> <address2> [;order]',CR,LF,LF
+                DC.B    '   SORTW <address1> <address2> [order]',CR,LF,LF
                 
                 DC.B    'DESCRIPTION',CR,LF
                 DC.B    '   The SORT command sorts a block of memory. The starting address <address1> and the',CR,LF
@@ -165,7 +175,7 @@ SORTWMANPAGE    DC.B    CR,LF,'SORTW(1)                       MC68000/SANPER-1 E
                 *DC.B    '   none',CR,LF,LF
                 
                 DC.B    'SEE ALSO',CR,LF
-                DC.B    '   HELP(1), MDSP(1), MM(1), MS(1), BF(1), BMOV(1), BTST(1), BSCH(1), GO(1), DF(1), EXIT(1), MAN(1)',CR,LF,LF
+                DC.B    '   HELP(1), MDSP(1), MM(1), MS(1), BF(1), BMOV(1), BTST(1), BSCH(1), GO(1), DF(1), EXIT(1), MAN(1), CHGREG(1), HISTORY(1)',CR,LF,LF
                 
                 DC.B    'Daniel H. Meves                    27 April 2016                        SORTW(1)',CR,LF,LF,0
                 
@@ -175,7 +185,7 @@ MMMANPAGE       DC.B    CR,LF,'MM(1)                       MC68000/SANPER-1 ELU 
                 DC.B    '   MM - Memory Modify.',CR,LF,LF
                 
                 DC.B    'SYNOPSYS',CR,LF
-                DC.B    '   MM <address> [;size]',CR,LF,LF
+                DC.B    '   MM <address> [size]',CR,LF,LF
                 
                 DC.B    'DESCRIPTION',CR,LF
                 DC.B    '   MM (Memory Modify) command is used to display memory and, as required, modify data',CR,LF
@@ -207,7 +217,7 @@ MMMANPAGE       DC.B    CR,LF,'MM(1)                       MC68000/SANPER-1 ELU 
                 *DC.B    '   none',CR,LF,LF
                 
                 DC.B    'SEE ALSO',CR,LF
-                DC.B    '   HELP(1), MDSP(1), SORTW(1), MS(1), BF(1), BMOV(1), BTST(1), BSCH(1), GO(1), DF(1), EXIT(1), MAN(1)',CR,LF,LF
+                DC.B    '   HELP(1), MDSP(1), SORTW(1), MS(1), BF(1), BMOV(1), BTST(1), BSCH(1), GO(1), DF(1), EXIT(1), MAN(1), CHGREG(1), HISTORY(1)',CR,LF,LF
                 
                 DC.B    'Daniel H. Meves                    27 April 2016                        MM(1)',CR,LF,LF,0
                 
@@ -248,7 +258,7 @@ MSMANPAGE       DC.B    CR,LF,'MS(1)                       MC68000/SANPER-1 ELU 
                 *DC.B    '   none',CR,LF,LF
                 
                 DC.B    'SEE ALSO',CR,LF
-                DC.B    '   HELP(1), MDSP(1), SORTW(1), MM(1), BF(1), BMOV(1), BTST(1), BSCH(1), GO(1), DF(1), EXIT(1), MAN(1)',CR,LF,LF
+                DC.B    '   HELP(1), MDSP(1), SORTW(1), MM(1), BF(1), BMOV(1), BTST(1), BSCH(1), GO(1), DF(1), EXIT(1), MAN(1), CHGREG(1), HISTORY(1)',CR,LF,LF
                 
                 DC.B    'Daniel H. Meves                    27 April 2016                        MS(1)',CR,LF,LF,0
                 
@@ -291,7 +301,7 @@ BFMANPAGE       DC.B    CR,LF,'BF(1)                       MC68000/SANPER-1 ELU 
                 *DC.B    '   none',CR,LF,LF
                 
                 DC.B    'SEE ALSO',CR,LF
-                DC.B    '   HELP(1), MDSP(1), SORTW(1), MM(1), MS(1), BMOV(1), BTST(1), BSCH(1), GO(1), DF(1), EXIT(1), MAN(1)',CR,LF,LF
+                DC.B    '   HELP(1), MDSP(1), SORTW(1), MM(1), MS(1), BMOV(1), BTST(1), BSCH(1), GO(1), DF(1), EXIT(1), MAN(1), CHGREG(1), HISTORY(1)',CR,LF,LF
                 
                 DC.B    'Daniel H. Meves                    27 April 2016                        BF(1)',CR,LF,LF,0
                 
@@ -331,7 +341,7 @@ BMOVMANPAGE     DC.B    CR,LF,'BMOV(1)                       MC68000/SANPER-1 EL
                 *DC.B    '   none',CR,LF,LF
                 
                 DC.B    'SEE ALSO',CR,LF
-                DC.B    '   HELP(1), MDSP(1), SORTW(1), MM(1), MS(1), BF(1), BTST(1), BSCH(1), GO(1), DF(1), EXIT(1), MAN(1)',CR,LF,LF
+                DC.B    '   HELP(1), MDSP(1), SORTW(1), MM(1), MS(1), BF(1), BTST(1), BSCH(1), GO(1), DF(1), EXIT(1), MAN(1), CHGREG(1), HISTORY(1)',CR,LF,LF
                 
                 DC.B    'Daniel H. Meves                    27 April 2016                        BMOV(1)',CR,LF,LF,0
                 
@@ -374,7 +384,7 @@ BTSTMANPAGE     DC.B    CR,LF,'BTST(1)                       MC68000/SANPER-1 EL
                 *DC.B    '   none',CR,LF,LF
                 
                 DC.B    'SEE ALSO',CR,LF
-                DC.B    '   HELP(1), MDSP(1), SORTW(1), MM(1), MS(1), BF(1), BMOV(1), BSCH(1), GO(1), DF(1), EXIT(1), MAN(1)',CR,LF,LF
+                DC.B    '   HELP(1), MDSP(1), SORTW(1), MM(1), MS(1), BF(1), BMOV(1), BSCH(1), GO(1), DF(1), EXIT(1), MAN(1), CHGREG(1), HISTORY(1)',CR,LF,LF
                 
                 DC.B    'Daniel H. Meves                    27 April 2016                        BTST(1)',CR,LF,LF,0     
 
@@ -416,7 +426,7 @@ BSCHMANPAGE     DC.B    CR,LF,'BSCH(1)                       MC68000/SANPER-1 EL
                 *DC.B    '   none',CR,LF,LF
                 
                 DC.B    'SEE ALSO',CR,LF
-                DC.B    '   HELP(1), MDSP(1), SORTW(1), MM(1), MS(1), BF(1), BMOV(1), BTST(1), GO(1), DF(1), EXIT(1), MAN(1)',CR,LF,LF
+                DC.B    '   HELP(1), MDSP(1), SORTW(1), MM(1), MS(1), BF(1), BMOV(1), BTST(1), GO(1), DF(1), EXIT(1), MAN(1), CHGREG(1), HISTORY(1)',CR,LF,LF
                 
                 DC.B    'Daniel H. Meves                    27 April 2016                        BSCH(1)',CR,LF,LF,0
                 
@@ -456,7 +466,7 @@ GOMANPAGE       DC.B    CR,LF,'GO(1)                       MC68000/SANPER-1 ELU 
                 *DC.B    '   none',CR,LF,LF
                 
                 DC.B    'SEE ALSO',CR,LF
-                DC.B    '   HELP(1), MDSP(1), SORTW(1), MM(1), MS(1), BF(1), BMOV(1), BTST(1), BSCH(1), DF(1), EXIT(1), MAN(1)',CR,LF,LF
+                DC.B    '   HELP(1), MDSP(1), SORTW(1), MM(1), MS(1), BF(1), BMOV(1), BTST(1), BSCH(1), DF(1), EXIT(1), MAN(1), CHGREG(1), HISTORY(1)',CR,LF,LF
                 
                 DC.B    'Daniel H. Meves                    27 April 2016                        GO(1)',CR,LF,LF,0
 
@@ -497,7 +507,7 @@ DFMANPAGE       DC.B    CR,LF,'DF(1)                       MC68000/SANPER-1 ELU 
                 *DC.B    '   none',CR,LF,LF
                 
                 DC.B    'SEE ALSO',CR,LF
-                DC.B    '   HELP(1), MDSP(1), SORTW(1), MM(1), MS(1), BF(1), BMOV(1), BTST(1), BSCH(1), GO(1), EXIT(1), MAN(1)',CR,LF,LF
+                DC.B    '   HELP(1), MDSP(1), SORTW(1), MM(1), MS(1), BF(1), BMOV(1), BTST(1), BSCH(1), GO(1), EXIT(1), MAN(1), CHGREG(1), HISTORY(1)',CR,LF,LF
                 
                 DC.B    'Daniel H. Meves                    27 April 2016                        DF(1)',CR,LF,LF,0
                 
@@ -537,7 +547,7 @@ EXITMANPAGE     DC.B    CR,LF,'EXIT(1)                       MC68000/SANPER-1 EL
                 *DC.B    '   none',CR,LF,LF
                 
                 DC.B    'SEE ALSO',CR,LF
-                DC.B    '   HELP(1), MDSP(1), SORTW(1), MM(1), MS(1), BF(1), BMOV(1), BTST(1), BSCH(1), GO(1), DF(1), MAN(1)',CR,LF,LF
+                DC.B    '   HELP(1), MDSP(1), SORTW(1), MM(1), MS(1), BF(1), BMOV(1), BTST(1), BSCH(1), GO(1), DF(1), MAN(1), CHGREG(1), HISTORY(1)',CR,LF,LF
                 
                 DC.B    'Daniel H. Meves                    27 April 2016                        EXIT(1)',CR,LF,LF,0   
 
@@ -577,11 +587,135 @@ MANMANPAGE      DC.B    CR,LF,'MAN(1)                       MC68000/SANPER-1 ELU
                 *DC.B    '   none',CR,LF,LF
                 
                 DC.B    'SEE ALSO',CR,LF
-                DC.B    '   HELP(1), MDSP(1), SORTW(1), MM(1), MS(1), BF(1), BMOV(1), BTST(1), BSCH(1), GO(1), DF(1), EXIT(1)',CR,LF,LF
+                DC.B    '   HELP(1), MDSP(1), SORTW(1), MM(1), MS(1), BF(1), BMOV(1), BTST(1), BSCH(1), GO(1), DF(1), EXIT(1), CHGREG(1), HISTORY(1)',CR,LF,LF
                 
-                DC.B    'Daniel H. Meves                    27 April 2016                        MAN(1)',CR,LF,LF,0        
+                DC.B    'Daniel H. Meves                    27 April 2016                        MAN(1)',CR,LF,LF,0  
+
+CHGREGMANPAGE   DC.B    CR,LF,'MAN(1)                       MC68000/SANPER-1 ELU                       CHGREG(1)',CR,LF,LF
+                
+                DC.B    'NAME',CR,LF
+                DC.B    '   Modify Registers,CR,LF,LF
+                
+                DC.B    'SYNOPSYS',CR,LF
+                DC.B    '   .D[0-7] [data] / .A[0-7] [data] / .SR [data]',CR,LF,LF
+                
+                DC.B    'DESCRIPTION',CR,LF
+                DC.B    '   Modify the contents of each register individually',CR,LF,LF
+                
+                *DC.B    'OPTIONS',CR,LF
+                *DC.B    '   none',CR,LF,LF
+                
+                *DC.B    'NOTES',CR,LF
+                *DC.B    '   none',CR,LF,LF
+                
+                *DC.B    'FILES',CR,LF
+                *DC.B    '   none',CR,LF,LF
+                
+                *DC.B    'ENVIRONMENT',CR,LF
+                *DC.B    '   none',CR,LF,LF
+                
+                *DC.B    'DIAGNOSTICS',CR,LF
+                *DC.B    '   none',CR,LF,LF
+                
+                *DC.B    'BUGS',CR,LF
+                *DC.B    '   none known atm',CR,LF,LF
+                
+                DC.B    'AUTHOR',CR,LF
+                DC.B    '   Daniel H. Meves',CR,LF,LF
+                
+                *DC.B    'HISTORY',CR,LF
+                *DC.B    '   none',CR,LF,LF
+                
+                DC.B    'SEE ALSO',CR,LF
+                DC.B    '   HELP(1), MDSP(1), SORTW(1), MM(1), MS(1), BF(1), BMOV(1), BTST(1), BSCH(1), GO(1), DF(1), EXIT(1), CHGREG(1), HISTORY(1)',CR,LF,LF
+                
+                DC.B    'Daniel H. Meves                    27 April 2016                        CHGREG(1)',CR,LF,LF,0
+
+HISTMANPAGE     DC.B    CR,LF,'MAN(1)                       MC68000/SANPER-1 ELU                       HISTORY(1)',CR,LF,LF
+                
+                DC.B    'NAME',CR,LF
+                DC.B    '   Command History',CR,LF,LF
+                
+                DC.B    'SYNOPSYS',CR,LF
+                DC.B    '   HISTORY [N]',CR,LF,LF
+                
+                DC.B    'DESCRIPTION',CR,LF
+                DC.B    '   Display Command History. N is the number of commands to display.',CR,LF
+                DC.B    '   HISTORY with no arguments prints all history.',CR,LF,LF
+                
+                *DC.B    'OPTIONS',CR,LF
+                *DC.B    '   none',CR,LF,LF
+                
+                *DC.B    'NOTES',CR,LF
+                *DC.B    '   none',CR,LF,LF
+                
+                *DC.B    'FILES',CR,LF
+                *DC.B    '   none',CR,LF,LF
+                
+                *DC.B    'ENVIRONMENT',CR,LF
+                *DC.B    '   none',CR,LF,LF
+                
+                *DC.B    'DIAGNOSTICS',CR,LF
+                *DC.B    '   none',CR,LF,LF
+                
+                *DC.B    'BUGS',CR,LF
+                *DC.B    '   none known atm',CR,LF,LF
+                
+                DC.B    'AUTHOR',CR,LF
+                DC.B    '   Daniel H. Meves',CR,LF,LF
+                
+                *DC.B    'HISTORY',CR,LF
+                *DC.B    '   none',CR,LF,LF
+                
+                DC.B    'SEE ALSO',CR,LF
+                DC.B    '   HELP(1), MDSP(1), SORTW(1), MM(1), MS(1), BF(1), BMOV(1), BTST(1), BSCH(1), GO(1), DF(1), EXIT(1), CHGREG(1), HISTORY(1)',CR,LF,LF
+                
+                DC.B    'Daniel H. Meves                    27 April 2016                        HISTORY(1)',CR,LF,LF,0    
+
+CLEARMANPAGE    DC.B    CR,LF,'MAN(1)                       MC68000/SANPER-1 ELU                       CLEAR(1)',CR,LF,LF
+                
+                DC.B    'NAME',CR,LF
+                DC.B    '   Clear screen.',CR,LF,LF
+                
+                DC.B    'SYNOPSYS',CR,LF
+                DC.B    '   CLEAR',CR,LF,LF
+                
+                DC.B    'DESCRIPTION',CR,LF
+                DC.B    '   Clears all text on terminal screen.',CR,LF,LF
+                
+                *DC.B    'OPTIONS',CR,LF
+                *DC.B    '   none',CR,LF,LF
+                
+                *DC.B    'NOTES',CR,LF
+                *DC.B    '   none',CR,LF,LF
+                
+                *DC.B    'FILES',CR,LF
+                *DC.B    '   none',CR,LF,LF
+                
+                *DC.B    'ENVIRONMENT',CR,LF
+                *DC.B    '   none',CR,LF,LF
+                
+                *DC.B    'DIAGNOSTICS',CR,LF
+                *DC.B    '   none',CR,LF,LF
+                
+                *DC.B    'BUGS',CR,LF
+                *DC.B    '   none known atm',CR,LF,LF
+                
+                DC.B    'AUTHOR',CR,LF
+                DC.B    '   Daniel H. Meves',CR,LF,LF
+                
+                *DC.B    'HISTORY',CR,LF
+                *DC.B    '   none',CR,LF,LF
+                
+                DC.B    'SEE ALSO',CR,LF
+                DC.B    '   HELP(1), MDSP(1), SORTW(1), MM(1), MS(1), BF(1), BMOV(1), BTST(1), BSCH(1), GO(1), DF(1), EXIT(1), CHGREG(1), HISTORY(1), CLEAR(1)',CR,LF,LF
+                
+                DC.B    'Daniel H. Meves                    27 April 2016                        CLEAR(1)',CR,LF,LF,0  
 
 HISTORYBUFFER   DS.L    500
+
+
+
 
 
 
