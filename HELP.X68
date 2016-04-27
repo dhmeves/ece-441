@@ -220,12 +220,17 @@ HELPONLY        LEA     CMDMSG,A1
                 MOVE.B  #14,D0
                 TRAP    #15
                 
+                LEA     CLEARMSG,A1
+                MOVE.B  #14,D0
+                TRAP    #15
+                
                 LEA     CMDMSG2,A1
                 MOVE.B  #14,D0
                 TRAP    #15
                 
 ENDHELP         MOVEM.L (SP)+,A0-A7/D0-D7
                 RTS
+
 
 
 
