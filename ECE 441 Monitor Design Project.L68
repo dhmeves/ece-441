@@ -1,6 +1,6 @@
 000015DE Starting Address
 Assembler used: EASy68K Editor/Assembler v5.15.04
-Created On: 4/27/2016 12:11:34 AM
+Created On: 4/27/2016 12:49:14 AM
 
 00000000                             1  *-----------------------------------------------------------
 00000000                             2  * Title      : ECE 441 Monitor Design Project
@@ -3564,15 +3564,17 @@ Created On: 4/27/2016 12:11:34 AM
 000732E4                          3560  
 000732E4                          3561  
 000732E4                          3562  
-000732E4                          3563  -------------------- end include --------------------
-000732E4                          3564             
-000732E4                          3565  * Put program code here
-000732E4                          3566  
-000732E4  FFFF FFFF               3567      SIMHALT             ; halt simulator
-000732E8                          3568  
-000732E8                          3569  * Put variables and constants here
+000732E4                          3563  
+000732E4                          3564  
+000732E4                          3565  -------------------- end include --------------------
+000732E4                          3566             
+000732E4                          3567  * Put program code here
+000732E4                          3568  
+000732E4  FFFF FFFF               3569      SIMHALT             ; halt simulator
 000732E8                          3570  
-000732E8                          3571      END    START        ; last line of source
+000732E8                          3571  * Put variables and constants here
+000732E8                          3572  
+000732E8                          3573      END    START        ; last line of source
 
 No errors detected
 No warnings generated

@@ -16,9 +16,9 @@ MMMSG           DC.B    CR,LF,'   MM: Modifies Data In Memory',CR,LF
                 DC.B    '   W: Displays One Word',CR,LF
                 DC.B    '   L: Displays One Long Word',CR,LF
                 DC.B    '   MM <address> [size] eg: MM $904 W<CR>',CR,LF
-                DC.B    '   Exit MM commmand by typing "."<CR>',CR,LF,LF,0
+                DC.B    '   Exit MM command by typing "."<CR>',CR,LF,LF,0
                 
-MSMSG           DC.B    CR,LF,'   MS: Memory Set.',CR,LF
+MSMSG           DC.B    CR,LF,'   MS: Memory Set',CR,LF
                 DC.B    '   MS <address> [data] eg: MS $904 $FFFF<CR>',CR,LF,LF,0
                 
 BFMSG           DC.B    CR,LF,'   BF: Fills A Block Of Memory',CR,LF
@@ -731,6 +731,9 @@ CLEARMANPAGE    DC.B    CR,LF,'MAN(1)                       MC68000/SANPER-1 ELU
                 DC.B    'Daniel H. Meves                    27 April 2016                        CLEAR(1)',CR,LF,LF,0  
 
 HISTORYBUFFER   DS.L    500
+
+
+
 
 
 

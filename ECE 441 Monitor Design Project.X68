@@ -2,10 +2,8 @@
 * Title      : ECE 441 Monitor Design Project
 * Written by : Daniel H. Meves
 * Date       : 03/21/2016 - 04/27/2016
-* Description: 
+* Description: Command driven interpreter/shell
 *-----------------------------------------------------------
-
-    INCLUDE "Constants.X68"
     
     ORG $08
     DC.L    BUSERRHDLR
@@ -25,6 +23,8 @@
     DC.L    LINE_FHDLR
 
     ORG    $1000
+    
+    INCLUDE "Constants.X68"
     
     INCLUDE "Random Strings.X68"
                                 
@@ -85,6 +85,7 @@
 * Put variables and constants here
 
     END    START        ; last line of source
+
 
 
 
