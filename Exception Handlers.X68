@@ -5,7 +5,8 @@
 *----------------------------------------------------------------------
 * BUS ERROR EXCEPTION HANDLER
 *----------------------------------------------------------------------
-BUSERRHDLR  MOVEM.L A0-A7/D0-D7,-(SP) 
+BUSERRHDLR  MOVE.L  A7,A2
+            MOVEM.L A0-A7/D0-D7,-(SP) 
             
             LEA     BERR,A1
             MOVE.B  #13,D0
@@ -17,7 +18,7 @@ BUSERRHDLR  MOVEM.L A0-A7/D0-D7,-(SP)
             LEA     BUFFER,A5
             LEA     BUFFER,A6
             ADDA.W  #2,A6
-            MOVE.W  (A7)+,(A5)
+            MOVE.W  (A2)+,(A5)
             JSR     HEX2ASCII
             MOVE.L  A4,A1
             MOVE.B  #13,D0
@@ -29,7 +30,7 @@ BUSERRHDLR  MOVEM.L A0-A7/D0-D7,-(SP)
             LEA     BUFFER,A5
             LEA     BUFFER,A6
             ADDA.W  #4,A6
-            MOVE.L  (A7)+,(A5)
+            MOVE.L  (A2)+,(A5)
             JSR     HEX2ASCII
             MOVE.L  A4,A1
             MOVE.B  #13,D0
@@ -41,14 +42,14 @@ BUSERRHDLR  MOVEM.L A0-A7/D0-D7,-(SP)
             LEA     BUFFER,A5
             LEA     BUFFER,A6
             ADDA.W  #2,A6
-            MOVE.W  (A7)+,(A5)
+            MOVE.W  (A2)+,(A5)
             JSR     HEX2ASCII
             MOVE.L  A4,A1
             MOVE.B  #13,D0
             TRAP    #15
             
-            MOVE.W  (A7)+,SRDATA
-            MOVE.L  (A7),PCDATA
+            MOVE.W  (A2)+,SRDATA
+            MOVE.L  (A2),PCDATA
             MOVE.L  USP,A3
             MOVE.L  A3,USPDATA
             MOVE.L  SP,SSPDATA2
@@ -64,7 +65,8 @@ BUSERRHDLR  MOVEM.L A0-A7/D0-D7,-(SP)
 *----------------------------------------------------------------------
 * ADDRESS ERROR EXCEPTION HANDLER
 *----------------------------------------------------------------------  
-ADDERRHDLR  MOVEM.L A0-A7/D0-D7,-(SP)
+ADDERRHDLR  MOVE.L  A7,A2
+            MOVEM.L A0-A7/D0-D7,-(SP)
 
             LEA     AERR,A1
             MOVE.B  #13,D0
@@ -76,7 +78,7 @@ ADDERRHDLR  MOVEM.L A0-A7/D0-D7,-(SP)
             LEA     BUFFER,A5
             LEA     BUFFER,A6
             ADDA.W  #2,A6
-            MOVE.W  (A7)+,(A5)
+            MOVE.W  (A2)+,(A5)
             JSR     HEX2ASCII
             MOVE.L  A4,A1
             MOVE.B  #13,D0
@@ -88,7 +90,7 @@ ADDERRHDLR  MOVEM.L A0-A7/D0-D7,-(SP)
             LEA     BUFFER,A5
             LEA     BUFFER,A6
             ADDA.W  #4,A6
-            MOVE.L  (A7)+,(A5)
+            MOVE.L  (A2)+,(A5)
             JSR     HEX2ASCII
             MOVE.L  A4,A1
             MOVE.B  #13,D0
@@ -100,14 +102,14 @@ ADDERRHDLR  MOVEM.L A0-A7/D0-D7,-(SP)
             LEA     BUFFER,A5
             LEA     BUFFER,A6
             ADDA.W  #2,A6
-            MOVE.W  (A7)+,(A5)
+            MOVE.W  (A2)+,(A5)
             JSR     HEX2ASCII
             MOVE.L  A4,A1
             MOVE.B  #13,D0
             TRAP    #15
             
-            MOVE.W  (A7)+,SRDATA
-            MOVE.L  (A7),PCDATA
+            MOVE.W  (A2)+,SRDATA
+            MOVE.L  (A2),PCDATA
             MOVE.L  USP,A3
             MOVE.L  A3,USPDATA
             MOVE.L  SP,SSPDATA2
@@ -123,14 +125,15 @@ ADDERRHDLR  MOVEM.L A0-A7/D0-D7,-(SP)
 *----------------------------------------------------------------------
 * ILLEGAL INSTRUCTION EXCEPTION HANDLER
 *----------------------------------------------------------------------
-ILLINSTHDLR MOVEM.L A0-A7/D0-D7,-(SP)
+ILLINSTHDLR MOVE.L  A7,A2
+            MOVEM.L A0-A7/D0-D7,-(SP)
 
             LEA     ILL_INST,A1
             MOVE.B  #13,D0
             TRAP    #15
  
-            MOVE.W  (A7)+,SRDATA
-            MOVE.L  (A7),PCDATA
+            MOVE.W  (A2)+,SRDATA
+            MOVE.L  (A2),PCDATA
             MOVE.L  USP,A3
             MOVE.L  A3,USPDATA
             MOVE.L  SP,SSPDATA2
@@ -146,14 +149,15 @@ ILLINSTHDLR MOVEM.L A0-A7/D0-D7,-(SP)
 *----------------------------------------------------------------------
 * PRIVILEGE VIOLATION EXCEPTION HANDLER
 *----------------------------------------------------------------------
-PRIV_VHDLR  MOVEM.L A0-A7/D0-D7,-(SP)
+PRIV_VHDLR  MOVE.L  A7,A2
+            MOVEM.L A0-A7/D0-D7,-(SP)
 
             LEA     PRIV_V,A1
             MOVE.B  #13,D0
             TRAP    #15
             
-            MOVE.W  (A7)+,SRDATA
-            MOVE.L  (A7),PCDATA
+            MOVE.W  (A2)+,SRDATA
+            MOVE.L  (A2),PCDATA
             MOVE.L  USP,A3
             MOVE.L  A3,USPDATA
             MOVE.L  SP,SSPDATA2
@@ -169,14 +173,15 @@ PRIV_VHDLR  MOVEM.L A0-A7/D0-D7,-(SP)
 *----------------------------------------------------------------------
 * DIVIDE BY ZERO EXCEPTION HANDLER
 *----------------------------------------------------------------------
-DIV_ZHDLR   MOVEM.L A0-A7/D0-D7,-(SP)
+DIV_ZHDLR   MOVE.L  A7,A2
+            MOVEM.L A0-A7/D0-D7,-(SP)
 
             LEA     DIV_ZERO,A1
             MOVE.B  #13,D0
             TRAP    #15
             
-            MOVE.W  (A7)+,SRDATA
-            MOVE.L  (A7),PCDATA
+            MOVE.W  (A2)+,SRDATA
+            MOVE.L  (A2),PCDATA
             MOVE.L  USP,A3
             MOVE.L  A3,USPDATA
             MOVE.L  SP,SSPDATA2
@@ -186,20 +191,21 @@ DIV_ZHDLR   MOVEM.L A0-A7/D0-D7,-(SP)
             MOVE.L  PCDATA2,PCDATA
             MOVE.L  USPDATA2,USPDATA
             
-            MOVEM.L (SP)+,A0-A7/D0-D7
+            *MOVEM.L (SP)+,A0-A7/D0-D7
             BRA     NEXTCMD
             
 *----------------------------------------------------------------------
 * CHECK INSTRUCTION EXCEPTION HANDLER
 *----------------------------------------------------------------------
-CHK_IHDLR   MOVEM.L A0-A7/D0-D7,-(SP)
+CHK_IHDLR   MOVE.L  A7,A2
+            MOVEM.L A0-A7/D0-D7,-(SP)
 
             LEA     CHK_INST,A1
             MOVE.B  #13,D0
             TRAP    #15
             
-            MOVE.W  (A7)+,SRDATA
-            MOVE.L  (A7),PCDATA
+            MOVE.W  (A2)+,SRDATA
+            MOVE.L  (A2),PCDATA
             MOVE.L  USP,A3
             MOVE.L  A3,USPDATA
             MOVE.L  SP,SSPDATA2
@@ -215,14 +221,15 @@ CHK_IHDLR   MOVEM.L A0-A7/D0-D7,-(SP)
 *----------------------------------------------------------------------
 * LINE A EMULATOR EXCEPTION HANDLER
 *----------------------------------------------------------------------
-LINE_AHDLR  MOVEM.L A0-A7/D0-D7,-(SP)
+LINE_AHDLR  MOVE.L  A7,A2
+            MOVEM.L A0-A7/D0-D7,-(SP)
 
             LEA     LINE_A,A1
             MOVE.B  #13,D0
             TRAP    #15
             
-            MOVE.W  (A7)+,SRDATA
-            MOVE.L  (A7),PCDATA
+            MOVE.W  (A2)+,SRDATA
+            MOVE.L  (A2),PCDATA
             MOVE.L  USP,A3
             MOVE.L  A3,USPDATA
             MOVE.L  SP,SSPDATA2
@@ -232,20 +239,21 @@ LINE_AHDLR  MOVEM.L A0-A7/D0-D7,-(SP)
             MOVE.L  PCDATA2,PCDATA
             MOVE.L  USPDATA2,USPDATA
             
-            MOVEM.L (SP)+,A0-A7/D0-D7
+            *MOVEM.L (SP)+,A0-A7/D0-D7
             BRA     NEXTCMD
             
 *----------------------------------------------------------------------
 * LINE F EMULATOR EXCEPTION HANDLER
 *----------------------------------------------------------------------
-LINE_FHDLR  MOVEM.L A0-A7/D0-D7,-(SP)
+LINE_FHDLR  MOVE.L  A7,A2
+            MOVEM.L A0-A7/D0-D7,-(SP)
 
             LEA     LINE_F,A1
             MOVE.B  #13,D0
             TRAP    #15
             
-            MOVE.W  (A7)+,SRDATA
-            MOVE.L  (A7),PCDATA
+            MOVE.W  (A2)+,SRDATA
+            MOVE.L  (A2),PCDATA
             MOVE.L  USP,A3
             MOVE.L  A3,USPDATA
             MOVE.L  SP,SSPDATA2
@@ -257,6 +265,8 @@ LINE_FHDLR  MOVEM.L A0-A7/D0-D7,-(SP)
             
             MOVEM.L (SP)+,A0-A7/D0-D7
             BRA     NEXTCMD
+
+
 
 *~Font name~Courier New~
 *~Font size~10~
