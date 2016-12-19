@@ -1,0 +1,162 @@
+00001590 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.15.04
+Created On: 4/25/2016 1:27:37 AM
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * BF (Block Fill) - The Block Fill (BF) command fills memory starting with the word
+00000000                             3  * boundary <address1> through <address2>. Both <address1> and <address2> must be even
+00000000                             4  * addresses. This command only fills with a word-size (2 bytes) data pattern. If an entire
+00000000                             5  * word-size data pattern is not entered, the pattern is right justified and leading zeros are inserted.
+00000000                             6  *-----------------------------------------------------------
+00000000  48E7 FFFF                  7  BF          MOVEM.L A0-A7/D0-D7,-(SP)
+00000004                             8              
+Line 9 ERROR: Undefined symbol
+00000004  41F9 004DBB8E              9              LEA     INPUTBUFFER,A0
+0000000A  5648                      10              ADDA.W  #3,A0
+0000000C  5248                      11  BFONLY      ADDA.W  #1,A0
+0000000E  5204                      12              ADD.B   #1,D4
+00000010  B83C 0003                 13              CMP.B   #3,D4
+00000014  6C00 0012                 14              BGE     PRTBF
+Line 15 ERROR: Undefined symbol
+00000018  0C10 008E                 15              CMP.B   #SP,(A0)
+0000001C  67EE                      16              BEQ     BFONLY
+Line 17 ERROR: Undefined symbol
+0000001E  0C10 008E                 17              CMP.B   #NULL,(A0)
+00000022  67E8                      18              BEQ     BFONLY
+00000024  6000 0012                 19              BRA     BFCONT
+00000028                            20              
+Line 21 ERROR: Undefined symbol
+00000028  43F9 004DBB8E             21  PRTBF       LEA     BFMSG,A1
+0000002E  103C 000E                 22              MOVE.B  #14,D0
+00000032  4E4F                      23              TRAP    #15
+00000034  6000 0102                 24              BRA     BFDONE
+00000038                            25  
+00000038  4286                      26  BFCONT      CLR.L   D6
+Line 27 ERROR: Undefined symbol
+0000003A  4EB9 004DBB8E             27              JSR     ARGV
+Line 28 ERROR: Undefined symbol
+00000040  41F9 004DBB8E             28              LEA     CMDBUFFER,A0
+Line 29 ERROR: Undefined symbol
+00000046  D0FC BB8E                 29              ADDA.W  #INDEX,A0
+0000004A                            30              
+Line 31 ERROR: Undefined symbol
+0000004A  0C10 008E                 31              CMP.B   #NULL,(A0)
+0000004E  6700 00D8                 32              BEQ     BFERROR
+00000052                            33              
+Line 34 ERROR: Undefined symbol
+00000052  4EB9 004DBB8E             34              JSR     CHKDOLLAR
+00000058  B43C 0001                 35              CMP.B   #1,D2
+0000005C  6700 00DA                 36              BEQ     BFDONE
+00000060  2254                      37              MOVEA.L (A4),A1
+00000062                            38              
+00000062  2409                      39              MOVE.L  A1,D2
+00000064  84FC 0002                 40              DIVU    #2,D2
+00000068  4842                      41              SWAP    D2
+0000006A  4A42                      42              TST.W   D2
+0000006C  6600 0098                 43              BNE     ODDADDR1
+00000070                            44              
+Line 45 ERROR: Undefined symbol
+00000070  41F9 004DBB8E             45  CHKADDR2    LEA     CMDBUFFER,A0
+00000076  103C 0002                 46              MOVE.B  #2,D0
+Line 47 ERROR: Undefined symbol
+0000007A  123C 008E                 47              MOVE.B  #INDEX,D1
+0000007E  C2C0                      48              MULU    D0,D1
+00000080  D0C1                      49              ADDA.W  D1,A0
+00000082                            50              
+Line 51 ERROR: Undefined symbol
+00000082  0C10 008E                 51              CMP.B   #NULL,(A0)
+00000086  6700 00A0                 52              BEQ     BFERROR
+0000008A                            53              
+Line 54 ERROR: Undefined symbol
+0000008A  4EB9 004DBB8E             54              JSR     CHKDOLLAR
+00000090  B43C 0001                 55              CMP.B   #1,D2
+00000094  6700 00A2                 56              BEQ     BFDONE
+00000098  2454                      57              MOVEA.L (A4),A2
+0000009A                            58              
+0000009A  240A                      59              MOVE.L  A2,D2
+0000009C  84FC 0002                 60              DIVU    #2,D2
+000000A0  4842                      61              SWAP    D2
+000000A2  4A42                      62              TST.W   D2
+000000A4  6600 0072                 63              BNE     ODDADDR2
+000000A8                            64              
+000000A8  B5C9                      65              CMPA.L  A1,A2
+000000AA  6C00 007C                 66              BGE     BFERROR
+000000AE                            67              
+000000AE  BC3C 0001                 68              CMP.B   #1,D6
+000000B2  6700 0084                 69              BEQ     BFDONE
+000000B6                            70              
+Line 71 ERROR: Undefined symbol
+000000B6  41F9 004DBB8E             71              LEA     CMDBUFFER,A0
+000000BC  103C 0003                 72              MOVE.B  #3,D0
+Line 73 ERROR: Undefined symbol
+000000C0  123C 008E                 73              MOVE.B  #INDEX,D1
+000000C4  C2C0                      74              MULU    D0,D1
+000000C6  D0C1                      75              ADDA.W  D1,A0
+000000C8                            76              
+Line 77 ERROR: Undefined symbol
+000000C8  0C10 008E                 77              CMP.B   #NULL,(A0)
+000000CC  6700 005A                 78              BEQ     BFERROR
+000000D0                            79              
+Line 80 ERROR: Undefined symbol
+000000D0  4EB9 004DBB8E             80              JSR     CHKDOLLAR
+000000D6  B43C 0001                 81              CMP.B   #1,D2
+000000DA  6700 005C                 82              BEQ     BFDONE
+000000DE  2654                      83              MOVEA.L (A4),A3
+000000E0                            84              
+000000E0  BA3C 0004                 85              CMP.B   #4,D5
+000000E4  6700 0006                 86              BEQ     FILLLOOP
+000000E8  6E00 000C                 87              BGT     DATALONG
+000000EC                            88          
+000000EC  32CB                      89  FILLLOOP    MOVE.W  A3,(A1)+
+000000EE  B5C9                      90              CMP.L   A1,A2
+000000F0  66FA                      91              BNE     FILLLOOP
+000000F2  6000 0044                 92              BRA     BFDONE
+000000F6                            93              
+Line 94 ERROR: Undefined symbol
+000000F6  43F9 004DBB8E             94  DATALONG    LEA     DATALONGMSG,A1
+000000FC  103C 000E                 95              MOVE.B  #14,D0
+00000100  4E4F                      96              TRAP    #15
+00000102  6000 0034                 97              BRA     BFDONE
+00000106                            98  
+00000106  7C01                      99  ODDADDR1    MOVE.L  #1,D6
+Line 100 ERROR: Undefined symbol
+00000108  43F9 004DBB8E            100              LEA     ODDADDRMSG1,A1
+0000010E  103C 000E                101              MOVE.B  #14,D0
+00000112  4E4F                     102              TRAP    #15
+00000114  6000 FF5A                103              BRA     CHKADDR2
+00000118                           104              
+Line 105 ERROR: Undefined symbol
+00000118  43F9 004DBB8E            105  ODDADDR2    LEA     ODDADDRMSG2,A1
+0000011E  103C 000E                106              MOVE.B  #14,D0
+00000122  4E4F                     107              TRAP    #15
+00000124  6000 0012                108              BRA     BFDONE
+00000128                           109  
+Line 110 ERROR: Undefined symbol
+00000128  43F9 004DBB8E            110  BFERROR     LEA     ERRORMSG,A1
+0000012E  103C 000E                111              MOVE.B  #14,D0
+00000132  4E4F                     112              TRAP    #15 
+00000134  6000 FEF2                113              BRA     PRTBF          
+00000138                           114                  
+00000138  4CDF FFFF                115  BFDONE      MOVEM.L (SP)+,A0-A7/D0-D7
+0000013C  4E75                     116              RTS
+0000013E                           117  
+Line 118 WARNING: END directive missing, starting address not set
+
+21 errors detected
+1 warning generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+BF                  0
+BFCONT              38
+BFDONE              138
+BFERROR             128
+BFONLY              C
+CHKADDR2            70
+DATALONG            F6
+FILLLOOP            EC
+ODDADDR1            106
+ODDADDR2            118
+PRTBF               28

@@ -1,0 +1,137 @@
+00001558 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.15.04
+Created On: 4/23/2016 5:19:47 PM
+
+00000000= 4D 4F 4E 49 54 4F ...      1  PROMPT          DC.B    'MONITOR441>',0
+0000000C                             2  INPUTBUFFER     DS.B    80
+0000005C                             3  CMDBUFFER       DS.B    80
+000000AC                             4  ASCIIBUFFER     DS.B    20
+000000C0                             5  HEXBUFFER       DS.B    20
+000000D4                             6  BUFFER          DS.B    20
+Line 7 ERROR: Undefined symbol
+000000E8= 41 4E 20 45 52 52 ...      7  ERRORMSG        DC.B    'AN ERROR OCCURRED!',CR,LF,0
+Line 8 ERROR: Undefined symbol
+000000FD= 49 4E 56 41 4C 49 ...      8  ADDRERROR       DC.B    'INVALID ADDRESS!',CR,LF,0
+Line 9 ERROR: Undefined symbol
+00000110= 4E 4F 54 20 41 20 ...      9  ASCIIERROR      DC.B    'NOT A HEXADECIMAL VALUE!',CR,LF,0
+Line 10 ERROR: Undefined symbol
+0000012B= 4E 4F 54 20 41 4E ...     10  HEXERROR        DC.B    'NOT AN ASCII VALUE!',CR,LF,0
+Line 11 ERROR: Undefined symbol
+00000141= 53 54 4F 52 49 4E ...     11  STOREDATA       DC.B    'STORING DATA AS ASCII.',CR,LF,0
+Line 12 ERROR: Undefined symbol
+0000015A= 41 44 44 52 45 53 ...     12  ODDADDRMSG1     DC.B    'ADDRESS 1 IS NOT AN EVEN ADDRESS!',CR,LF,0
+Line 13 ERROR: Undefined symbol
+0000017E= 41 44 44 52 45 53 ...     13  ODDADDRMSG2     DC.B    'ADDRESS 2 IS NOT AN EVEN ADDRESS!',CR,LF,0
+Line 14 ERROR: Undefined symbol
+000001A2= 44 41 54 41 20 45 ...     14  DATALONGMSG     DC.B    'DATA ENTERED TOO LARGE, PLEASE ENTER WORD SIZE OR SMALLER!',CR,LF,0
+000001DF= 4D 45 4D 4F 52 59 ...     15  MEMERROR        DC.B    'MEMORY ERROR AT ADDRESS: ',0
+000001F9= 4E 4F 20 4D 45 4D ...     16  MEMSUCCESS      DC.B    'NO MEMORY ERROR DETECTED AT ADDRESS: ',0
+0000021F= 44 41 54 41 20 53 ...     17  DATASTORED      DC.B    'DATA STORED: ',0
+0000022D= 44 41 54 41 20 52 ...     18  DATAREAD        DC.B    'DATA READ: ',0
+00000239= 20 2D 20 00               19  SPACE           DC.B    ' - ',0
+Line 20 ERROR: Undefined symbol
+0000023D= 4E 4F 20 4D 41 54 ...     20  NOSTRINGFOUND   DC.B    'NO MATCHING STRING FOUND!',CR,LF,0
+Line 21 ERROR: Undefined symbol
+00000259= 53 54 52 49 4E 47 ...     21  STRINGFOUNDMSG  DC.B    'STRING FOUND!',CR,LF,0
+00000269= 44 30 20 2D 20 00         22  REGD0           DC.B    'D0 - ',0
+0000026F= 44 31 20 2D 20 00         23  REGD1           DC.B    'D1 - ',0
+00000275= 44 32 20 2D 20 00         24  REGD2           DC.B    'D2 - ',0
+0000027B= 44 33 20 2D 20 00         25  REGD3           DC.B    'D3 - ',0
+00000281= 44 34 20 2D 20 00         26  REGD4           DC.B    'D4 - ',0
+00000287= 44 35 20 2D 20 00         27  REGD5           DC.B    'D5 - ',0
+0000028D= 44 36 20 2D 20 00         28  REGD6           DC.B    'D6 - ',0
+00000293= 44 37 20 2D 20 00         29  REGD7           DC.B    'D7 - ',0
+00000299= 41 30 20 2D 20 00         30  REGA0           DC.B    'A0 - ',0
+0000029F= 41 31 20 2D 20 00         31  REGA1           DC.B    'A1 - ',0
+000002A5= 41 32 20 2D 20 00         32  REGA2           DC.B    'A2 - ',0
+000002AB= 41 33 20 2D 20 00         33  REGA3           DC.B    'A3 - ',0
+000002B1= 41 34 20 2D 20 00         34  REGA4           DC.B    'A4 - ',0
+000002B7= 41 35 20 2D 20 00         35  REGA5           DC.B    'A5 - ',0
+000002BD= 41 36 20 2D 20 00         36  REGA6           DC.B    'A6 - ',0
+000002C3= 41 37 20 2D 20 00         37  REGA7           DC.B    'A7 - ',0
+000002C9= 53 52 20 2D 20 00         38  REGSR           DC.B    'SR - ',0
+000002CF= 53 53 50 20 2D 20 00      39  REGSSP          DC.B    'SSP - ',0
+000002D6= 55 53 50 20 2D 20 00      40  REGUSP          DC.B    'USP - ',0
+000002DD= 50 43 20 2D 20 00         41  REGPC           DC.B    'PC - ',0
+000002E4                            42  PCDATA          DS.L    1
+000002E8                            43  SRDATA          DS.W    1
+000002EA                            44  SPDATA          DS.L    1
+000002EE                            45  SPDATA2         DS.L    1
+000002F2= 41 20 42 55 53 20 ...     46  BERR            DC.B    'A BUS ERROR JUST OCCURRED!',0
+0000030D= 41 4E 20 41 44 44 ...     47  AERR            DC.B    'AN ADDRESS ERROR JUST OCCURRED!',0
+0000032D= 41 4E 20 49 4C 4C ...     48  ILL_INST        DC.B    'AN ILLEGAL INSTRUCTION WAS EXECUTED!',0
+00000352= 41 20 50 52 49 56 ...     49  PRIV_V          DC.B    'A PRIVILEGE VIOLATION JUST OCCURRED!',0
+00000377= 41 20 44 49 56 49 ...     50  DIV_ZERO        DC.B    'A DIVIDE BY ZERO EXCEPTION JUST OCCURRED!',0
+000003A1= 41 20 43 48 45 43 ...     51  CHK_INST        DC.B    'A CHECK INSTRUCTION EXCEPTION JUST OCCURRED!',0
+000003CE= 41 20 4C 49 4E 45 ...     52  LINE_A          DC.B    'A LINE A EMULATOR EXCEPTION JUST OCCURRED!',0
+000003F9= 41 20 4C 49 4E 45 ...     53  LINE_F          DC.B    'A LINE F EMULATOR EXCEPTION JUST OCCURRED!',0
+00000424= 53 53 57 20 2D 20 00      54  SSW             DC.B    'SSW - ',0
+0000042B= 42 41 20 2D 20 00         55  BA              DC.B    'BA - ',0
+00000431= 49 52 20 2D 20 00         56  IR              DC.B    'IR - ',0
+00000437                            57  
+00000437                            58  
+Line 59 WARNING: END directive missing, starting address not set
+
+10 errors detected
+1 warning generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+ADDRERROR           FD
+AERR                30D
+ASCIIBUFFER         AC
+ASCIIERROR          110
+BA                  42B
+BERR                2F2
+BUFFER              D4
+CHK_INST            3A1
+CMDBUFFER           5C
+DATALONGMSG         1A2
+DATAREAD            22D
+DATASTORED          21F
+DIV_ZERO            377
+ERRORMSG            E8
+HEXBUFFER           C0
+HEXERROR            12B
+ILL_INST            32D
+INPUTBUFFER         C
+IR                  431
+LINE_A              3CE
+LINE_F              3F9
+MEMERROR            1DF
+MEMSUCCESS          1F9
+NOSTRINGFOUND       23D
+ODDADDRMSG1         15A
+ODDADDRMSG2         17E
+PCDATA              2E4
+PRIV_V              352
+PROMPT              0
+REGA0               299
+REGA1               29F
+REGA2               2A5
+REGA3               2AB
+REGA4               2B1
+REGA5               2B7
+REGA6               2BD
+REGA7               2C3
+REGD0               269
+REGD1               26F
+REGD2               275
+REGD3               27B
+REGD4               281
+REGD5               287
+REGD6               28D
+REGD7               293
+REGPC               2DD
+REGSR               2C9
+REGSSP              2CF
+REGUSP              2D6
+SPACE               239
+SPDATA              2EA
+SPDATA2             2EE
+SRDATA              2E8
+SSW                 424
+STOREDATA           141
+STRINGFOUNDMSG      259
